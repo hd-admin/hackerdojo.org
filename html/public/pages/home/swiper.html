@@ -1,0 +1,115 @@
+<div id="carousel">
+	<div class="swiper">
+		<div class="swiper-wrapper">
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/main_2.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/solar_2.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/main_lobby_gaming.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/rob_electronics.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/pingpong.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/karaoke.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/mechanic_cat_2.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/nicole_laser.jpeg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/lobby_chairs.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/nicole_tiyanna.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/work_dojo.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/dark_mode_3.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+			
+			<div class="swiper-slide">
+				<img src="static/images/swiper/current/hack_comedy.jpg" loading="lazy" />
+				<div class="swiper-lazy-preloader"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="swiper-controls">
+		<div class="swiper-pagination"></div>
+		<div class="swiper-control-buttons">
+			<div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div>
+		</div>
+	</div>
+</div>
+
+<div class="clear" style="margin-bottom: 100px;"></div>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+
+<script type="text/javascript">
+	var Carousel = new Swiper('.swiper', {
+	  effect: 'coverflow',
+	  grabCursor: true,
+	  centeredSlides: true,
+	  loop: true,
+	  slidesPerView: 'auto',
+	  coverflowEffect: {
+		rotate: 0,
+		stretch: 0,
+		depth: 100,
+		modifier: 2.5,
+	  },
+	  pagination: {
+		el: '.swiper-pagination',
+		clickable: true,
+	  },
+	  navigation: {
+		nextEl: '.swiper-button-next',
+		prevEl: '.swiper-button-prev',
+	  },
+	  autoplay: {
+		delay: 5000,
+		disableOnInteraction: true
+	  },
+	});
+</script>
