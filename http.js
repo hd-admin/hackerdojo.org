@@ -4,11 +4,11 @@ Bun.serve({
 	  const url 	= new URL(req.url)
 	  const path 	= url.pathname
 	  const paths = path.split('/')
-	  
+
 	  const mainPath = paths[1]
-	  
+
 	  var html = ""
-	  
+
 	  if(mainPath == "static") {
 		  html = await Bun.file("./html" + path)
 		  const blob = new Blob([html])
@@ -16,7 +16,7 @@ Bun.serve({
 	  } else {
 		  // HEADER
 		  html += await Bun.file("./html/public/layout/header.html").text()
-	  
+
 		  if(mainPath == "" || mainPath == "home") {
 			  html += await Bun.file("./html/public/pages/home/topbg.html").text()
 			  html += await Bun.file("./html/public/pages/home/hero.html").text()
@@ -38,7 +38,7 @@ Bun.serve({
 
 		  // FOOTER
 		  html += await Bun.file("./html/public/layout/footer.html").text()
-		  
+
 		  const blob = new Blob([html], { type: "text/html" })
 		  return new Response(blob)
 	  }
