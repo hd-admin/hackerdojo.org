@@ -7,14 +7,13 @@ Bun.serve({
 	  
 	  const mainPath = paths[1]
 	  
-	  var html = ""
 	  
 	  if(mainPath == "static") {
-		  html = await Bun.file("./html" + path)
-		  const blob = new Blob([html])
+		//   html = await (await Bun.file("./html" + path)).text();
+		  const blob = new Blob([Bun.file("./html" + path)])
 		  return new Response(blob)
 	  } else {
-		  // HEADER
+		  let html = ""
 		  html += await Bun.file("./html/public/layout/header.html").text()
 	  
 		  if(mainPath == "" || mainPath == "home") {
