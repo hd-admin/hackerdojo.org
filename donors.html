@@ -1,0 +1,348 @@
+---
+layout: default
+title: Hacker Dojo Donors Page
+---
+  <style>
+    :root{
+      --bg:#0f1724; /* deep navy */
+      --card:#0b1220;
+      --muted:#94a3b8;
+      --accent:#00bcd4; /* cyan */
+      --accent-2:#ffd166; /* warm gold */
+      --success:#16a34a;
+      --danger:#ef4444;
+      --glass: rgba(255,255,255,0.04);
+      --radius:12px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg),#061023);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+      display:flex;
+      justify-content:center;
+      font-size:16px;
+    }
+    .container{max-width:1100px;width:100%}
+    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .logo{
+      width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#042029
+    }
+    h1{margin:0;font-size:1.5rem}
+    p.lead{margin:0;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:340px 1fr;gap:20px}
+
+    /* sidebar */
+    .sidebar{background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 6px 20px rgba(4,6,12,0.6)}
+    .sidebar h2{margin:0 0 8px 0}
+    .stats{display:flex;gap:8px;flex-wrap:wrap}
+    .stat{background:var(--glass);padding:10px;border-radius:10px;min-width:110px}
+    .stat strong{display:block;font-size:1.1rem}
+    .filters{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+    .filters label{font-size:0.9rem;color:var(--muted)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),#07a5b2);color:#042029;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    /* main */
+    .main{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 6px 30px rgba(0,0,0,0.6)}
+    form.add-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    form.add-form input, form.add-form select{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;min-width:0}
+    form.add-form textarea{min-width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+
+    .list{margin-top:16px;display:grid;gap:12px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);display:flex;gap:12px;align-items:flex-start}
+    .card .left{width:8px;height:60px;border-radius:6px}
+    .card h3{margin:0 0 4px 0}
+    .meta{font-size:0.9rem;color:var(--muted)}
+    .actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .chip{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:0.85rem}
+
+    /* small helpers */
+    .row{display:flex;gap:8px;align-items:center}
+    .muted{color:var(--muted)}
+    .claimed{background:linear-gradient(90deg,var(--success),#06c270);color:#042029}
+    .danger{background:linear-gradient(90deg,var(--danger),#ff7a7a);color:#042029}
+    .empty{padding:36px;text-align:center;color:var(--muted);border-radius:8px}
+
+    /* responsive */
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr;}
+      .sidebar{order:2}
+    }
+<body>
+  <div class="container" id="app">
+    <header>
+      <div class="logo" aria-hidden>HD</div>
+      <div>
+        <h1>Hacker Dojo — Community Wishlist</h1>
+        <p class="lead">A shared place for members and supporters to request, sponsor, and claim items the Dojo needs.</p>
+      </div>
+    </header>
+
+    <section class="grid">
+      <aside class="sidebar" aria-labelledby="sideTitle">
+        <h2 id="sideTitle">Summary</h2>
+        <div class="stats" id="stats">
+          <div class="stat"><span class="muted">Total items</span><strong id="totalCount">0</strong></div>
+          <div class="stat"><span class="muted">Open</span><strong id="openCount">0</strong></div>
+          <div class="stat"><span class="muted">Claimed</span><strong id="claimedCount">0</strong></div>
+        </div>
+
+        <div class="filters">
+          <label for="filterCategory">Filter by category</label>
+          <select id="filterCategory">
+            <option value="all">All</option>
+            <option value="tools">Tools</option>
+            <option value="hardware">Hardware</option>
+            <option value="supplies">Supplies</option>
+            <option value="funding">Funding</option>
+            <option value="other">Other</option>
+          </select>
+
+          <label for="sortBy">Sort by</label>
+          <select id="sortBy">
+            <option value="new">Newest</option>
+            <option value="old">Oldest</option>
+            <option value="popular">Most claimed</option>
+          </select>
+
+          <div class="row" style="margin-top:6px">
+            <button class="btn" id="exportBtn" title="Export wishlist as CSV">Export CSV</button>
+            <button class="btn ghost" id="clearBtn" title="Clear all local data (only localStorage)">Clear</button>
+          </div>
+        </div>
+
+        <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)">
+        <p class="muted" style="font-size:0.9rem">Usage notes:</p>
+        <ul style="margin:6px 0 0 18px;color:var(--muted)">
+          <li>Members add wishlist items with details & priority.</li>
+          <li>Guests can claim items and optionally add a link or message.</li>
+          <li>Data is saved in your browser (Local Storage). Export to preserve/share.</li>
+        </ul>
+      </aside>
+
+      <main class="main" aria-labelledby="mainTitle">
+        <h2 id="mainTitle">Add an item</h2>
+
+        <form id="addForm" class="add-form" autocomplete="off">
+          <input type="text" id="title" placeholder="Item title — e.g. '3D printer (Ender 3 Pro)'" required aria-label="Item title" style="flex:1;min-width:200px">
+          <select id="category" aria-label="Category">
+            <option value="tools">Tools</option>
+            <option value="hardware">Hardware</option>
+            <option value="supplies">Supplies</option>
+            <option value="funding">Funding</option>
+            <option value="other">Other</option>
+          </select>
+          <input type="text" id="qty" placeholder="Qty (1)" aria-label="Quantity" style="width:90px">
+          <button class="btn" type="submit">Add</button>
+
+          <div style="width:100%">
+            <textarea id="notes" rows="2" placeholder="Notes: why it's needed, approximate price, link to buy, who requested it (optional)"></textarea>
+          </div>
+        </form>
+
+        <section style="margin-top:18px">
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <h2 style="margin:0">Wishlist</h2>
+            <div class="muted">Showing <span id="visibleCount">0</span> items</div>
+          </div>
+
+          <div id="list" class="list" aria-live="polite">
+            <div class="empty" id="empty">No wishlist items yet — add the first one above.</div>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <div class="left"></div>
+      <div class="content">
+        <h3></h3>
+        <div class="meta"></div>
+        <div class="muted smallnotes" style="margin-top:8px;font-size:0.95rem"></div>
+      </div>
+      <div class="actions">
+        <div class="chip qty"></div>
+        <button class="btn ghost claimBtn">Claim</button>
+        <button class="btn ghost editBtn">Edit</button>
+        <button class="btn danger deleteBtn">Delete</button>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    // Simple wishlist app: stores items in localStorage, allows add/edit/claim/delete, export CSV
+    (function(){
+      const STORAGE_KEY = 'hackerdojo_wishlist_v1';
+      let items = [];
+
+      // elements
+      const totalCount = document.getElementById('totalCount');
+      const openCount = document.getElementById('openCount');
+      const claimedCount = document.getElementById('claimedCount');
+      const listEl = document.getElementById('list');
+      const emptyEl = document.getElementById('empty');
+      const visibleCount = document.getElementById('visibleCount');
+
+      const addForm = document.getElementById('addForm');
+      const titleInput = document.getElementById('title');
+      const categoryInput = document.getElementById('category');
+      const qtyInput = document.getElementById('qty');
+      const notesInput = document.getElementById('notes');
+
+      const filterCategory = document.getElementById('filterCategory');
+      const sortBy = document.getElementById('sortBy');
+      const exportBtn = document.getElementById('exportBtn');
+      const clearBtn = document.getElementById('clearBtn');
+
+      const template = document.getElementById('cardTemplate');
+
+      // Helpers
+      function uid(){return Math.random().toString(36).slice(2,9)}
+      function nowISO(){return new Date().toISOString()}
+
+      function save(){localStorage.setItem(STORAGE_KEY, JSON.stringify(items))}
+      function load(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          items = raw ? JSON.parse(raw) : [];
+        }catch(e){items=[]}
+      }
+
+      function addItem(data){
+        const it = Object.assign({id:uid(),title:'',category:'other',qty:1,notes:'',claimed:false,claimedBy:'',createdAt:nowISO(),updatedAt:nowISO(),claims:0}, data);
+        items.unshift(it);
+        save();
+        render();
+      }
+
+      function updateItem(id, patch){
+        const idx = items.findIndex(i=>i.id===id); if(idx===-1) return;
+        items[idx] = Object.assign({},items[idx],patch,{updatedAt:nowISO()});
+        save(); render();
+      }
+
+      function removeItem(id){ items = items.filter(i=>i.id!==id); save(); render(); }
+
+      function claimItem(id){
+        const by = prompt('Your name (optional) — this will be visible to others who view the wishlist');
+        if(by===null) return; // cancelled
+        updateItem(id,{claimed:true,claimedBy:by||'Anonymous',claims:(items.find(i=>i.id===id).claims||0)+1});
+      }
+
+      function editItem(id){
+        const it = items.find(i=>i.id===id);
+        if(!it) return;
+        const newTitle = prompt('Edit title', it.title);
+        if(newTitle===null) return;
+        const newNotes = prompt('Edit notes / link / details', it.notes || '');
+        if(newNotes===null) return;
+        updateItem(id,{title:newTitle,notes:newNotes});
+      }
+
+      function exportCSV(){
+        if(!items.length){alert('No items to export');return}
+        const header = ['id','title','category','qty','notes','claimed','claimedBy','createdAt','updatedAt','claims'];
+        const rows = items.map(i=>header.map(h=>JSON.stringify(i[h]===undefined?'':i[h]).replace(/\n/g,' ')).join(','));
+        const csv = [header.join(','), ...rows].join('\n');
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='hackerdojo_wishlist.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      }
+
+      function clearAll(){ if(confirm('Clear all wishlist data from this browser? This cannot be undone.')){ items=[]; save(); render(); }}
+
+      function render(){
+        // filtering
+        const cat = filterCategory.value;
+        const sorted = [...items];
+        if(sortBy.value==='new') sorted.sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt));
+        if(sortBy.value==='old') sorted.sort((a,b)=> new Date(a.createdAt)-new Date(b.createdAt));
+        if(sortBy.value==='popular') sorted.sort((a,b)=> (b.claims||0)-(a.claims||0));
+
+        const shown = (cat==='all') ? sorted : sorted.filter(i=>i.category===cat);
+
+        // stats
+        totalCount.textContent = items.length;
+        const claimed = items.filter(i=>i.claimed).length;
+        claimedCount.textContent = claimed;
+        openCount.textContent = items.length - claimed;
+
+        // list
+        listEl.innerHTML='';
+        if(!shown.length){ listEl.appendChild(emptyEl); visibleCount.textContent='0'; return }
+        visibleCount.textContent = String(shown.length);
+
+        shown.forEach(it=>{
+          const el = template.content.cloneNode(true);
+          const article = el.querySelector('.card');
+          article.querySelector('h3').textContent = it.title;
+          article.querySelector('.meta').innerHTML = `<span class="chip">${it.category}</span> <span style="margin-left:8px" class="muted">Added ${new Date(it.createdAt).toLocaleString()}</span>`;
+          article.querySelector('.smallnotes').textContent = it.notes || '';
+          article.querySelector('.qty').textContent = 'Qty: ' + (it.qty||1);
+          const left = article.querySelector('.left');
+          // color by category
+          const colorMap = {tools:'#ffd166',hardware:'#00bcd4',supplies:'#7dd3fc',funding:'#a78bfa',other:'#fca5a5'};
+          left.style.background = colorMap[it.category]||'#94a3b8';
+
+          const claimBtn = article.querySelector('.claimBtn');
+          const editBtn = article.querySelector('.editBtn');
+          const deleteBtn = article.querySelector('.deleteBtn');
+
+          if(it.claimed){
+            claimBtn.textContent = 'Claimed\n(' + (it.claimedBy||'—') + ')';
+            claimBtn.classList.add('claimed');
+          } else {
+            claimBtn.textContent = 'Claim';
+            claimBtn.classList.remove('claimed');
+          }
+
+          claimBtn.addEventListener('click', ()=>{ if(it.claimed){ if(!confirm('This item is already claimed by "'+(it.claimedBy||'someone')+'". Do you want to unclaim it?')) return; updateItem(it.id,{claimed:false,claimedBy:''}); } else claimItem(it.id); });
+          editBtn.addEventListener('click', ()=>editItem(it.id));
+          deleteBtn.addEventListener('click', ()=>{ if(confirm('Delete this item?')) removeItem(it.id); });
+
+          listEl.appendChild(article);
+        });
+      }
+
+      // attach events
+      addForm.addEventListener('submit', e=>{
+        e.preventDefault();
+        const title = titleInput.value.trim(); if(!title) return titleInput.focus();
+        const category = categoryInput.value;
+        const qty = parseInt(qtyInput.value) || 1;
+        const notes = notesInput.value.trim();
+        addItem({title,category,qty,notes});
+        addForm.reset();
+        titleInput.focus();
+      });
+
+      filterCategory.addEventListener('change', render);
+      sortBy.addEventListener('change', render);
+      exportBtn.addEventListener('click', exportCSV);
+      clearBtn.addEventListener('click', clearAll);
+
+      // seed example items if empty
+      load();
+      if(!items.length){
+        addItem({title:'Ender 3 (3D printer) — replacement fans & nozzle',category:'hardware',qty:1,notes:'Needed for member projects. Link: https://example.com/end3'});
+        addItem({title:'Soldering iron tips (assorted)',category:'supplies',qty:5,notes:'Consume quickly during workshops'});
+        addItem({title:'New ergonomic office chairs (for workspace)',category:'funding',qty:6,notes:'Replace old chairs in shared coworking area — budget $800/ea'});
+      } else {
+        render();
+      }
+
+      // expose for debugging (optional)
+      window.HDWishlist = {items,save,load,addItem,updateItem,removeItem};
+    })();
+  </script>
+</body>
+</html>
