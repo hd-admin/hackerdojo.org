@@ -1031,6 +1031,11 @@ body {
 	color:#444;
 }
 
+.location-hours {
+	font-size: 18px;
+	color:#444;
+}
+
 .map-holder {
 	background: #fff;
 	padding: 5px 5px 5px 5px;
