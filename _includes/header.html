@@ -3,13 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" type="image/x-icon" href="static/images/favicon/hackerdojo.ico">
+	<link rel="icon" type="image/x-icon" href="/static/images/favicon/hackerdojo.ico">
 
 	<title>{{ page.title }}</title>
 
 	<!-- CSS -->
-	<link href="static/css/style.css" rel="stylesheet" type="text/css">
-	<link href="static/css/swiper.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/style.css" rel="stylesheet" type="text/css">
+	<link href="/static/css/swiper.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 
 	<!-- FONTS -->
@@ -36,7 +36,7 @@
 	<div id="header">
 		<div id="header-left">
 			<a href="/" id="header-logo">
-				<img src="static/images/logo.png" id="logo-icon" />
+				<img src="/static/images/logo.png" id="logo-icon" />
 				<div id="logo-text">Hacker Dojo</div>
 			</a>
 		</div>
@@ -44,7 +44,7 @@
 		<div id="top-navigation">
 			<a href="https://wiki.hackerdojo.com/index.php?title=Main_Page">About</a>
 			<a href="https://www.meetup.com/hackerdojo/events/">Events</a>
-			<span class="top-navigation-link" onClick="getid('startups-holder').scrollIntoView({ behavior: 'smooth' })">Startups</span>
+			<a href="/startups/">Startups</a>
 			<span class="top-navigation-link" onClick="getid('pricing-holder').scrollIntoView({ behavior: 'smooth' })">Pricing</span>
 			<a href="https://www.every.org/hacker-dojo?donateTo=hacker-dojo#/donate/card" target="_blank" class="mobile-donate-button-header" style="">Donate</a>
 		</div>
@@ -75,7 +75,7 @@
 					</a>
 
 					<a href="https://wiki.hackerdojo.com/index.php?title=Main_Page">About</a>
-					<span class="top-navigation-link popup-link" onClick="getid('startups-holder').scrollIntoView({ behavior: 'smooth' })">Startups</span>
+					<a href="/startups/">Startups</a>
 					<span class="top-navigation-link popup-link" onClick="getid('pricing-holder').scrollIntoView({ behavior: 'smooth' })">Pricing</span>
 					<a href="https://www.every.org/hacker-dojo/f/hacker-dojo-expansion">Donate</a>
 					<a href="https://calendly.com/hdfrontdesk/30min">Take A Tour</a>
