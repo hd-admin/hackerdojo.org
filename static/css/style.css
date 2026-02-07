@@ -953,11 +953,6 @@ body {
 	color: rgba(0,0,0,0.5);
 }
 
-.boardship-2-center {
-  grid-template-columns: max-content max-content;
-  justify-content: center;
-}
-
 .boardship {
 	display: grid;
 	grid-gap: 20px;
@@ -972,6 +967,11 @@ body {
 
 .boardship-3 {
 	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.boardship-2-center {
+  grid-template-columns: max-content max-content;
+  justify-content: center;
 }
 
 .boardship-mobile {
