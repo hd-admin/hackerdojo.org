@@ -964,14 +964,19 @@ body {
 	grid-gap: 80px;
 	padding: 20px 50px;
 }
+/* Board Advisors: grid placement */
+.boardship-advisors .board:nth-child(1) { grid-column: 2; }
+.boardship-advisors .board:nth-child(2) { grid-column: 3; }
+
+@media only screen and (max-width:960px) {
+	.boardship-advisors .board:nth-child(1),
+	.boardship-advisors .board:nth-child(2) {
+	grid-column: auto;
+	}
+}
 
 .boardship-3 {
 	grid-template-columns: 1fr 1fr 1fr;
-}
-
-.boardship-2-center {
-  grid-template-columns: max-content max-content;
-  justify-content: center;
 }
 
 .boardship-mobile {
