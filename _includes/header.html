@@ -32,34 +32,54 @@
 </head>
 <body>
 <main>
+
+<!-- ========================================== -->
+<!-- START OF NEW AI CAREER HUB BANNER SECTION  -->
+<!-- ========================================== -->
+<div style="background-color: #0f172a; color: white; padding: 12px 20px; font-family: 'Saira', sans-serif; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; font-size: 15px; border-bottom: 1px solid #1e293b; z-index: 999; position: relative;">
+	<div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center; text-align: center;">
+		<span style="color: #f59e0b; font-weight: 600; letter-spacing: 0.5px; margin-right: 8px;">✦ NEW &mdash; AI CAREER INITIATIVE - REINVENT YOURSELF</span>
+		<span style="color: #e2e8f0;">Whether you've been laid off or see the writing on the wall &mdash; upskill in AI, build a product, launch your next chapter.</span>
+	</div>
+	<a href="/ai-initiative.html" style="background-color: #df3f33; color: white; padding: 6px 16px; border-radius: 4px; text-decoration: none; font-weight: 600; white-space: nowrap; font-size: 14px; margin-left: 20px; margin-top: 4px; margin-bottom: 4px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Learn More &rarr;</a>
+</div>
+<!-- ========================================== -->
+<!-- END OF NEW AI CAREER HUB BANNER SECTION    -->
+<!-- ========================================== -->
+
 <div class="section header-section" style="padding: 0; position: relative">
-	<div id="header">
+	<div id="header" style="display: flex; align-items: center; justify-content: space-between;">
 		<div id="header-left">
-			<a href="/" id="header-logo">
+			<a href="/" id="header-logo" style="display: flex; align-items: center; white-space: nowrap;">
 				<img src="/static/images/logo.png" id="logo-icon" />
 				<div id="logo-text">Hacker Dojo</div>
 			</a>
 		</div>
 
-		<div id="top-navigation">
-      <a href="/accelerator">Accelerator</a>
+		<!-- UPDATED NAVIGATION WITH PILL BUTTONS -->
+		<div id="top-navigation" style="display: flex; align-items: center; gap: 15px; flex-wrap: nowrap; white-space: nowrap;">
+			<a href="/accelerator">Accelerator</a>
 			<a href="https://wiki.hackerdojo.com/index.php?title=Main_Page">Wiki</a>
 			<a href="https://www.meetup.com/hackerdojo/events/">Events</a>
 			<a href="/startups/">Startups</a>
+			
+			<a href="/cocreate.html" style="background-color: #7c3aed; color: white; padding: 4px 16px; border-radius: 20px; font-weight: 500; text-decoration: none;">COCREATE</a>
+			<a href="/ai-initiative.html" style="background-color: #df3f33; color: white; padding: 4px 16px; border-radius: 20px; font-weight: 500; text-decoration: none;">AI DOJO</a>
+			
 			<span class="top-navigation-link" onClick="getid('pricing-holder').scrollIntoView({ behavior: 'smooth' })">Pricing</span>
 			<a href="https://www.every.org/hacker-dojo?donateTo=hacker-dojo#/donate/card" target="_blank" class="mobile-donate-button-header" style="">Donate</a>
 		</div>
 
-		<div id="header-right">
-			<div id="account">
-				<a href="https://www.meetup.com/hackerdojo/events/calendar/" target="_blank">
-					<svg style="color:#df3f33; width: 24px; height: 24px; float: left;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg>
+		<div id="header-right" style="display: flex; align-items: center;">
+			<div id="account" style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
+				<a href="https://www.meetup.com/hackerdojo/events/calendar/" target="_blank" style="display: flex;">
+					<svg style="color:#df3f33; width: 24px; height: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg>
 				</a>
-				<a href="https://hackerdojo.spaces.nexudus.com/login">
-					<svg style="color:#df3f33; width: 24px; height: 24px; float: left;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+				<a href="https://hackerdojo.spaces.nexudus.com/login" style="display: flex;">
+					<svg style="color:#df3f33; width: 24px; height: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
 				</a>
-				<a href="https://dojo-earth.vercel.app" target="_blank" title="Dojo Earth">
-					<svg style="color:#df3f33; width: 24px; height: 24px; float: left;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+				<a href="https://dojo-earth.vercel.app" target="_blank" title="Dojo Earth" style="display: flex;">
+					<svg style="color:#df3f33; width: 24px; height: 24px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
 				</a>
 			</div>
 
@@ -80,6 +100,10 @@
 
 					<a href="https://wiki.hackerdojo.com/index.php?title=Main_Page">Wiki</a>
 					<a href="/startups/">Startups</a>
+					
+					<a href="/cocreate.html" style="color: #7c3aed; font-weight: 600;">COCREATE</a>
+					<a href="/ai-initiative.html" style="color: #df3f33; font-weight: 600;">AI DOJO</a>
+					
 					<span class="top-navigation-link popup-link" onClick="getid('pricing-holder').scrollIntoView({ behavior: 'smooth' })">Pricing</span>
 					<a href="https://www.every.org/hacker-dojo/f/hacker-dojo-expansion">Donate</a>
 					<a href="https://dojo-earth.vercel.app" target="_blank">Dojo Earth 🌍</a>
