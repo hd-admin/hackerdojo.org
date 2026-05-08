@@ -7,20 +7,16 @@
 
 	<title>{{ page.title }}</title>
 
-	<!-- CSS -->
 	<link href="/static/css/style.css" rel="stylesheet" type="text/css">
 	<link href="/static/css/swiper.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
 
-	<!-- FONTS -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Saira:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
 
-	<!-- JAVASCRIPT -->
 	<script src="/static/js/functions.js" type="text/javascript"></script>
 
-	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-880343912"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
@@ -29,13 +25,65 @@
 	
 		gtag('config', 'AW-880343912');
 	</script>
+
+    <style>
+        .ai-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .ai-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 260px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+            z-index: 1000;
+            border-radius: 12px;
+            overflow: hidden;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .ai-dropdown:hover .ai-dropdown-content {
+            display: block;
+        }
+        .ai-dropdown-content a {
+            color: #0f172a !important;
+            padding: 14px 20px !important;
+            text-decoration: none !important;
+            display: block !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            text-align: left !important;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.2s !important;
+            font-family: 'Saira', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .ai-dropdown-content a:hover {
+            background-color: #f8fafc !important;
+            color: #df3f33 !important;
+            padding-left: 24px !important;
+        }
+        .ai-dropdown-content a:last-child {
+            border-bottom: none;
+        }
+        /* Invisible bridge so the hover doesn't drop */
+        .ai-dropdown::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 16px;
+        }
+    </style>
 </head>
 <body>
 <main>
 
-<!-- ========================================== -->
-<!-- START OF NEW AI CAREER HUB BANNER SECTION  -->
-<!-- ========================================== -->
 <div style="background-color: #0f172a; color: white; padding: 12px 20px; font-family: 'Saira', sans-serif; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; font-size: 15px; border-bottom: 1px solid #1e293b; z-index: 999; position: relative;">
 	<div style="display: flex; align-items: center; flex-wrap: wrap; justify-content: center; text-align: center;">
 		<span style="color: #f59e0b; font-weight: 600; letter-spacing: 0.5px; margin-right: 8px;">✦ NEW &mdash; AI CAREER INITIATIVE - REINVENT YOURSELF</span>
@@ -43,9 +91,6 @@
 	</div>
 	<a href="/ai-initiative.html" style="background-color: #df3f33; color: white; padding: 6px 16px; border-radius: 4px; text-decoration: none; font-weight: 600; white-space: nowrap; font-size: 14px; margin-left: 20px; margin-top: 4px; margin-bottom: 4px; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Learn More &rarr;</a>
 </div>
-<!-- ========================================== -->
-<!-- END OF NEW AI CAREER HUB BANNER SECTION    -->
-<!-- ========================================== -->
 
 <div class="section header-section" style="padding: 0; position: relative">
 	<div id="header" style="display: flex; align-items: center; justify-content: space-between;">
@@ -56,15 +101,21 @@
 			</a>
 		</div>
 
-		<!-- UPDATED NAVIGATION WITH PILL BUTTONS -->
 		<div id="top-navigation" style="display: flex; align-items: center; gap: 15px; flex-wrap: nowrap; white-space: nowrap;">
-			<a href="/accelerator">Accelerator</a>
 			<a href="https://wiki.hackerdojo.com/index.php?title=Main_Page">Wiki</a>
 			<a href="https://www.meetup.com/hackerdojo/events/">Events</a>
 			<a href="/startups/">Startups</a>
 			
 			<a href="/cocreate.html" style="background-color: #7c3aed; color: white; padding: 4px 16px; border-radius: 20px; font-weight: 500; text-decoration: none;">COCREATE</a>
-			<a href="/ai-initiative.html" style="background-color: #df3f33; color: white; padding: 4px 16px; border-radius: 20px; font-weight: 500; text-decoration: none;">AI DOJO</a>
+			
+            <div class="ai-dropdown">
+                <a href="#" style="background-color: #df3f33; color: white; padding: 4px 16px; border-radius: 20px; font-weight: 500; text-decoration: none; display: inline-block;">AI STARS ▾</a>
+                <div class="ai-dropdown-content">
+                    <a href="/accelerator/">ACCELERATOR</a>
+                    <a href="/ai-initiative.html">AI CAREER INITIATIVE</a>
+                    <a href="/ai-initiative.html">AI ARCHITECT CERTIFICATION</a>
+                </div>
+            </div>
 			
 			<span class="top-navigation-link" onClick="getid('pricing-holder').scrollIntoView({ behavior: 'smooth' })">Pricing</span>
 			<a href="https://www.every.org/hacker-dojo?donateTo=hacker-dojo#/donate/card" target="_blank" class="mobile-donate-button-header" style="">Donate</a>
@@ -96,13 +147,13 @@
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style=""><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" style="color: #e13838;" /></svg>
 						<span>Events</span>
 					</a>
-					<a href="/accelerator" style="font-weight: 500 !important;">Accelerator</a>
-
 					<a href="https://wiki.hackerdojo.com/index.php?title=Main_Page">Wiki</a>
 					<a href="/startups/">Startups</a>
 					
 					<a href="/cocreate.html" style="color: #7c3aed; font-weight: 600;">COCREATE</a>
-					<a href="/ai-initiative.html" style="color: #df3f33; font-weight: 600;">AI DOJO</a>
+					<a href="/accelerator/" style="color: #df3f33; font-weight: 600;">AI STARS: ACCELERATOR</a>
+					<a href="/ai-initiative.html" style="color: #df3f33; font-weight: 600;">AI STARS: CAREER INITIATIVE</a>
+					<a href="/ai-initiative.html" style="color: #df3f33; font-weight: 600;">AI STARS: ARCHITECT CERTIFICATION</a>
 					
 					<span class="top-navigation-link popup-link" onClick="getid('pricing-holder').scrollIntoView({ behavior: 'smooth' })">Pricing</span>
 					<a href="https://www.every.org/hacker-dojo/f/hacker-dojo-expansion">Donate</a>
@@ -123,3 +174,5 @@
 		}
 	}
 </script>
+</body>
+</html>
