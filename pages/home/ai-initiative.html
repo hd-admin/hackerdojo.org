@@ -1,71 +1,614 @@
-<!-- ========================================== -->
-<!-- START OF AI CAREER INITIATIVE SECTION      -->
-<!-- ========================================== -->
-<div class="section" style="background-color: #f8fafc; padding: 100px 20px; text-align: center; border-top: 1px solid #f1f5f9;">
-    <div style="max-width: 1000px; margin: 0 auto;">
-        <div style="color: #df3f33; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; font-family: 'Saira', sans-serif;">AI Career Initiative</div>
-        <h2 style="font-size: 38px; font-weight: 800; color: #0f172a; margin-bottom: 20px; font-family: 'Saira', sans-serif;">Reinvent yourself. We'll show you how.</h2>
-        <p style="font-size: 16px; color: #64748b; max-width: 600px; margin: 0 auto 50px auto; line-height: 1.6;">
-            Whether you've been displaced by AI or want to stay ahead of it &mdash; our structured program helps you pivot into a fulfilling, sustainable career. <strong style="color: #334155;">Choose your track:</strong>
+<!-- Load Tailwind and Fonts for this page -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Saira:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: { sans: ['Saira', 'system-ui', 'sans-serif'] },
+                colors: {
+                    dojo: {
+                        red: '#C84A0E',
+                        navy: '#0C111D',
+                        purple: '#7C3AED',
+                        blue: '#2563EB'
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<!-- Main Wrapper -->
+<div class="bg-[#F5F5F5] text-[#141414] antialiased selection:bg-dojo-red selection:text-white font-sans scroll-smooth">
+
+    <!-- NEW: Reinvent Yourself Hero Section -->
+    <header class="py-24 px-6 text-center max-w-5xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-red-50 text-dojo-red px-5 py-2 rounded-full text-sm font-bold mb-8 border border-red-100 shadow-sm uppercase tracking-widest">
+            <span class="text-lg leading-none mt-[1px]">✦</span> Reinvent Yourself
+        </div>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tight text-dojo-navy mb-4 leading-tight">
+            AI is reshaping every career.<br/>
+            <span class="text-dojo-red">Get ahead of it — or get left behind.</span>
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto font-medium mb-12 leading-relaxed">
+            Whether you've been laid off, you're watching your industry shift, or you simply want to future-proof your skills — Hacker Dojo's AI Career Initiative gives you the structure, community, and launchpad to make your next move.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="#paths" class="bg-dojo-red text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-red-700 transition shadow-[0_4px_14px_rgba(200,74,14,0.3)] w-full sm:w-auto">Find Your Path &rarr;</a>
+            <button class="bg-white border-2 border-gray-200 text-dojo-navy px-8 py-4 rounded-xl font-bold text-lg hover:border-gray-300 transition flex items-center justify-center gap-2 w-full sm:w-auto shadow-sm">
+                Watch 2-Min Overview 
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-dojo-navy"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- NEW: Market Leverage Section -->
+    <section class="py-16 px-6 text-center max-w-5xl mx-auto border-t border-gray-100">
+        <h2 class="text-3xl md:text-5xl font-black text-dojo-navy mb-6 tracking-tight">The market pays for leverage, not knowledge.</h2>
+        <p class="text-lg md:text-xl text-gray-600 mb-16 leading-relaxed max-w-4xl mx-auto">
+            If you're using ChatGPT as a glorified search engine, you're falling behind. Every product below is designed to help you build autonomous agents, wire workflows, and ship products without permission.
         </p>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px; text-align: left;">
-            
-            <!-- Card 1 -->
-            <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05); position: relative;">
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background-color: #3b82f6;"></div>
-                <div style="padding: 40px 30px;">
-                    <div style="width: 48px; height: 48px; border-radius: 12px; background-color: #eff6ff; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
-                        <svg style="color: #3b82f6; width: 24px; height: 24px;" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-							<circle cx="12" cy="12" r="6"/>
-							<circle cx="12" cy="12" r="2"/>
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 12px; font-family: 'Saira', sans-serif;">Regain your leverage.</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0;">Assess market disruption and identify your high-impact pivot. We'll help you turn shipped products and execution history into direct interviews and job offers.</p>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05); position: relative;">
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background-color: #f59e0b;"></div>
-                <div style="padding: 40px 30px;">
-                    <div style="width: 48px; height: 48px; border-radius: 12px; background-color: #fffbeb; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
-                        <svg style="color: #f59e0b; width: 24px; height: 24px;" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 12px; font-family: 'Saira', sans-serif;">Become Irreplaceable.</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0;">Don't wait to be displaced. Master workflow automation and learn to build autonomous AI agents that make you the most irreplaceable, highly leveraged person in your company.</p>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05); position: relative;">
-                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background-color: #10b981;"></div>
-                <div style="padding: 40px 30px;">
-                    <div style="width: 48px; height: 48px; border-radius: 12px; background-color: #ecfdf5; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
-                        <svg style="color: #10b981; width: 24px; height: 24px;" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
-							<path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 12px; font-family: 'Saira', sans-serif;">Launch your vision.</h3>
-                    <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin: 0;">Stop looking for a technical co-founder. Use AI to build and launch your own micro-SaaS into the Dojo network, instantly connecting with talent and capital.</p>
-                </div>
-            </div>
-
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-xl md:text-2xl font-medium text-gray-500 bg-gray-50 py-10 px-6 rounded-3xl border border-gray-200">
+            <span>Free classes are <strong class="text-dojo-navy font-black">education.</strong></span>
+            <span class="hidden md:block w-px h-10 bg-gray-300"></span>
+            <span>Paid intensives are <strong class="text-dojo-red font-black">execution.</strong></span>
+            <span class="hidden md:block w-px h-10 bg-gray-300"></span>
+            <span>Cohorts are <strong class="text-dojo-purple font-black">transformation.</strong></span>
         </div>
+    </section>
 
-        <a href="/ai-initiative.html" style="display: inline-flex; align-items: center; background-color: #df3f33; color: white; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 15px; transition: opacity 0.2s; box-shadow: 0 4px 14px 0 rgba(223, 63, 51, 0.3);" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-            Explore the Full Program 
-            <svg style="width: 18px; height: 18px; margin-left: 6px;" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-            </svg>
-        </a>
-    </div>
+    <!-- Header Section (Updated with larger text) -->
+    <section id="paths" class="py-20 px-6 text-center max-w-4xl mx-auto border-t border-gray-100">
+        <h1 class="text-6xl md:text-8xl font-black tracking-tight text-dojo-navy mb-6 leading-none">
+            Transformation.
+        </h1>
+        <h2 class="text-4xl md:text-6xl font-extrabold text-dojo-red mb-8 tracking-tight">
+            Not Courses — Execution.
+        </h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto font-medium">
+            Stop watching video tutorials. The AI era rewards those who ship products and execute strategies. Choose a one-morning sprint to get your hands dirty, or commit to a full cohort crucible.
+        </p>
+    </section>
+
+    <!-- Sprints Section -->
+    <section class="py-24 px-6 bg-white border-t border-b border-gray-200">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-6xl font-black text-dojo-navy text-center mb-16 tracking-tight">
+                Guided Outcome Sprints
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <!-- Career Pivot Sprint -->
+                <div class="bg-white border border-gray-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-dojo-blue"></div>
+                    <div class="text-xs font-bold text-dojo-blue uppercase tracking-widest mb-4">1 Saturday Morning · 4 Hours</div>
+                    <h3 class="text-4xl font-extrabold mb-4 text-gray-900">Career Pivot Sprint</h3>
+                    <div class="text-2xl font-bold text-gray-400 mb-8">$197</div>
+                    
+                    <p class="text-gray-600 mb-6 font-medium leading-relaxed text-lg">
+                        The job market changed, but most advice you hear is still the same. This isn’t another generic career workshop. It’s a live execution sprint focused on helping you adapt to an AI-disrupted market.
+                    </p>
+
+                    <!-- Expanded Content -->
+                    <div id="career-expanded" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0 flex flex-col gap-6">
+                        <ul class="space-y-4 mb-2">
+                            <li class="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
+                                <span class="text-dojo-blue font-bold mt-0.5">✓</span>
+                                <span><strong>Identify the Gap:</strong> Figure out exactly where your past experience meets current market demand.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
+                                <span class="text-dojo-blue font-bold mt-0.5">✓</span>
+                                <span><strong>The Pipeline:</strong> Master the AI-assisted outbound strategies that actually generate high-paying interviews.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
+                                <span class="text-dojo-blue font-bold mt-0.5">✓</span>
+                                <span><strong>The Clarity:</strong> Walk out by noon with certainty about your next pivot and the exact steps to get your first interviews for it.</span>
+                            </li>
+                        </ul>
+
+                        <!-- Prominent Link -->
+                        <a href="https://buy.stripe.com/your-career-sprint-link" class="block w-full text-center py-5 rounded-2xl bg-dojo-blue text-white font-black text-xl hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transform hover:-translate-y-1">
+                            Register for Career Pivot Sprint &rarr;
+                        </a>
+                    </div>
+
+                    <div class="mt-auto pt-6">
+                        <button onclick="toggleCard('career-expanded', this)" class="w-full text-center py-4 rounded-2xl bg-gray-50 text-gray-700 font-bold text-lg hover:bg-gray-100 transition-all flex items-center justify-center gap-2 border border-transparent hover:border-gray-200">
+                            <span class="btn-text">See More...</span>
+                            <svg class="w-5 h-5 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Builder Sprint -->
+                <div class="bg-white border border-gray-200 rounded-3xl p-10 hover:shadow-2xl transition-all duration-500 flex flex-col relative overflow-hidden group">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-dojo-purple"></div>
+                    <div class="text-xs font-bold text-dojo-purple uppercase tracking-widest mb-4">1 Saturday Morning · 4 Hours</div>
+                    <h3 class="text-4xl font-extrabold mb-4 text-gray-900">AI Builder Sprint</h3>
+                    <div class="text-2xl font-bold text-gray-400 mb-8">$147</div>
+                    
+                    <p class="text-gray-600 mb-6 font-medium leading-relaxed text-lg">
+                        Most AI training teaches you tools in a vacuum. This isn't a tutorial — it's a live execution sprint where you dissect how real AI products work, then build and deploy your own version before lunch.
+                    </p>
+
+                    <!-- Expanded Content -->
+                    <div id="builder-expanded" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0 flex flex-col gap-6">
+                        <ul class="space-y-4 mb-2">
+                            <li class="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
+                                <span class="text-dojo-purple font-bold mt-0.5">✓</span>
+                                <span><strong>The X-Ray:</strong> Tear apart 3 AI products that are already making money. Learn to see the wiring — what's AI, what's a wrapper, where's the actual value.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
+                                <span class="text-dojo-purple font-bold mt-0.5">✓</span>
+                                <span><strong>The Build:</strong> Learn agentic AI hands-on — prompt chaining, tool use, and workflow automation — as you wire a working proof-of-concept for your own use case. No coding experience needed.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-gray-600 text-lg font-medium leading-relaxed">
+                                <span class="text-dojo-purple font-bold mt-0.5">✓</span>
+                                <span><strong>The Deploy:</strong> Ship it live, get feedback, and walk out with a deployed prototype and a 1-page product brief.</span>
+                            </li>
+                        </ul>
+
+                        <!-- Prominent Link -->
+                        <a href="https://buy.stripe.com/your-ai-sprint-link" class="block w-full text-center py-5 rounded-2xl bg-dojo-purple text-white font-black text-xl hover:bg-purple-700 transition-all shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] transform hover:-translate-y-1">
+                            Register for AI Builder Sprint &rarr;
+                        </a>
+                    </div>
+
+                    <div class="mt-auto pt-6">
+                        <button onclick="toggleCard('builder-expanded', this)" class="w-full text-center py-4 rounded-2xl bg-gray-50 text-gray-700 font-bold text-lg hover:bg-gray-100 transition-all flex items-center justify-center gap-2 border border-transparent hover:border-gray-200">
+                            <span class="btn-text">See More...</span>
+                            <svg class="w-5 h-5 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Cohorts Section -->
+    <section class="py-24 px-6 bg-[#F5F5F5]">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-6xl font-black text-dojo-navy text-center mb-16 tracking-tight">
+                Full Cohort Programs
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <!-- The Bridge -->
+                <div class="bg-dojo-navy text-white rounded-3xl p-10 flex flex-col relative border border-gray-800 shadow-2xl transition-all duration-500">
+                    <div class="text-dojo-blue font-bold tracking-widest text-sm uppercase mb-4">4-Week Crucible</div>
+                    <h3 class="text-4xl font-extrabold mb-5 flex items-center gap-3">🌉 The Bridge</h3>
+                    <p class="text-gray-300 mb-6 text-lg leading-relaxed">
+                        Laid off, stuck in a role that's evaporating, or quietly watching your industry shift? We help you figure out your next pivot and how to start landing interviews for it. You leave with proper positioning, proof of work, and a real interview pipeline.
+                    </p>
+
+                    <!-- Expanded Content -->
+                    <div id="bridge-expanded" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0 flex flex-col gap-6">
+                        <p class="text-gray-400 leading-relaxed font-medium">
+                            Career transitions are hard. Doing them solo — sending hundreds of applications into the void, losing confidence with every rejection — is even harder. The people who pivot fastest are the ones surrounded by others who've done it before.
+                        </p>
+                        <p class="text-gray-400 leading-relaxed font-medium">
+                            The Bridge doesn't teach AI and job search separately. You learn to build an AI-powered outreach engine that generates interviews, ship a portfolio piece that proves you're an orchestrator, and translate your builder skills into corporate roles that pay $150K+. The AI education never feels like homework — it feels like an unfair advantage.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-3 mt-2">
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide text-gray-200">In-person · Mountain View</span>
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide text-gray-200">15 builders/cohort</span>
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide text-gray-200">Pods of 4</span>
+                        </div>
+                        
+                        <div class="font-extrabold text-white text-lg mt-4 border-t border-gray-800 pt-6">
+                            $997 Standard · $1497 Premium
+                        </div>
+                        
+                        <a href="bridge.html" class="block w-full text-center py-5 mt-2 rounded-2xl bg-dojo-blue text-white font-black text-xl hover:bg-blue-600 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transform hover:-translate-y-1">
+                            See Program Details &rarr;
+                        </a>
+                    </div>
+
+                    <div class="mt-auto pt-6">
+                        <button onclick="toggleCard('bridge-expanded', this)" class="w-full text-center py-4 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 border border-transparent hover:border-gray-700">
+                            <span class="btn-text">See More...</span>
+                            <svg class="w-5 h-5 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- The Forge -->
+                <div class="bg-dojo-navy text-white rounded-3xl p-10 flex flex-col relative border border-gray-800 shadow-2xl transition-all duration-500">
+                    <div class="text-dojo-purple font-bold tracking-widest text-sm uppercase mb-4">6-Week Crucible</div>
+                    <h3 class="text-4xl font-extrabold mb-5 flex items-center gap-3">⚒️ The Forge</h3>
+                    <p class="text-gray-300 mb-6 text-lg leading-relaxed">
+                        Having the HD Applied AI Architect Certification is proof that you can build something real. You collaborate with your small group to ship an AI product and, in the meantime, learn everything you need to know about leveraging agentic AI.
+                    </p>
+
+                    <!-- Expanded Content -->
+                    <div id="forge-expanded" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0 flex flex-col gap-6">
+                        <p class="text-gray-400 leading-relaxed font-medium">
+                            Most AI certificates prove you watched videos and passed a quiz. The HD Applied AI Architect certification proves you can actually build. Six intensive sessions where you go from understanding how AI works under the hood to shipping a live AI product — in production, in front of real users.
+                        </p>
+                        <p class="text-gray-400 leading-relaxed font-medium">
+                            Walk out with the HD Applied AI Architect credential — proof that you don't just understand AI at a deep level, but can use it to get something real into the world.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-3 mt-2">
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide text-gray-200">Hybrid format</span>
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide text-gray-200">12 builders/cohort</span>
+                            <span class="px-4 py-1.5 bg-white/10 rounded-full text-xs font-bold tracking-wide text-gray-200">Pods of 4</span>
+                        </div>
+                        
+                        <div class="font-extrabold text-white text-lg mt-4 border-t border-gray-800 pt-6">
+                            Standard Path: $1497 · AI Architect Path: $1997
+                        </div>
+                        
+                        <a href="forge.html" class="block w-full text-center py-5 mt-2 rounded-2xl bg-dojo-purple text-white font-black text-xl hover:bg-purple-600 transition-all shadow-[0_0_20px_rgba(124,58,237,0.3)] hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] transform hover:-translate-y-1">
+                            See Program Details &rarr;
+                        </a>
+                    </div>
+
+                    <div class="mt-auto pt-6">
+                        <button onclick="toggleCard('forge-expanded', this)" class="w-full text-center py-4 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 border border-transparent hover:border-gray-700">
+                            <span class="btn-text">See More...</span>
+                            <svg class="w-5 h-5 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: The Dojo Dual Guarantee Section -->
+    <section class="py-24 px-6 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-4">The Dojo Dual Guarantee</div>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+                    We don't want your money <span class="text-dojo-red">if we can't deliver results.</span>
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Two layers of protection. You decide within a week if a cohort is right for you. If you commit to the Bridge Premium track and do the work but don't get results within six months, you get your full tuition back.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- 7-Day Guarantee -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h3 class="text-dojo-red font-bold text-xl mb-4 flex items-center gap-2">
+                        <span>①</span> The 7-Day Vibe Check
+                    </h3>
+                    <h4 class="text-gray-900 font-bold text-lg mb-3">Try the first week. If it's not for you, full refund.</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        No questions asked. No emails. No exit interview. Just your money back within 7 days. (Applies to all Bridge and Forge tracks).
+                    </p>
+                </div>
+
+                <!-- 180-Day Guarantee -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h3 class="text-dojo-red font-bold text-xl mb-4 flex items-center gap-2">
+                        <span>②</span> The 180-Day Money-Back (Bridge Premium only)
+                    </h3>
+                    <h4 class="text-gray-900 font-bold text-lg mb-3">Do the work. Get results. Or get your tuition back.</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Complete every session, submit every deliverable, and meet the effort threshold below. If you don't land a role or contract within 6 months of graduation — full refund.
+                    </p>
+                </div>
+            </div>
+
+            <!-- What "do the work" means -->
+            <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 text-center">
+                <h4 class="text-gray-900 font-bold text-lg mb-4">What "do the work" means for the 180-Day Guarantee:</h4>
+                <p class="text-gray-600 text-sm leading-relaxed max-w-3xl mx-auto">
+                    If you attend all 4 sessions, complete all deliverables, ship your role-relevant AI demo, rebuild your resume/LinkedIn, and send 50+ documented tailored outreach messages—but do not generate at least 3 qualified interviews or serious hiring conversations within 180 days—you get continued support or a full refund.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: How We Bridge / How We Forge -->
+    <section class="py-20 px-6 bg-gradient-to-br from-slate-900 to-[#131B2E] border-t border-gray-800 relative overflow-hidden">
+        <!-- Subtle background pattern -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;"></div>
+        
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+                <!-- How We Bridge -->
+                <div>
+                    <h3 class="text-2xl font-extrabold mb-2 text-[#FF8A50] flex items-center gap-2">
+                        <span>🌉</span> How We Bridge
+                    </h3>
+                    <p class="text-sm text-slate-400 mb-6 font-medium">Move from where you are to what aligns with you most.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><span>🎯</span> Applied Upskilling</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">You don't learn AI separately from the job search. You use it to generate outreach, proof, and momentum.</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><span>💼</span> Corporate Translation</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Turn raw AI fluency into hiring-manager language employers understand and trust.</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><span>🚀</span> Proof of Life</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Create a real AI artifact for your target role — something you can show, not just describe.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How We Forge -->
+                <div>
+                    <h3 class="text-2xl font-extrabold mb-2 text-[#B794F6] flex items-center gap-2">
+                        <span>⚒️</span> How We Forge
+                    </h3>
+                    <p class="text-sm text-slate-400 mb-6 font-medium">Learn AI by shipping, not by watching.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><span>👥</span> Accountability Pods</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Small teams create pressure, momentum, and shared progress.</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><span>📦</span> Micro-Shippables</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Every session produces a working artifact — workflow, prototype, or tool.</p>
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/10 transition-colors">
+                            <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><span>🧠</span> Thinking Over Tooling</h4>
+                            <p class="text-sm text-slate-400 leading-relaxed">Tools change. Clear thinking, problem-solving, and judgment endure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orchestrator Callout -->
+            <div class="mt-12 bg-gradient-to-br from-[#C84A0E]/10 to-transparent border border-[#C84A0E]/20 rounded-2xl p-6 md:p-8 max-w-4xl mx-auto flex flex-col md:flex-row items-start gap-6">
+                <span class="text-4xl shrink-0">⚡</span>
+                <div>
+                    <h3 class="text-lg font-extrabold text-[#FF8A50] mb-2">We turn you into an Applied AI Architect.</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">The highest-value people in 2026 are not those that can ask questions from ChatGPT — it's the people who design the systems where AI agents do the work and humans make the decisions AI can't, and the ones that create visible proof of value.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Typical Dojo Journey -->
+    <section class="py-24 px-6 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-3">How It Fits Together</p>
+            <h2 class="text-3xl md:text-5xl font-black text-dojo-navy mb-4 tracking-tight">A typical Dojo journey.</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-16 font-medium">Most people start with one program. The flywheel kicks in when they don't stop there.</p>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-2">
+                <!-- Step 1 -->
+                <div class="flex-1 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-gray-400 text-white font-black text-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-md">1</div>
+                    <h4 class="font-extrabold text-gray-900 mb-1">Free Workshop</h4>
+                    <p class="text-sm text-gray-500 leading-snug">Public preview. Find out if this is for you.</p>
+                </div>
+                <div class="text-dojo-red font-black text-2xl rotate-90 md:rotate-0">⟶</div>
+                <!-- Step 2 -->
+                <div class="flex-1 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-amber-500 text-white font-black text-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-md">2</div>
+                    <h4 class="font-extrabold text-gray-900 mb-1">Sprint</h4>
+                    <p class="text-sm text-gray-500 leading-snug">Career Pivot or AI Builder. One morning. Real output.</p>
+                </div>
+                <div class="text-dojo-red font-black text-2xl rotate-90 md:rotate-0">⟶</div>
+                <!-- Step 3 -->
+                <div class="flex-1 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-dojo-red text-white font-black text-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-md">3</div>
+                    <h4 class="font-extrabold text-gray-900 mb-1">Bridge / Forge</h4>
+                    <p class="text-sm text-gray-500 leading-snug">Full cohort. Pods. Capstone. Transformation.</p>
+                </div>
+                <div class="text-dojo-red font-black text-2xl rotate-90 md:rotate-0">⟶</div>
+                <!-- Step 4 -->
+                <div class="flex-1 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-dojo-navy text-white font-black text-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-md">4</div>
+                    <h4 class="font-extrabold text-gray-900 mb-1">Black Belt</h4>
+                    <p class="text-sm text-gray-500 leading-snug">Expert Mode. Micro-Consulting. Earn on the platform.</p>
+                </div>
+                <div class="text-dojo-red font-black text-2xl rotate-90 md:rotate-0">⟶</div>
+                <!-- Step 5 -->
+                <div class="flex-1 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-dojo-purple text-white font-black text-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110 shadow-md">5</div>
+                    <h4 class="font-extrabold text-gray-900 mb-1">Mentor</h4>
+                    <p class="text-sm text-gray-500 leading-snug">Teach the next cohort. Build the Dojo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Belt System -->
+    <section class="py-24 px-6 bg-[#F5F5F5] border-t border-gray-200">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-3">Reputation System</p>
+                <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">The Belt System.</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto font-medium">Your status on CoCreate OS isn't bought — it's earned by shipping. Founders see your Belt before they see your name.</p>
+            </div>
+
+            <div class="relative border-l-2 border-gray-200 ml-6 md:ml-12 space-y-12 pb-4">
+                <!-- White Belt -->
+                <div class="relative pl-10 md:pl-16">
+                    <div class="absolute -left-[25px] bg-[#F5F5F3] border-2 border-gray-300 w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-sm z-10">⬜</div>
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-xl font-extrabold text-gray-900 mb-1">White Belt</h4>
+                        <div class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Default — Just Joined</div>
+                        <p class="text-gray-600 leading-relaxed font-medium">Browse startups. Claim free Portfolio Micro-Contracts. Build your first proofs of work. Complete 2 contracts (no rating below 4.0★) to advance.</p>
+                    </div>
+                </div>
+                <!-- Blue Belt -->
+                <div class="relative pl-10 md:pl-16">
+                    <div class="absolute -left-[25px] bg-[#EEF2FF] border-2 border-[#6366F1] w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-sm z-10">🟦</div>
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-xl font-extrabold text-gray-900 mb-1">Blue Belt</h4>
+                        <div class="text-xs font-bold text-dojo-blue uppercase tracking-widest mb-4">Proven Operator · Unlocks Pro Contracts + Expert Mode</div>
+                        <p class="text-gray-600 leading-relaxed font-medium">You've shipped real work. Now you can claim paid Pro Contracts, activate Expert Mode in Micro-Consulting (offer paid services), and get priority on the Talent Directory. Fast-track via GitHub or LinkedIn verification.</p>
+                    </div>
+                </div>
+                <!-- Black Belt -->
+                <div class="relative pl-10 md:pl-16">
+                    <div class="absolute -left-[25px] bg-[#0C111D] border-2 border-[#0C111D] w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-sm z-10">⬛</div>
+                    <div class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-xl font-extrabold text-gray-900 mb-1">Black Belt</h4>
+                        <div class="text-xs font-bold text-dojo-purple uppercase tracking-widest mb-4">Founder · Mentor · HD Applied AI Architect</div>
+                        <p class="text-gray-600 leading-relaxed font-medium">The top tier. Earned by founding a launched startup, mentoring 2 Blue Belts into hired roles, OR earning the HD Applied AI Architect certification through The Forge. God-Mode directory visibility, Demo Day judge authority, masterclass teaching rights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Built on Mountain View Soil -->
+    <section class="py-24 px-6 bg-white border-t border-gray-200 text-center">
+        <div class="max-w-5xl mx-auto">
+            <p class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-3">Built On Mountain View Soil</p>
+            <h2 class="text-3xl md:text-5xl font-black text-gray-900 mb-16 tracking-tight">17 years of building builders at Hacker Dojo.</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+                <div>
+                    <div class="text-5xl md:text-6xl font-black text-dojo-red mb-3 tracking-tighter">2009</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest">Founded</div>
+                </div>
+                <div>
+                    <div class="text-5xl md:text-6xl font-black text-dojo-red mb-3 tracking-tighter">100+</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest">Startups Launched</div>
+                </div>
+                <div>
+                    <div class="text-5xl md:text-6xl font-black text-dojo-red mb-3 tracking-tighter">$2B+</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest">Capital Raised by Alumni</div>
+                </div>
+                <div>
+                    <div class="text-5xl md:text-6xl font-black text-dojo-red mb-3 tracking-tighter">501(c)</div>
+                    <div class="text-xs font-bold text-gray-500 uppercase tracking-widest">Non-Profit Mission</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Quick Answers (FAQ) -->
+    <section class="py-24 px-6 bg-[#F5F5F5] border-t border-gray-200">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-3">Common Questions</p>
+                <h2 class="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">Quick answers.</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">Do I need to be a member to take The Bridge or The Forge?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        No. Cohorts are open to anyone. But members get 20% off and priority enrollment when seats are limited. Most people join the Community membership ($49/mo) before or right after their first cohort to access the Members-Only Library and CoCreate OS year-round.
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">Should I do The Bridge or The Forge first?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        If you need a job in the next 90 days, start with The Bridge. If you're employed and want to upskill or earn a credential, start with The Forge. Not sure? Start with a Sprint — the Career Pivot Sprint ($197) or AI Builder Sprint ($147) are single-morning execution sessions that give you a taste of the method without the full commitment. Many people do a Sprint first, then sign up for the full cohort.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">What's the difference between a Sprint and a full cohort?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        Sprints are guided execution sessions — one or two Saturday mornings where you walk in with a goal and walk out with a tangible output (positioning materials for the Career Pivot Sprint, a deployed AI workflow for the AI Builder Sprint). Full cohorts (The Bridge and The Forge) are multi-week transformation programs with accountability pods, weekly sessions, and capstone projects. Think of sprints as "try the method" and cohorts as "commit to the transformation."
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">What's actually different about the HD Applied AI Architect cert vs. Coursera or NVIDIA?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        Three things: (1) You don't pass an exam — you ship a live AI product and prove it's useful to real people (via revenue, active users, or a corporate Letter of Utility). (2) Your work happens in a 4-person accountability pod, not solo videos. (3) The credential is backed by your CoCreate OS Living Resume — a public, verified track record of contracts shipped, reviews earned, and Belt rank. Hiring managers can verify everything.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">How does the Dual Guarantee actually work?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        Two layers. First: a 7-day unconditional refund. Try the first week; if it's not for you, full refund, no questions. Second: a 180-day conditional money-back guarantee. If you complete 100% of sessions, submit every deliverable, prove you sent 50+ tailored outreach messages (Bridge) or pass the Proof of Utility Matrix (Forge — revenue from a stranger, 100+ active users, or a corporate Letter of Utility), and you still don't land a contract or full-time role within 6 months of graduation — we refund your full tuition. Not partial. Full. The conditions are strict because if you actually complete them, you'll almost certainly get hired.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">Can I do this remotely?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        The Bridge is in-person only — pod chemistry and real-time energy don't replicate over Zoom. The Forge is hybrid (some sessions in-person, some live online). CoCreate OS and the Members-Only Library work fully remote. Demo Day is always in-person at the Dojo.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 7 -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow transition-shadow">
+                    <button onclick="toggleFaq(this)" class="w-full px-8 py-6 text-left flex justify-between items-center font-extrabold text-gray-900 hover:bg-gray-50 transition-colors">
+                        <span class="pr-6 text-lg">When does the next cohort start?</span>
+                        <span class="faq-icon text-gray-400 text-3xl font-light leading-none select-none">+</span>
+                    </button>
+                    <div class="hidden px-8 pb-6 text-gray-600 text-base leading-relaxed border-t border-gray-100 pt-5 font-medium">
+                        We run cohorts roughly every 6–8 weeks. Founding cohorts are launching now with bonus perks (founding alumni status, free 90-day Community membership, name on the Founders Wall). Click "Find Your Path" above or join our list to be notified about the next start date.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script for Toggles -->
+    <script>
+        function toggleCard(id, btn) {
+            const content = document.getElementById(id);
+            const icon = btn.querySelector('svg');
+            const text = btn.querySelector('.btn-text');
+            
+            if (content.classList.contains('max-h-0')) {
+                // Expand
+                content.classList.remove('max-h-0', 'opacity-0');
+                content.classList.add('max-h-[1000px]', 'opacity-100');
+                icon.classList.add('rotate-180');
+                text.textContent = 'See Less';
+            } else {
+                // Collapse
+                content.classList.add('max-h-0', 'opacity-0');
+                content.classList.remove('max-h-[1000px]', 'opacity-100');
+                icon.classList.remove('rotate-180');
+                text.textContent = 'See More...';
+            }
+        }
+
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.faq-icon');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '−';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '+';
+            }
+        }
+    </script>
 </div>
-<!-- ========================================== -->
-<!-- END OF AI CAREER INITIATIVE SECTION        -->
-<!-- ========================================== -->
