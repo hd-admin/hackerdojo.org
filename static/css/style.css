@@ -161,6 +161,11 @@ body {
 	height: 30px;
 }
 
+#header-logo {
+  display:flex;
+  flex-wrap:nowrap;
+}
+
 .header-section {
 	width: 100%;
 	box-sizing: border-box;

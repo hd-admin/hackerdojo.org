@@ -1,0 +1,777 @@
+<style>
+/* ── Summer Camp page styles ─────────────────────────────────── */
+  body {
+    color: rgb(73,0,9);
+  }
+
+  ul {padding-left: 3em; }
+  .sc-hero {
+    background: linear-gradient(175deg, #fff4d2 0%, #fa9ef9 25%, #fbc0f9 100%);
+    padding: 80px 40px 70px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: rgb(73,0,9);
+  }
+
+  .sc-hero-camp {
+    margin-bottom:20px;
+  }
+  
+  .sc-hero-dots {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  .sc-hero-glow {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    height: 280px;
+    background: #fbbf24;
+    opacity: 0.09;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  /* ── Lava lamp blobs ────────────────────────────────────────── */
+  .sc-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    will-change: transform, border-radius;
+    mix-blend-mode: multiply;
+    opacity: 0.65;
+  }
+  .sc-blob-1 {
+    width: 400px; height: 400px;
+    background: #ffb347;
+    top: -100px; left: -80px;
+    animation: sc-lava1 15s ease-in-out infinite;
+  }
+  .sc-blob-2 {
+    width: 320px; height: 350px;
+    background: #e040fb90;
+    bottom: -80px; right: -60px;
+    animation: sc-lava2 19s ease-in-out infinite;
+  }
+  .sc-blob-3 {
+    width: 280px; height: 300px;
+    background: #ff6ec730;
+    top: 35%; left: 42%;
+    animation: sc-lava3 23s ease-in-out infinite;
+  }
+
+  @keyframes sc-lava1 {
+    0%   { transform: translate(0px,   0px)   scale(1);    border-radius: 50%; }
+    20%  { transform: translate(90px,  70px)  scale(1.1);  border-radius: 42% 58% 55% 45% / 50% 48% 52% 50%; }
+    45%  { transform: translate(40px, 140px)  scale(0.92); border-radius: 58% 42% 40% 60% / 45% 55% 45% 55%; }
+    70%  { transform: translate(-50px, 80px)  scale(1.07); border-radius: 45% 55% 62% 38% / 55% 42% 58% 45%; }
+    100% { transform: translate(0px,   0px)   scale(1);    border-radius: 50%; }
+  }
+  @keyframes sc-lava2 {
+    0%   { transform: translate(0px,    0px)    scale(1);    border-radius: 50%; }
+    25%  { transform: translate(-80px, -90px)   scale(1.12); border-radius: 60% 40% 52% 48% / 48% 55% 45% 52%; }
+    55%  { transform: translate(-130px, -35px)  scale(0.88); border-radius: 44% 56% 68% 32% / 52% 44% 56% 48%; }
+    80%  { transform: translate(-55px, -110px)  scale(1.06); border-radius: 55% 45% 38% 62% / 40% 58% 42% 60%; }
+    100% { transform: translate(0px,    0px)    scale(1);    border-radius: 50%; }
+  }
+  @keyframes sc-lava3 {
+    0%   { transform: translate(0px,   0px)   scale(1);    border-radius: 50%; }
+    18%  { transform: translate(-70px, 55px)  scale(1.18); border-radius: 38% 62% 47% 53% / 55% 44% 56% 45%; }
+    42%  { transform: translate(85px, -65px)  scale(0.83); border-radius: 65% 35% 54% 46% / 42% 58% 42% 58%; }
+    68%  { transform: translate(25px,  85px)  scale(1.1);  border-radius: 50% 50% 38% 62% / 58% 42% 58% 42%; }
+    100% { transform: translate(0px,   0px)   scale(1);    border-radius: 50%; }
+  }
+  .sc-badge {
+    display: inline-block;
+    background: rgba(251,191,36,0.13);
+#    color: #fbbf24;
+    border: 1px solid rgba(151,91,86,0.25);
+    font-family: "Rajdhani";
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 18px 4px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .simplecard{
+    border: 1px solid rgba(151,91,86,0.25);
+    width: 250px;
+  }
+  .simplecard-icon {
+    font-size:500%;
+    flex: 0 1 calc(33.33% - 10px); 
+  }
+  
+  #member-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    /* Limit to exactly 3 columns of equal size */
+    grid-template-columns: repeat(3); 
+    /* Centers the entire grid track horizontally in the container */
+    justify-content: center; 
+    /* Centers the content inside each individual cell */
+    justify-items: center; 
+    gap: 20px;
+  }
+  
+  .sc-hero-title {
+    font-family: "Rajdhani";
+    font-size: 74px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+  .sc-hero-title span {
+    #color: #fbbf24;
+  }
+  .sc-hero-desc {
+    font-size: 20px;
+  #  color: rgba(255,255,255,0.72);
+    max-width: 620px;
+    margin: 0 auto 36px;
+    line-height: 1.6;
+  }
+  .sc-hero-cta {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+  }
+  .sc-btn-gold {
+    background: #fbbf24;
+    color: #111 !important;
+    font-family: "Rajdhani";
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 12px 26px;
+    border-radius: 12px;
+  }
+  .sc-btn-ghost {
+    background: rgba(255,255,255,0.08);
+    #    color: #fff !important;
+    color:    rgb(73,0,9);
+    border: 1px solid rgba(255,255,255,0.18);
+    font-family: "Rajdhani";
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 12px 26px;
+    border-radius: 12px;
+  }
+  .sc-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .sc-stat-num {
+    font-family: "Rajdhani";
+    font-size: 48px;
+    font-weight: 700;
+    # color: #fbbf24;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .sc-stat-label {
+    font-family: "Rajdhani";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    # color: rgba(255,255,255,0.5);
+  }
+  
+  /* ── Course grid ────────────────────────────────────────────── */
+  .sc-course-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    text-align: left;
+  }
+  .sc-course-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 24px 24px 20px;
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.04),
+                0px 0px 2px rgba(0,0,0,0.04),
+                0px 0px 5px rgba(0,0,0,0.03);
+    border-top: 4px solid #e13838;
+    position: relative;
+  }
+  .sc-course-emoji { font-size: 28px; margin-bottom: 10px; display: block; line-height: 1; }
+  .sc-course-name {
+    font-family: "Rajdhani";
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 8px;
+    padding-right: 90px;
+  }
+  .sc-course-desc {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+  .sc-course-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sc-tag {
+    font-family: "Rajdhani";
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 3px 10px 2px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    color: #444;
+  }
+  .sc-level-badge {
+    position: absolute;
+    top: 20px;
+    right: 18px;
+    font-family: "Rajdhani";
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 3px 9px 2px;
+    border-radius: 8px;
+  }
+  
+  /* Track accent colors */
+  .sc-t-violet { border-top-color: #7c3aed; }
+  .sc-t-blue   { border-top-color: #2563eb; }
+  .sc-t-rose   { border-top-color: #e11d48; }
+  .sc-t-amber  { border-top-color: #d97706; }
+  .sc-t-green  { border-top-color: #059669; }
+  .sc-t-indigo { border-top-color: #4338ca; }
+  .sc-t-red    { border-top-color: #e13838; }
+  .sc-t-yellow { border-top-color: #ca8a04; }
+  
+  .sc-b-violet { background: #ede9fe; color: #5b21b6; }
+  .sc-b-blue   { background: #dbeafe; color: #1e40af; }
+  .sc-b-rose   { background: #ffe4e6; color: #9f1239; }
+  .sc-b-amber  { background: #fef3c7; color: #78350f; }
+  .sc-b-green  { background: #d1fae5; color: #065f46; }
+  .sc-b-indigo { background: #e0e7ff; color: #3730a3; }
+  .sc-b-red    { background: #fee2e2; color: #991b1b; }
+  .sc-b-yellow { background: #fef9c3; color: #713f12; }
+  
+  /* ── Schedule grid ──────────────────────────────────────────── */
+  .sc-schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    text-align: left;
+  }
+  .sc-week-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid rgb(73,0,9);
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.04),
+                0px 0px 2px rgba(0,0,0,0.04),
+                0px 0px 5px rgba(0,0,0,0.03);
+  }
+  .sc-week-card.sc-muted { opacity: 0.5; }
+  .sc-week-label {
+    font-family: "Rajdhani";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .sc-week-item {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    line-height: 1.3;
+  }
+  .sc-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  /* ── Practical info grid ───────────────────────────────────── */
+  .sc-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    text-align: left;
+  }
+  .sc-info-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 24px;
+    box-shadow: 0px 0px 1px rgba(0,0,0,0.04),
+                0px 0px 2px rgba(0,0,0,0.04),
+                0px 0px 5px rgba(0,0,0,0.03);
+  }
+  .sc-info-label {
+    font-family: "Rajdhani";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #df3f33;
+    margin-bottom: 8px;
+  }
+  .sc-info-value {
+    font-size: 17px;
+    font-weight: 500;
+    color: #111;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .sc-info-note { font-size: 13px; color: #666; line-height: 1.5; }
+  
+  /* ── CTA section ───────────────────────────────────────────── */
+  .sc-cta {
+    background: linear-gradient(170deg, #0c111d 0%, #1a1f30 60%, #2d1d50 100%);
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .sc-cta-glow {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 200px;
+    background: #fbbf24;
+    opacity: 0.09;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+  }
+  .sc-cta-title {
+    font-family: "Rajdhani";
+    font-size: 52px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .sc-cta-title span { color: #fbbf24; }
+  .sc-cta-desc { font-size: 18px; color: rgba(255,255,255,0.68); max-width: 520px; margin: 0 auto 36px; line-height: 1.6; }
+  .sc-cta-note { font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 24px; }
+  
+  /* ── Mobile ─────────────────────────────────────────────────── */
+  @media only screen and (max-width: 960px) {
+    .sc-hero { padding: 50px 20px 50px; }
+    .sc-hero-title { font-size: 48px; }
+    .sc-hero-desc { font-size: 17px; }
+    .sc-stats { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .sc-stat-num { font-size: 38px; }
+    .sc-course-grid { grid-template-columns: 1fr; }
+    .sc-course-name { padding-right: 0; }
+    .sc-level-badge { position: static; display: inline-block; margin-bottom: 10px; }
+    .sc-schedule-grid { grid-template-columns: 1fr 1fr; }
+    .sc-info-grid { grid-template-columns: 1fr; }
+    .sc-cta { padding: 50px 20px; }
+    .sc-cta-title { font-size: 36px; }
+  }
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════ -->
+<div class="sc-hero">
+    <div class="sc-hero-dots"></div>
+    <div class="sc-hero-glow"></div>
+    <div class="sc-blob sc-blob-1"></div>
+    <div class="sc-blob sc-blob-2"></div>
+    <div class="sc-blob sc-blob-3"></div>
+    <div>
+      <div class="sc-hero-camp">
+        <img src="/static/images/summer-camp-2026-474dd079-3751-4597-bc60-ddf98150b8bd.png.avif" width=300></img>
+      </div>
+
+      <div class="section-content" style="position:relative;z-index:2;">
+        <div class="sc-badge">☀ Summer 2026 &nbsp;·&nbsp; Mountain View, CA</div>
+        <div class="sc-hero-title">Hacker Dojo<br><span>Summer Camp</span></div>
+        <div class="sc-hero-desc">
+Hacker Dojo Summer Camp is a hands-on, creativity-driven program where students explore technology, design, and innovation through interactive classes. Campers can dive into Game Design, Fashion and Textiles, 3D Design and Making, Entrepreneurship, and LEGO Robotics Space Camp. Each course is built to spark curiosity, build real-world skills, and encourage kids 12 - 17 years old to create, experiment, and bring their ideas to life in a fun, collaborative environment.
+        </div>
+        <div class="sc-hero-cta">
+            <a href="https://lu.ma/HDSummerCamp2026" target="_blank" class="sc-btn-gold">Register Now &rarr;</a>
+            <a href="#camp-courses" class="sc-btn-ghost">Explore Courses</a>
+        </div>
+        <div class="sc-stats">
+            <div>
+                <div class="sc-stat-num">12</div>
+                <div class="sc-stat-label">Weeks of Camp</div>
+            </div>
+            <div>
+                <div class="sc-stat-num">8</div>
+                <div class="sc-stat-label">Unique Courses</div>
+            </div>
+            <div>
+                <div class="sc-stat-num">12–17</div>
+                <div class="sc-stat-label">Age Range</div>
+            </div>
+            <div>
+                <div class="sc-stat-num">3hr</div>
+                <div class="sc-stat-label">Sessions</div>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STEAM TRACKS OVERVIEW
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section" style="background:#fff; padding-top:60px; padding-bottom:60px;">
+    <div class="section-content">
+        <div class="section-title">STEAM Curriculum</div>
+        <div class="section-description" style="margin-bottom:40px;">
+            Five hands-on tracks covering the full spectrum of modern making and technology.
+        </div>
+        <div id="member-benefits">
+            <div class="simplecard">
+                <div class="simplecard-icon">🎮</div>
+                <div class="simplecard-title">Game Design</div>
+                <div class="simplecard-desc">Scratch &amp; Godot 4</div>
+            </div>
+            <div class="simplecard">
+                <div class="simplecard-icon">🖨</div>
+                <div class="simplecard-title">3D Design &amp; Making</div>
+                <div class="simplecard-desc">Modeling &amp; Printing</div>
+            </div>
+            <div class="simplecard">
+                <div class="simplecard-icon">🤖</div>
+                <div class="simplecard-title">Robotics</div>
+                <div class="simplecard-desc">LEGO, VEX IQ, &amp; SumoBots</div>
+            </div>
+            <div class="simplecard">
+                <div class="simplecard-icon">🪡</div>
+                <div class="simplecard-title">Fashion &amp; Textiles</div>
+                <div class="simplecard-desc">Sewing &amp; Tailoring</div>
+            </div>
+            <div class="simplecard">
+                <div class="simplecard-icon">🎭</div>
+                <div class="simplecard-title">Prop Making</div>
+                <div class="simplecard-desc">Cosplay & Movies</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COURSES
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section" id="camp-courses">
+    <div class="section-content">
+        <div class="section-title">8 Courses — Pick Your Passion</div>
+        <div class="section-description" style="margin-bottom:40px;">
+            Each session runs 3 hours — mornings (9:30–12:30) or afternoons (1:00–4:00).<br>
+            Sessions are self-contained; register for one week or mix across the whole summer.
+        </div>
+
+        <div class="sc-course-grid">
+
+            <!-- Game Design with Scratch -->
+            <div class="sc-course-card sc-t-violet">
+                <span class="sc-level-badge sc-b-violet">Beginner · Level 2</span>
+                <span class="sc-course-emoji">🎮</span>
+                <div class="sc-course-name">Game Design with Scratch</div>
+                <div class="sc-course-desc">
+This STEM class is an introduction to Game Design using Scratch software to teach students about real-world game design concepts in a fun and exciting way. Students will learn design concepts, coding actions such as loops, variables, functions and pseudocode The students will create an account and can download and play their games at home. Each day students will make a new game culminating in a final game day challenge. Availability is limited.
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–16</span>
+                    <span class="sc-tag">Weeks 2, 4, 6</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+            <!-- 3D Print & Design -->
+            <div class="sc-course-card sc-t-blue">
+                <span class="sc-level-badge sc-b-blue">Intermediate · Level 3</span>
+                <span class="sc-course-emoji">🖨</span>
+                <div class="sc-course-name">3D Print &amp; Design</div>
+                <div class="sc-course-desc">
+This session is designed for newcomers, makers, and aspiring entrepreneurs who want to learn not only how to create 3D printed products, but also how to turn their ideas into a brand people recognize and connect with. Students will create a TinkerCad account to begin designing projects while learning the fundamentals of product development, branding, and presentation. Throughout the course, we’ll guide students through the essential tools and programs needed for modeling, slicing, printing, and building a marketable product identity.
+What to Expect:
+<ul><li>
+ Beginner-friendly introduction to 3D printing technology; no experience necessary!
+</li><li>Hands-on tutorials covering basic 3D modeling and product design concepts
+</li><li>Guidance on creating a brand around your 3D printed product
+</li><li>Introduction to logo design and visual brand identity
+  </li><li>Product market analysis to help students understand target audience
+    </li>
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–17</span>
+                    <span class="sc-tag">Weeks 1, 4, 7, 9, 11</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+            <!-- Fashion & Textile Design -->
+            <div class="sc-course-card sc-t-rose">
+                <span class="sc-level-badge sc-b-rose">Beginner–Intermediate Level 1-2</span>
+                <span class="sc-course-emoji">🪡</span>
+                <div class="sc-course-name">Fashion &amp; Textile Design</div>
+                <div class="sc-course-desc">
+Are you into fashion? Interested learning how to make your own clothing? Just want to be able to mend your favorite shirt or hem your favorite pants? This class is for you!
+You will learn all the steps of machine sewing from Sewing 101 to Designing your Own piece for our Runway show.
+Sewing machines and tools will be available. Some fabric is available, for a unique design plan to bring your own fabric. If you would like to bring your own tools and sewing machine, they would be most welcome.
+What you will learn:
+<ul>
+<li>Introduction to Fashion & Textile Arts
+</li><li>Basic Sewing Skills & Stitches
+</li><li>Mending, Altering and Embellishing
+</li><li>Pattern Making Fundamentals
+</li><li>Project Design & Fabric Preparation
+</li><li>Construction & Assembly
+</li><li>Tailoring, Finishing & Showcase
+    </li></ul>
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–17</span>
+                    <span class="sc-tag">Weeks 1, 7, 9</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+            <!-- LEGO Robotics Space Camp -->
+            <div class="sc-course-card sc-t-amber">
+                <span class="sc-level-badge sc-b-amber">Intermediate · Level 2</span>
+                <span class="sc-course-emoji">🤖</span>
+                <div class="sc-course-name">LEGO Robotics Space Camp</div>
+                <div class="sc-course-desc">
+This exhilarating class is teamwork focused with an emphasis on Solar System Space projects. Students will see the future while learning about the Moon, Artemis Mission, Mars and our Solar System. Students will be building and programming robots using LEGO® Robotics Systems to complete an out of this world space missions and challenges. This class will teach students teamwork, project planning and documentation skills. Students will learn the essential 21st century skills needed to become the pioneering minds of tomorrow all while having fun with daily activities and game challenges. Availability is limited.
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–16</span>
+                    <span class="sc-tag">Weeks 2, 6</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+            <!-- VEX IQ -->
+            <div class="sc-course-card sc-t-green">
+                <span class="sc-level-badge sc-b-green">Intermediate–Advanced</span>
+                <span class="sc-course-emoji">⚙</span>
+                <div class="sc-course-name">VEX IQ Engineering &amp; Game Challenge</div>
+                <div class="sc-course-desc">
+It’s Your Future – Learn about STEM, engineering, and robotics. Let’s get started learning about VEX IQ, the controller, and the robot brain. Take the next step in your robotics experience and expand your skills building and programming robots using the VEX IQ Robotics System. Students will learn programming skills and engineering design with the VEX IQ system using motors, touch, color, bump and distance sensors. Students will learn to build and code several different VEX IQ robots from kits provided. Students will gain teamwork skills while sharing a VEX IQ robotics kit and computer to complete daily game challenges. This class is suitable preparation for students interested in VEX IQ Tournaments. Availability is limited.
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–17</span>
+                    <span class="sc-tag">Weeks 3, 11</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+            <!-- Game Design with Godot -->
+            <div class="sc-course-card sc-t-indigo">
+                <span class="sc-level-badge sc-b-indigo">Intermediate · Level 3</span>
+                <span class="sc-course-emoji">🕹</span>
+                <div class="sc-course-name">Game Design with Godot</div>
+                <div class="sc-course-desc">
+Build your own video game in just one week with Godot 4! In this hands-on class, you’ll go from beginner to game creator—designing characters, coding mechanics, and publishing a playable game. Bring your own computer and a basic understanding of programming and leave with a game you can share. No experience with game engines? No problem—just bring your ideas and get ready to create!
+Availability is limited.
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 14–17</span>
+                    <span class="sc-tag">Weeks 3, 8, 10, 12</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+            <!-- SumoBot -->
+            <div class="sc-course-card sc-t-red">
+                <span class="sc-level-badge sc-b-red">Intermediate · Level 2</span>
+                <span class="sc-course-emoji">🥊</span>
+                <div class="sc-course-name">Robotics SumoBot Engineering</div>
+                <div class="sc-course-desc">
+This exhilarating class is teamwork focused with an emphasis on SumoBot projects. Students will learn key engineering concepts to design stronger, faster robots for Sumo challenges. Students will be building and programming robots using LEGO® Robotics Systems to complete thrilling game challenges. This class will teach students teamwork, project planning and documentation skills. Students will learn the essential 21st century skills needed to become the pioneering minds of tomorrow all while having fun with daily activities and game challenges. Availability is limited.
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–16</span>
+                    <span class="sc-tag">Week 8</span>
+                    <span class="sc-tag">1:00–4:00pm</span>
+                </div>
+            </div>
+
+            <!-- Prop Making -->
+            <div class="sc-course-card sc-t-yellow">
+                <span class="sc-level-badge sc-b-yellow">Intermediate–Advanced</span>
+                <span class="sc-course-emoji">🎭</span>
+                <div class="sc-course-name">Prop Making for Cosplay &amp; Movies</div>
+                <div class="sc-course-desc">
+Are you interested in designing your own props for fun and adventure? Learn engineering design while making your props for cosplay, movie making or just for fun. Students will have an opportunity to use a variety of materials to expand their artistic and engineering talents to make a prosthetic piece, a cosplay item, or a movie prop that you will get to take home at the end of the week. Many different and unique materials will be used including textiles, 3d printing, upcycled materials. Previous classes in 3D printing and Fashion & Textiles recommended but not required. Limited availability.
+                </div>
+                <div class="sc-course-tags">
+                    <span class="sc-tag">Ages 12–17</span>
+                    <span class="sc-tag">Weeks 10, 12</span>
+                    <span class="sc-tag">AM or PM</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCHEDULE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section" style="background:#fff; padding-top:60px; padding-bottom:60px;">
+    <div class="section-content">
+        <div class="section-title">12-Week Calendar</div>
+        <div class="section-description" style="margin-bottom:40px;">
+            Mix and match weeks across the summer — each session is self-contained. Morning session is listed first, followed by afternoon session for each week.
+        </div>
+        <div class="sc-schedule-grid">
+
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 1</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#2563eb"></span>3D Print &amp; Design</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#e11d48"></span>Fashion &amp; Textile</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 2</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#7c3aed"></span>Game Design (Scratch)</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#d97706"></span>LEGO Robotics</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 3</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#059669"></span>VEX IQ Engineering</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#4338ca"></span>Game Design (Godot)</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 4</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#7c3aed"></span>Game Design (Scratch)</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#2563eb"></span>3D Print &amp; Design</div>
+            </div>
+            <div class="sc-week-card sc-muted">
+                <div class="sc-week-label">Week 5</div>
+                <div class="sc-week-item" style="color:#999; font-style:italic;">Check Luma for updates</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 6</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#7c3aed"></span>Game Design (Scratch)</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#d97706"></span>LEGO Robotics</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 7</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#2563eb"></span>3D Print &amp; Design</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#e11d48"></span>Fashion &amp; Textile</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 8</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#e13838"></span>Robotics SumoBot</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#4338ca"></span>Game Design (Godot)</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 9</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#2563eb"></span>3D Print &amp; Design</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#e11d48"></span>Fashion &amp; Textile</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 10</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#4338ca"></span>Game Design (Godot)</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#ca8a04"></span>Prop Making</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 11</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#2563eb"></span>3D Print &amp; Design</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#059669"></span>VEX IQ Engineering</div>
+            </div>
+            <div class="sc-week-card">
+                <div class="sc-week-label">Week 12</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#4338ca"></span>Game Design (Godot)</div>
+                <div class="sc-week-item"><span class="sc-dot" style="background:#ca8a04"></span>Prop Making</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PRACTICAL INFO
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section" style="padding-top:60px; padding-bottom:60px;">
+    <div class="section-content">
+        <div class="section-title">Practical Details</div>
+        <div class="section-description" style="margin-bottom:40px;">Everything you need to plan your summer.</div>
+        <div class="sc-info-grid">
+            <div class="sc-info-card">
+                <div class="sc-info-label">📍 Location</div>
+                <div class="sc-info-value">Hacker Dojo</div>
+                <div class="sc-info-value">855 Maude Ave, Mountain View, CA 94043</div>
+                <div class="sc-info-note" style="margin-top:10px;">
+                    <a href="https://maps.google.com/?q=855+Maude+Ave+Mountain+View+CA+94043" target="_blank" style="color:#df3f33;">Get Directions &rarr;</a>
+                </div>
+            </div>
+            <div class="sc-info-card">
+                <div class="sc-info-label">🕐 Session Times</div>
+                <div class="sc-info-value">Morning: 9:30am – 12:30pm</div>
+                <div class="sc-info-value">Afternoon: 1:00pm – 4:00pm</div>
+                <div class="sc-info-note" style="margin-top:8px;">Some courses offer both sessions — check the course card on <a href="https://luma.com/HDSummerCamp2026">Luma</a> for availability.</div>
+            </div>
+            <div class="sc-info-card">
+                <div class="sc-info-label">👤 Who Can Attend</div>
+                <div class="sc-info-value">Ages 12–17</div>
+                <div class="sc-info-note" style="margin-top:4px;">Courses are labeled Beginner, Intermediate, or Advanced. Most require no prior experience. Students can join any level-appropriate course each week.</div>
+            </div>
+            <div class="sc-info-card">
+                <div class="sc-info-label">🎟 Registration</div>
+                <div class="sc-info-value">Via Luma</div>
+                <div class="sc-info-note" style="margin-top:4px;">Select the specific course and week when signing up. Wallet token verification may be required.</div>
+                <div style="margin-top:14px;">
+                    <a href="https://lu.ma/HDSummerCamp2026" target="_blank" class="button button-red" style="font-size:14px; padding:9px 18px;">Register on Luma &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CTA
+     ═══════════════════════════════════════════════════════════ -->
+<div class="sc-cta">
+    <div class="sc-hero-dots"></div>
+    <div class="sc-cta-glow"></div>
+    <div class="section-content" style="position:relative;z-index:2;">
+        <div style="font-size:36px; margin-bottom:20px;">☀</div>
+        <div class="sc-cta-title">Ready to build something<br><span>amazing this summer?</span></div>
+        <div class="sc-cta-desc">
+            Spots fill up fast. Register on Luma to secure your place and get notified
+            when each week opens for enrollment.
+        </div>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="https://lu.ma/HDSummerCamp2026" target="_blank" class="sc-btn-gold">Get Tickets on Luma &rarr;</a>
+            <a href="mailto:info@hackerdojo.com" class="sc-btn-ghost">Questions? Email Us</a>
+        </div>
+        <div class="sc-cta-note">Organized by Hacker Dojo &amp; Eva Carrender &nbsp;·&nbsp; 855 Maude Ave, Mountain View, CA</div>
+    </div>
+</div>
