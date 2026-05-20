@@ -1052,25 +1052,35 @@ body {
 	z-index: 1;
 	margin-top: -135px !important;
 }
+#footer-background {
+  width:100%;
+  background-color: black;
+}
 
 #footer-holder {
+  display: flex;
+  flex-direction: row;
+  max-width: 960px;
+  width:100%;
+  margin:auto;
 	background: #000;
 	margin-top: auto;
 	padding: 30px 20px 40px 20px;
 	color:#fff;
 }
 
-#footer {
-	max-width: 960px;
-	margin: auto;
-	padding: 20px 30px;
-	font-family: "Rajdhani";
-	font-size: 16px;
-	letter-spacing: 0.8;
-	display: grid;
-	grid-template-columns: 2fr 1fr 1fr;
-	grid-gap: 20px;
+
+#footer-holder>div {
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+  width:60%;
 }
+
+#footer-holder>div:last-child {
+  width:25%;
+}
+
 
 .copyright {
 	font-family: "Rajdhani";
@@ -1078,12 +1088,6 @@ body {
 	letter-spacing: 0.8px;
 	margin-top: 60px;
 	font-size: 14px;
-}
-
-.copyright-bottom {
-	font-size: 14px;
-	display: none;
-	text-transform: uppercase;
 }
 
 .footer-title {
@@ -1154,8 +1158,13 @@ body {
 	display: none;
 }
 
+.wide {display:block}
+.narrow {display: none}
+
 @media only screen and (max-width:960px) {
-	
+  .wide {display:none;}
+  .narrow {display:block;}
+
 	#top-bg {
 		height: 580px;
 	}
@@ -1167,6 +1176,13 @@ body {
 	#intro {
 		grid-template-columns: 1fr !important;
 	}	
+
+  #footer-holder>div {
+    width:100%;
+  }
+  #footer-holder>div:last-child {
+    width:100%;
+  }
 	
 	.section {
 		padding: 20px;
@@ -1349,10 +1365,6 @@ body {
 		grid-template-columns: 1fr;
 	}
 	
-	#footer {
-		grid-template-columns: 1fr;
-	}
-	
 	.startup-logos {
 		grid-template-columns: 1fr 1fr;
 	}
@@ -1476,15 +1488,8 @@ body {
 	}
 	
 	#footer-holder {
+    flex-wrap: wrap;
 		padding: 20px 20px 20px 20px;
-	}
-	
-	#footer {
-		padding: 10px;
-	}
-	
-	.copyright {
-		display: none;
 	}
 	
 	.copyright {
@@ -1492,10 +1497,11 @@ body {
 		font-size: 14px;
 		text-transform: uppercase;
 		letter-spacing: 0.8px;
-	}
-	
-	.copyright-bottom {
-		display: block;
+    color:white;
+    width:100%;
+    margin:auto;
+    padding:20px;
+
 	}
 	
 	.footer-logo {
