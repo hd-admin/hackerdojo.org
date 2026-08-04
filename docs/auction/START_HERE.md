@@ -6,6 +6,22 @@
 2. [CURRENT_STATE.md](./CURRENT_STATE.md) — what the repo actually is today  
 3. [REQUIREMENTS.md](./REQUIREMENTS.md) — what the MVP must do  
 4. [SLICES.md](./SLICES.md) — **how to build** (easy vertical slices → minimal fully functional auction)  
+5. [DECISIONS.md](./DECISIONS.md) — **fill before coding** (DB, auth, email, API host)  
+6. [ARCHITECTURE.md](./ARCHITECTURE.md) — how it fits this repo  
+7. [DATA_MODEL.md](./DATA_MODEL.md) — tables and relationships  
+8. [API.md](./API.md) — REST surface  
+9. [UI.md](./UI.md) — page wireframes  
+10. [EMAILS.md](./EMAILS.md) — notification catalog  
+11. [SECURITY.md](./SECURITY.md) — threats and controls  
+12. [ACCEPTANCE.md](./ACCEPTANCE.md) — how we know it works  
+13. [ROADMAP.md](./ROADMAP.md) — phases 0–4  
+14. [TODO.md](./TODO.md) — task checklist by slice  
+
+## How to implement (after Phase 0 decisions)
+
+1. Record DB / auth / email / API host in [DECISIONS.md](./DECISIONS.md) (closes T00d).  
+2. Build **only** [SLICES.md](./SLICES.md) **0 → 5**, in order.  
+3. After Slice 5, stop — that is the **minimal fully functional** Auction Space.  
 5. [ARCHITECTURE.md](./ARCHITECTURE.md) — how it fits this repo  
 6. [DATA_MODEL.md](./DATA_MODEL.md) — tables and relationships  
 7. [API.md](./API.md) — REST surface  

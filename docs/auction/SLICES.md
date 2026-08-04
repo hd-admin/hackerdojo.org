@@ -1,7 +1,10 @@
+# Implementation slices — Auction Space (minimal fully functional)
 # Implementation slices — minimal fully functional auction
 
 Build Phase 1 as **thin vertical slices**.  
 Each slice ships something you can demo. Do not start the next slice until the current one’s **Done when** passes.
+
+**Gate:** [DECISIONS.md](./DECISIONS.md) D1–D4 must be filled before Slice 0 coding.
 
 ```text
 Slice 0  Bootstrap

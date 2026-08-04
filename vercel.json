@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "functions": {
+    "api/**/*.js": {
+      "memory": 256,
+      "maxDuration": 30
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/auction/cron/ending-soon",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

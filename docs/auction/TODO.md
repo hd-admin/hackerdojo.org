@@ -3,6 +3,7 @@
 Build guide: **[SLICES.md](./SLICES.md)** (read this first for Phase 1).  
 Roadmap: [ROADMAP.md](./ROADMAP.md).
 
+Do not start Phase 1 coding until [DECISIONS.md](./DECISIONS.md) records DB / auth / email / API host choices.
 Do not start Phase 1 coding until Phase 0 review records DB / auth / email / API host choices.
 
 ---
@@ -11,6 +12,10 @@ Do not start Phase 1 coding until Phase 0 review records DB / auth / email / API
 
 - [x] **T00a** Repository audit → CURRENT_STATE.md
 - [x] **T00b** Planning docs package under `docs/auction/`
+- [x] **T00c** Root README pointer + planning PR ([hd-admin#62](https://github.com/hd-admin/hackerdojo.org/pull/62))
+- [x] **T00c2** Decision log + env checklist → [DECISIONS.md](./DECISIONS.md)
+- [x] **T00d** Reviewer records DB / auth / email / API host decisions in DECISIONS.md (defaults 2026-08-04)
+- [x] **T00e** Upstream Phase 0 docs merged; open Phase 1 PRs **one slice at a time** after T00d
 - [x] **T00c** Root README pointer + draft planning PR
 - [ ] **T00d** Reviewer records DB / auth / email / API host decisions
 - [ ] **T00e** Merge Phase 0 docs; open Phase 1 implementation PRs **one slice at a time**
@@ -23,6 +28,20 @@ Prefer **one PR per slice**. Each slice must meet its **Done when** in [SLICES.m
 
 ### Slice 0 — Bootstrap
 
+- [x] **T01** Copy approved choices from [DECISIONS.md](./DECISIONS.md) into Slice 0 PR; confirm env vars present in staging.
+- [x] **T02** Add DB client + migration tooling; empty migration pipeline runs.
+- [x] **T03** Migrate `User` + seed one admin email from env.
+- [x] **T04** Migrate `Artwork`, `Bid`, `Notification` + indexes ([DATA_MODEL.md](./DATA_MODEL.md)).
+- [x] **T05** Shared API helpers: JSON, error codes, money parse/validate, requireUser / requireAdmin.
+
+**Slice 0 done when:** migrations apply; admin user exists. → see [SLICE_0_RUNBOOK.md](./SLICE_0_RUNBOOK.md)
+
+### Slice 1 — Browse
+
+- [x] **T09** `GET /api/auction/artworks` + `GET /api/auction/artworks/:id` (+ bid amounts).
+- [x] **T09b** Seed one `active` artwork for local/staging demos.
+- [x] **T10** Jekyll gallery page `/auction/` wired to list API.
+- [x] **T11** Artwork detail page + countdown from `ends_at` (bid CTA disabled or “coming next”).
 - [ ] **T01** Record approved choices: database, email provider, auth method, serverless host; env var checklist.
 - [ ] **T02** Add DB client + migration tooling; empty migration pipeline runs.
 - [ ] **T03** Migrate `User` + seed one admin email from env.
@@ -42,6 +61,31 @@ Prefer **one PR per slice**. Each slice must meet its **Done when** in [SLICES.m
 
 ### Slice 2 — Bid
 
+- [x] **T06** `POST /api/auction/auth/request-link` + token persistence + rate limit.
+- [x] **T07** `POST /api/auction/auth/verify` + session cookie + `GET /me` + `DELETE` session.
+- [x] **T08** Minimal login UI (reused by bid modal).
+- [x] **T12** `POST /api/auction/bids` with transactional row lock + validation errors.
+- [x] **T13** Bid modal UI + success/error + refresh current bid on page.
+- [ ] **T14** Manual concurrency check (two near-simultaneous bids) — operator smoke on staging.
+
+**Slice 2 done when:** logged-in user can place a valid bid; invalid/late bids fail cleanly. → [SLICE_2_RUNBOOK.md](./SLICE_2_RUNBOOK.md)
+
+### Slice 3 — Admin
+
+- [x] **T19** Admin list/create API (`GET`/`POST` artworks).
+- [x] **T20** Admin patch + delete-draft + close (sets winner).
+- [x] **T21** Admin HTML page: table, editor form, bid list.
+
+**Slice 3 done when:** staff can create → activate → close a lot without DB access. → [SLICE_3_RUNBOOK.md](./SLICE_3_RUNBOOK.md)
+
+### Slice 4 — Emails
+
+- [x] **T15** Email send helper + `Notification` write on success/failure.
+- [x] **T16** `bid_received` + `outbid` from bid handler.
+- [x] **T17** `winner` + `auction_closed` on close.
+- [x] **T18** Secured cron for `auction_ending_soon` + idempotency (+ auto-close expired).
+
+**Slice 4 done when:** emails in [EMAILS.md](./EMAILS.md) send for the happy path. → [SLICE_4_RUNBOOK.md](./SLICE_4_RUNBOOK.md)
 - [ ] **T06** `POST /api/auction/auth/request-link` + token persistence + rate limit.
 - [ ] **T07** `POST /api/auction/auth/verify` + session cookie + `GET /me` + `DELETE` session.
 - [ ] **T08** Minimal login UI (reused by bid modal).

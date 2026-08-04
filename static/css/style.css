@@ -1155,6 +1155,28 @@ body {
 	border-radius: 14px;
 }
 
+/* Silent Auction nav CTA — pairs with green Donate chip */
+.header-auction-button {
+	background: #e13838;
+	color: #fff !important;
+	padding: 0px 14px;
+	border-radius: 14px;
+	font-weight: 600 !important;
+}
+
+#top-navigation a.header-auction-button {
+	margin: 0px 8px 0px 10px;
+}
+
+.mobile-navigation-popup a.header-auction-button {
+	display: inline-block;
+	float: none;
+	color: #fff !important;
+	padding: 8px 18px;
+	margin: 10px auto;
+	line-height: 1.3;
+}
+
 .mobile-donate-button {
 	background: #018669;
 	color: #fff;

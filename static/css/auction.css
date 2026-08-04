@@ -1,0 +1,904 @@
+/* Auction Space — aligned with static/css/style.css (Hacker Dojo site system) */
+
+/* Site tokens (mirrored for clarity) */
+:root {
+  --hd-bg: #f5f5f5;
+  --hd-red: #e13838;
+  --hd-red-deep: #df3f33;
+  --hd-ink: #111;
+  --hd-muted: #505050;
+  --hd-body: #444;
+  --hd-card-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.04),
+    0px 0px 3px rgba(0, 0, 0, 0.02), 0px 0px 5px rgba(0, 0, 0, 0.03);
+}
+
+/* Section shell — same rhythm as .section on the marketing site */
+.auction-section {
+  background: var(--hd-bg);
+  padding: 60px 40px 80px;
+  text-align: center;
+  margin: auto;
+}
+
+.auction-section .section-header {
+  margin: auto;
+  text-align: center;
+  margin-bottom: 36px;
+  max-width: 700px;
+}
+
+.auction-section .section-title {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Rajdhani", sans-serif;
+  letter-spacing: 0.5px;
+  color: var(--hd-red-deep);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.auction-section .section-description {
+  font-size: 18px;
+  font-family: "Saira", sans-serif;
+  color: var(--hd-body);
+  margin-bottom: 0;
+  line-height: 1.45;
+}
+
+.auction-section-content {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+/* Soft hero wash (matches pricing / hero gradient language) */
+.auction-hero {
+  background-image: linear-gradient(0deg, #6d3bdb2e 8%, #f5f5f5 48%, #f5f5f5 100%);
+  padding: 56px 40px 28px;
+  text-align: center;
+}
+
+.auction-hero-tagline {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background: #fff;
+  color: #516368;
+  display: inline-block;
+  padding: 3px 10px 2px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  box-shadow: var(--hd-card-shadow);
+}
+
+.auction-hero-title {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--hd-ink);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.auction-hero-desc {
+  font-size: 18px;
+  color: var(--hd-body);
+  max-width: 560px;
+  margin: 0 auto;
+  font-family: "Saira", sans-serif;
+  line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+  .auction-section,
+  .auction-hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .auction-hero-title {
+    font-size: 36px;
+  }
+}
+
+/* Buttons — extend site .button without fighting it */
+.auction-section .button,
+.auction-modal .button,
+.admin-page .button {
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  box-sizing: border-box;
+  line-height: 1.2;
+}
+
+.auction-section .button-red,
+.auction-modal .button-red,
+.admin-page .button-red {
+  color: #fff;
+  background: var(--hd-red);
+}
+
+.auction-section .button-green,
+.admin-page .button-green {
+  color: #fff;
+  background: #018669;
+}
+
+.auction-section .button-darkblue,
+.admin-page .button-darkblue {
+  color: #fff;
+  background: #444c5a;
+}
+
+.auction-section .button:disabled,
+.auction-section .button[disabled],
+.auction-modal .button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Gallery grid — plan-card / intro card language */
+.auction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.auction-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--hd-card-shadow);
+  border: 3px solid #fff;
+  display: flex;
+  flex-direction: column;
+  transition: 0.2s;
+  text-align: left;
+}
+
+.auction-card:hover {
+  border-color: peachpuff;
+}
+
+.auction-card a.auction-card-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.auction-card-image {
+  aspect-ratio: 4 / 3;
+  background: #eee;
+  object-fit: cover;
+  width: 100%;
+  display: block;
+}
+
+.auction-card-image-placeholder {
+  aspect-ratio: 4 / 3;
+  background: #f0ebe6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.auction-card-body {
+  padding: 18px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.auction-card-title {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--hd-ink);
+  line-height: 1.2;
+}
+
+.auction-card-artist {
+  color: var(--hd-muted);
+  font-size: 15px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-card-meta {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-family: "Saira", sans-serif;
+  color: #333;
+}
+
+.auction-card-meta strong {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--hd-ink);
+}
+
+.auction-card-cta {
+  margin-top: 14px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--hd-red);
+}
+
+.auction-countdown {
+  font-variant-numeric: tabular-nums;
+  color: var(--hd-red-deep);
+  font-weight: 600;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+}
+
+.auction-countdown.is-ended {
+  color: #888;
+}
+
+/* Empty / loading / error — site-native notes */
+.auction-empty,
+.auction-error,
+.auction-loading {
+  padding: 28px 20px;
+  text-align: center;
+  color: var(--hd-muted);
+  background: #fff;
+  border-radius: 15px;
+  border: 3px solid #fff;
+  box-shadow: var(--hd-card-shadow);
+  font-family: "Saira", sans-serif;
+  font-size: 16px;
+}
+
+.auction-error {
+  color: var(--hd-red-deep);
+  border-color: #f5d0cd;
+  background: #fff8f7;
+}
+
+/* Detail page */
+.auction-detail-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.auction-back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #516368;
+  text-decoration: none;
+}
+
+.auction-back:hover {
+  color: var(--hd-red);
+}
+
+.auction-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .auction-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auction-detail-image-wrap {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 3px solid #fff;
+  box-shadow: var(--hd-card-shadow);
+}
+
+.auction-detail-image {
+  width: 100%;
+  display: block;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #eee;
+}
+
+.auction-detail-info {
+  background: #fff;
+  border-radius: 15px;
+  border: 3px solid #fff;
+  box-shadow: var(--hd-card-shadow);
+  padding: 24px 26px 28px;
+}
+
+.auction-detail-info h1 {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--hd-ink);
+  line-height: 1.15;
+  margin: 0 0 4px;
+  text-align: left;
+}
+
+.auction-detail-artist {
+  color: var(--hd-muted);
+  font-size: 16px;
+  margin-bottom: 16px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-status-pill {
+  display: inline-block;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 3px 8px 2px;
+  border-radius: 5px;
+  background: var(--hd-red);
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.auction-status-pill.is-closed,
+.auction-status-pill.is-preview,
+.auction-status-pill.is-draft {
+  background: #444c5a;
+}
+
+.auction-price-block {
+  background: #f8f4f1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.auction-price-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 0;
+  font-size: 15px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-price-row .label {
+  color: var(--hd-muted);
+}
+
+.auction-price-row .value {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+  color: var(--hd-ink);
+}
+
+.auction-price-row .value.accent {
+  color: var(--hd-red-deep);
+  font-size: 22px;
+}
+
+.auction-description {
+  margin: 0 0 18px;
+  line-height: 1.55;
+  color: #2d3340;
+  white-space: pre-wrap;
+  font-size: 15px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-session {
+  font-size: 14px;
+  color: var(--hd-muted);
+  margin: 0 0 12px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-link-btn {
+  background: none;
+  border: none;
+  color: var(--hd-red);
+  cursor: pointer;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0;
+}
+
+.auction-link-btn:hover {
+  text-decoration: underline;
+}
+
+.auction-bid-cta {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  margin-top: 4px;
+}
+
+.auction-bid-cta.is-ready {
+  opacity: 1;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.auction-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #888;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-bids {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #eee;
+}
+
+.auction-bids h2 {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--hd-red-deep);
+  margin: 0 0 12px;
+}
+
+.auction-bids-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f8f4f1;
+}
+
+.auction-bids-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #efe8e1;
+  font-size: 14px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-bids-list li:last-child {
+  border-bottom: none;
+}
+
+.auction-bids-empty {
+  color: #888;
+  font-size: 14px;
+  padding: 4px 0;
+  font-family: "Saira", sans-serif;
+}
+
+/* Modal — white card, Dojo red accents */
+body.auction-modal-open {
+  overflow: hidden;
+}
+
+.auction-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.auction-modal[hidden] {
+  display: none !important;
+}
+
+.auction-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 17, 17, 0.45);
+}
+
+.auction-modal-dialog {
+  position: relative;
+  background: #fff;
+  border-radius: 15px;
+  max-width: 420px;
+  width: 100%;
+  padding: 28px 26px 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  z-index: 1;
+  border: 3px solid #fff;
+  text-align: left;
+}
+
+.auction-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #888;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-modal-title {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--hd-red-deep);
+  margin: 0 0 12px;
+  padding-right: 24px;
+}
+
+.auction-modal-help {
+  color: var(--hd-body);
+  font-size: 15px;
+  margin: 0 0 14px;
+  line-height: 1.45;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-modal-dev {
+  background: #fff0df;
+  border: 1px solid peachpuff;
+  color: #5a4030;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 0 0 12px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-form label {
+  display: block;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #505050;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.auction-form input,
+.auction-form textarea,
+.auction-form select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-family: "Saira", sans-serif;
+  font-size: 15px;
+  box-sizing: border-box;
+  background: #fafafa;
+  color: #111;
+}
+
+.auction-form input:focus,
+.auction-form textarea:focus,
+.auction-form select:focus {
+  outline: none;
+  border-color: #c4b5e8;
+  box-shadow: 0 0 0 3px rgba(109, 59, 219, 0.12);
+}
+
+.auction-form .optional {
+  font-weight: 500;
+  color: #999;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: "Saira", sans-serif;
+  font-size: 12px;
+}
+
+.auction-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.auction-modal-error {
+  color: var(--hd-red-deep);
+  background: #fff8f7;
+  border: 1px solid #f5d0cd;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  margin: 0 0 10px;
+  font-family: "Saira", sans-serif;
+}
+
+.auction-modal-error[hidden] {
+  display: none !important;
+}
+
+/* Admin — same cards/typography as public auction */
+.admin-page {
+  text-align: left;
+}
+
+.admin-page .admin-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.admin-page .admin-header .section-title {
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.admin-page .auction-lede {
+  font-size: 16px;
+  color: var(--hd-body);
+  max-width: 36rem;
+  margin: 0;
+  font-family: "Saira", sans-serif;
+  line-height: 1.45;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar {
+  margin: 16px 0 18px;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.95fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border: 3px solid #fff;
+  border-radius: 15px;
+  box-shadow: var(--hd-card-shadow);
+}
+
+.admin-table,
+.admin-bids-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-family: "Saira", sans-serif;
+}
+
+.admin-table th,
+.admin-table td,
+.admin-bids-table th,
+.admin-bids-table td {
+  text-align: left;
+  padding: 11px 14px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.admin-table th,
+.admin-bids-table th {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #888;
+  background: #fafafa;
+}
+
+.admin-row.is-selected {
+  background: #fff8f4;
+}
+
+.admin-status {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--hd-red-deep);
+}
+
+.admin-editor {
+  background: #fff;
+  border: 3px solid #fff;
+  border-radius: 15px;
+  box-shadow: var(--hd-card-shadow);
+  padding: 20px 22px 24px;
+}
+
+.admin-editor h2,
+.admin-editor h3 {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--hd-ink);
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+
+.admin-editor h3 {
+  color: var(--hd-red-deep);
+  font-size: 15px;
+}
+
+.admin-editor textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.admin-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 500px) {
+  .admin-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.admin-bids-block {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.admin-flash {
+  background: #e8f6f1;
+  border: 1px solid #b5e0d0;
+  color: #018669;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  font-family: "Saira", sans-serif;
+  text-align: left;
+}
+
+.admin-flash.is-error {
+  background: #fff8f7;
+  border-color: #f5d0cd;
+  color: var(--hd-red-deep);
+}
+
+.admin-flash[hidden] {
+  display: none !important;
+}
+
+.admin-login-form {
+  max-width: 400px;
+  margin: 20px auto 0;
+  background: #fff;
+  border: 3px solid #fff;
+  border-radius: 15px;
+  box-shadow: var(--hd-card-shadow);
+  padding: 22px 22px 24px;
+  text-align: left;
+}
+
+.admin-edit-btn {
+  padding: 7px 12px !important;
+  font-size: 13px !important;
+}
+
+/* Legacy class used by older markup paths */
+.auction-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+  color: var(--hd-ink);
+  font-family: "Saira", sans-serif;
+  text-align: left;
+}
+
+.auction-status-banner {
+  display: inline-block;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background: #fff;
+  color: #516368;
+  padding: 3px 10px 2px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  box-shadow: var(--hd-card-shadow);
+}
+
+.auction-page h1 {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--hd-ink);
+  line-height: 1.15;
+}
+
+.auction-lede {
+  color: var(--hd-body);
+  font-size: 17px;
+  margin-bottom: 24px;
+  max-width: 40rem;
+  line-height: 1.45;
+  font-family: "Saira", sans-serif;
+}

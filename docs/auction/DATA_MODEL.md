@@ -21,6 +21,18 @@ Artwork * --- (admin managed by) User(role=admin)
 
 Note: Bid field `auction_id` in the brief maps to **Artwork.id** (each artwork listing is an auction lot in MVP). Column name in DB: `artwork_id` (clearer). API may accept `auction_id` as an alias if needed for brief compatibility — prefer `artwork_id` in code.
 
+## Physical table names (Slice 0)
+
+Implementation uses an `auction_` prefix so the schema can share a Postgres database with other Dojo apps:
+
+| Logical entity | Table |
+|----------------|--------|
+| User | `auction_users` |
+| Artwork | `auction_artworks` |
+| Bid | `auction_bids` |
+| Notification | `auction_notifications` |
+| Login token (magic-link / OTP) | `auction_login_tokens` |
+| Migration bookkeeping | `auction_schema_migrations` |
 ## Tables
 
 ### User (**NEW** — required)

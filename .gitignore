@@ -5,6 +5,11 @@
 .gstack
 .vercel
 .wrangler
+node_modules/
+.env
+.env.local
+.env.*.local
+package-lock.json.bak
 
 **/*.*~
 
