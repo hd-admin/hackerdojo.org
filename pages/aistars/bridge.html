@@ -1,0 +1,285 @@
+<!-- Load Tailwind and Fonts for this page -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: { sans: ['Outfit', 'system-ui', 'sans-serif'] },
+                colors: {
+                    dojo: {
+                        red: '#C84A0E',
+                        navy: '#0C111D',
+                        purple: '#7C3AED',
+                        blue: '#2563EB',
+                        green: '#059669'
+                    }
+                }
+            }
+        }
+    }
+</script>
+
+<!-- Main Page Wrapper -->
+<div class="bg-[#F5F5F5] text-[#141414] antialiased selection:bg-dojo-blue selection:text-white font-sans scroll-smooth">
+
+    <!-- Hero Section -->
+    <header class="py-24 px-6 text-center max-w-5xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-blue-50 text-dojo-blue px-5 py-2 rounded-full text-sm font-bold mb-8 border border-blue-100 shadow-sm">
+            <span class="text-lg leading-none mt-[1px]">🌉</span> Career Transition Cohort
+        </div>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tight text-dojo-navy mb-4 leading-tight">
+            Find the role that's <br/>
+            <span class="text-[#FF8A50]">actually right for you.</span>
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto font-medium mb-12 leading-relaxed">
+            The Bridge helps you figure out what role aligns with who you are, what transferable skills you already have, where the market demand is — and then uses AI to help you get in front of the right hiring managers before anyone else does.
+        </p>
+        
+        <!-- Cohort Stats -->
+        <div class="flex justify-center gap-6 md:gap-12 mb-12 flex-wrap">
+            <div class="text-center"><div class="text-3xl font-black text-dojo-navy">4</div><div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Weeks</div></div>
+            <div class="text-center"><div class="text-3xl font-black text-dojo-navy">4</div><div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Sessions</div></div>
+            <div class="text-center"><div class="text-3xl font-black text-dojo-navy">15</div><div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Builders</div></div>
+            <div class="text-center"><div class="text-3xl font-black text-dojo-navy">4</div><div class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Per Pod</div></div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="#enroll" class="bg-dojo-blue text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition shadow-[0_4px_14px_rgba(37,99,235,0.3)] w-full sm:w-auto">View Enrollment Options &rarr;</a>
+        </div>
+    </header>
+
+    <!-- The Journey Arc -->
+    <section class="py-20 px-6 bg-white border-t border-b border-gray-200">
+        <div class="max-w-5xl mx-auto text-center">
+            <p class="text-dojo-blue font-bold text-sm tracking-widest uppercase mb-3">The Journey</p>
+            <h2 class="text-3xl md:text-5xl font-black text-dojo-navy mb-16 tracking-tight">Four weeks. Four phases. One outcome: interviews.</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 relative hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-black text-dojo-blue mb-3">1</div>
+                    <h4 class="font-extrabold text-gray-900 text-lg mb-1">Discover</h4>
+                    <p class="text-sm text-gray-600 font-medium">What role fits who you actually are</p>
+                    <div class="hidden md:block absolute -right-4 top-1/2 transform -translate-y-1/2 text-3xl font-black text-dojo-blue z-10">&rarr;</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 relative hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-black text-dojo-blue mb-3">2</div>
+                    <h4 class="font-extrabold text-gray-900 text-lg mb-1">Build</h4>
+                    <p class="text-sm text-gray-600 font-medium">Ship proof that you can do the work</p>
+                    <div class="hidden md:block absolute -right-4 top-1/2 transform -translate-y-1/2 text-3xl font-black text-dojo-blue z-10">&rarr;</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 relative hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-black text-dojo-blue mb-3">3</div>
+                    <h4 class="font-extrabold text-gray-900 text-lg mb-1">Position</h4>
+                    <p class="text-sm text-gray-600 font-medium">Tap the hidden job market</p>
+                    <div class="hidden md:block absolute -right-4 top-1/2 transform -translate-y-1/2 text-3xl font-black text-dojo-blue z-10">&rarr;</div>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 relative hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-black text-dojo-blue mb-3">4</div>
+                    <h4 class="font-extrabold text-gray-900 text-lg mb-1">Execute</h4>
+                    <p class="text-sm text-gray-600 font-medium">Get in front of hiring managers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Week by Week Curriculum -->
+    <section class="py-24 px-6 bg-[#F5F5F5]">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-3">Curriculum</p>
+                <h2 class="text-4xl md:text-5xl font-black text-dojo-navy tracking-tight">Week by Week</h2>
+            </div>
+
+            <!-- Week 1 -->
+            <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 mb-8 shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8 pb-8 border-b border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-red-50 text-dojo-red flex items-center justify-center text-3xl font-black shrink-0 shadow-sm border border-red-100">1</div>
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Role Discovery & Market Analysis</h3>
+                        <p class="text-gray-500 font-medium text-lg">Who are you? What do you bring? Where's the demand?</p>
+                    </div>
+                </div>
+                <div class="space-y-4 text-gray-600 leading-relaxed font-medium mb-8">
+                    <p>Most career programs start with resume tips. We start with the harder question: what role is actually aligned with who you are? Your pod runs you through a structured coaching protocol that maps your transferable skills, energy patterns, and domain expertise against real market demand.</p>
+                    <p>AI generates 3 "Bridge Roles" — a Safe Pivot (80% skill overlap), a Revenue Multiplier (your skills in a higher-paying context), and a Wildcard (an unexpected direction). You validate each role against market supply and demand: how many openings? What's the salary range? What's the skills gap you need to close? You leave with a Career Hypothesis — one sentence that describes where you're headed, why you're positioned to get there, and what assets you already have.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8">
+                    <h4 class="text-dojo-green font-bold uppercase tracking-widest text-xs mb-4">You walk out with:</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Transferable skills inventory mapped against 3 Bridge Roles</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Market supply/demand analysis for each role (openings, salary, competition)</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Skills gap assessment — what you have vs. what you need</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Career Hypothesis (one sentence — your new direction)</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> AI-rewritten resume using advanced prompting (not templates)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 mb-8 shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8 pb-8 border-b border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-red-50 text-dojo-red flex items-center justify-center text-3xl font-black shrink-0 shadow-sm border border-red-100">2</div>
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Build Your Proof of Work</h3>
+                        <p class="text-gray-500 font-medium text-lg">Ship an AI artifact that demonstrates what you can do</p>
+                    </div>
+                </div>
+                <div class="space-y-4 text-gray-600 leading-relaxed font-medium mb-8">
+                    <p>You now know what role you're targeting. This week you build tangible proof that you can do it. Using "vibe coding" with Cursor and Claude, you ship a micro-tool relevant to your Bridge Role. Targeting tech recruiting? Build a GPT that scores resumes. Going into operations? Build a workflow that triages support tickets. Product management? Build a feature prioritization agent.</p>
+                    <p>Your pod also starts building the AI-powered outreach system you'll activate in Week 3 — learning workflow automation (Zapier/Make) and advanced prompting to identify, research, and reach hiring managers at scale. When you walk into an interview, you drop a link on the table: "I built this for your specific workflow."</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8">
+                    <h4 class="text-dojo-green font-bold uppercase tracking-widest text-xs mb-4">You walk out with:</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> A deployed AI micro-tool relevant to your Bridge Role</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Real test users and feedback from the Dojo community</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Practical vibe coding experience (Cursor + Claude)</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Your AI outreach engine under construction</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 mb-8 shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8 pb-8 border-b border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-red-50 text-dojo-red flex items-center justify-center text-3xl font-black shrink-0 shadow-sm border border-red-100">3</div>
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">The Hidden Job Market</h3>
+                        <p class="text-gray-500 font-medium text-lg">Position yourself for the 70% of roles that never get posted</p>
+                    </div>
+                </div>
+                <div class="space-y-4 text-gray-600 leading-relaxed font-medium mb-8">
+                    <p>70% of jobs are filled through networking and referrals — they never hit a job board. This week is about tapping into that hidden market using techniques most job seekers never learn, amplified by the AI systems you've been building.</p>
+                    <p><strong class="text-gray-900">Corporate Translation:</strong> You learn to map your builder skills into language corporate HR systems understand. "Vibe Coding" becomes "AI-Assisted Rapid Prototyping." You also learn enough about enterprise AI governance — context windows, model selection, data privacy — to explain why your workflow won't leak proprietary data. This is the language of trust that hiring managers need to hear.</p>
+                    <p><strong class="text-gray-900">The Trojan Pitch:</strong> Your AI outreach engine goes live. It identifies specific hiring managers at target companies, ingests their recent LinkedIn posts, and drafts hyper-personalized messages that reference their actual work. This is not spray-and-pray. This is precision targeting at scale. Your LinkedIn gets rewritten with your portfolio piece featured, and your first batch of Trojan Pitches goes out.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8">
+                    <h4 class="text-dojo-green font-bold uppercase tracking-widest text-xs mb-4">You walk out with:</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Corporate-translated resume (builder skills → ATS-friendly titles)</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Rewritten LinkedIn with portfolio piece featured</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> AI outreach engine live and sending personalized messages</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> First batch of Trojan Pitch messages sent to hiring managers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 mb-8 shadow-sm hover:shadow-lg transition-shadow">
+                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-8 pb-8 border-b border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-red-50 text-dojo-red flex items-center justify-center text-3xl font-black shrink-0 shadow-sm border border-red-100">4</div>
+                    <div>
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Interview Prep & Pipeline Blitz</h3>
+                        <p class="text-gray-500 font-medium text-lg">Win the conversations you've generated</p>
+                    </div>
+                </div>
+                <div class="space-y-4 text-gray-600 leading-relaxed font-medium mb-8">
+                    <p>By now your outreach engine is generating responses. This week is about converting those conversations into offers. You learn the 3-part framework for answering "How do you use AI?" — referencing real things you built, not hypotheticals. You practice STAR stories with your pod, run mock interviews, and build a salary negotiation playbook with AI-researched market data.</p>
+                    <p>Then: 90 minutes of pure execution. The Pipeline Blitz. Messages drafted by your AI engine, reviewed by you, and sent — in the room, together. You follow up on every pending conversation. You leave with a 30-day accountability plan — your pod commits to weekly check-ins for a month after the cohort ends.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8">
+                    <h4 class="text-dojo-green font-bold uppercase tracking-widest text-xs mb-4">You walk out with:</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> 3 STAR stories practiced (referencing real things you built)</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Mock interview experience (both sides of the table)</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> Salary negotiation script with AI-researched market data</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> 10+ additional outreach messages sent from the room</li>
+                        <li class="flex items-start gap-3 text-gray-700 text-sm md:text-base font-medium"><span class="text-dojo-green shrink-0 font-bold">✓</span> 30-day pod accountability plan committed</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing / Enroll Section -->
+    <section id="enroll" class="py-24 px-6 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <p class="text-dojo-blue font-bold text-sm tracking-widest uppercase mb-3">Enrollment</p>
+                <h2 class="text-4xl md:text-5xl font-black text-dojo-navy mb-4 tracking-tight">Choose your Bridge track.</h2>
+                <div class="text-sm font-bold text-gray-500 mt-4">Members get 20% off both tiers.</div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- Standard -->
+                <div class="bg-white border border-gray-200 rounded-3xl p-10 hover:shadow-xl transition-shadow flex flex-col relative">
+                    <h3 class="text-3xl font-extrabold mb-2 text-gray-900">Bridge Standard</h3>
+                    <p class="text-gray-500 font-medium mb-6">4 sessions + pods + all deliverables.</p>
+                    <div class="text-5xl font-black text-gray-900 mb-8">$997</div>
+                    <ul class="space-y-4 mb-10 flex-grow">
+                        <li class="flex items-start gap-3 text-gray-600 font-medium"><span class="text-dojo-blue">✓</span> 4-Week Cohort Access</li>
+                        <li class="flex items-start gap-3 text-gray-600 font-medium"><span class="text-dojo-blue">✓</span> Placement in a 4-person Accountability Pod</li>
+                        <li class="flex items-start gap-3 text-gray-600 font-medium"><span class="text-dojo-blue">✓</span> Rewritten LinkedIn positioning</li>
+                        <li class="flex items-start gap-3 text-gray-600 font-medium"><span class="text-dojo-blue">✓</span> Access to CoCreate Career Tools</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/eVqcN56qug1S5eq3dqfrW03" target="_blank" class="block w-full text-center py-4 rounded-xl border-2 border-dojo-blue text-dojo-blue font-bold text-lg hover:bg-blue-50 transition-colors mt-auto">Enroll in Standard</a>
+                </div>
+
+                <!-- Premium -->
+                <div class="bg-dojo-navy text-white border border-gray-800 rounded-3xl p-10 hover:shadow-2xl transition-shadow flex flex-col relative overflow-hidden shadow-xl">
+                    <div class="absolute top-0 left-0 w-full h-2 bg-dojo-blue"></div>
+                    <div class="absolute top-6 right-6 bg-dojo-blue text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Recommended</div>
+                    <h3 class="text-3xl font-extrabold mb-2 text-white">Bridge Premium</h3>
+                    <p class="text-gray-400 font-medium mb-6">The fully guaranteed transition path.</p>
+                    <div class="text-5xl font-black text-white mb-8">$1,497</div>
+                    <ul class="space-y-4 mb-10 flex-grow">
+                        <li class="flex items-start gap-3 text-gray-300 font-medium"><span class="text-dojo-blue">✓</span> Everything in Standard</li>
+                        <li class="flex items-start gap-3 text-white font-bold"><span class="text-dojo-blue">✓</span> 180-Day Interview Pipeline Guarantee</li>
+                        <li class="flex items-start gap-3 text-gray-300 font-medium"><span class="text-dojo-blue">✓</span> Private career strategy session</li>
+                        <li class="flex items-start gap-3 text-gray-300 font-medium"><span class="text-dojo-blue">✓</span> 1-on-1 Mock Interview Session</li>
+                        <li class="flex items-start gap-3 text-gray-300 font-medium"><span class="text-dojo-blue">✓</span> 30-day post-cohort pipeline support</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/6oUfZh2ae3f60Ya29mfrW04" target="_blank" class="block w-full text-center py-4 rounded-xl bg-dojo-blue text-white font-bold text-lg hover:bg-blue-600 transition-colors shadow-[0_0_15px_rgba(37,99,235,0.4)] mt-auto">Enroll in Premium</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Dojo Dual Guarantee Section (Exactly from ai-initiative) -->
+    <section class="py-24 px-6 bg-white border-t border-gray-200">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="text-dojo-red font-bold text-sm tracking-widest uppercase mb-4">The Dojo Dual Guarantee</div>
+                <h2 class="text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight">
+                    We don't want your money <span class="text-dojo-red">if we can't deliver results.</span>
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Two layers of protection. You decide within a week if a cohort is right for you. If you commit to the Bridge Premium track and do the work but don't get results within six months, you get your full tuition back.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- 7-Day Guarantee -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h3 class="text-dojo-red font-bold text-xl mb-4 flex items-center gap-2">
+                        <span>①</span> The 7-Day Vibe Check
+                    </h3>
+                    <h4 class="text-gray-900 font-bold text-lg mb-3">Try the first week. If it's not for you, full refund.</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        No questions asked. No emails. No exit interview. Just your money back within 7 days. (Applies to all Bridge and Forge tracks).
+                    </p>
+                </div>
+
+                <!-- 180-Day Guarantee -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h3 class="text-dojo-red font-bold text-xl mb-4 flex items-center gap-2">
+                        <span>②</span> The 180-Day Money-Back (Bridge Premium only)
+                    </h3>
+                    <h4 class="text-gray-900 font-bold text-lg mb-3">Do the work. Get results. Or get your tuition back.</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Complete every session, submit every deliverable, and meet the effort threshold below. If you don't land a role or contract within 6 months of graduation — full refund.
+                    </p>
+                </div>
+            </div>
+
+            <!-- What "do the work" means -->
+            <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200 text-center">
+                <h4 class="text-gray-900 font-bold text-lg mb-4">What "do the work" means for the 180-Day Guarantee:</h4>
+                <p class="text-gray-600 text-sm leading-relaxed max-w-3xl mx-auto">
+                    If you attend all 4 sessions, complete all deliverables, ship your role-relevant AI demo, rebuild your resume/LinkedIn, and send 50+ documented tailored outreach messages—but do not generate at least 3 qualified interviews or serious hiring conversations within 180 days—you get continued support or a full refund.
+                </p>
+            </div>
+        </div>
+    </section>
+</div>
