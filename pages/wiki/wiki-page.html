@@ -1,0 +1,717 @@
+<!-- Hacker Dojo Wiki Styles & Data -->
+<link href="/static/css/wiki.css" rel="stylesheet" type="text/css">
+<script src="/static/js/wiki-data.js"></script>
+
+<div class="wiki-container" id="wiki-app">
+  <!-- Hero Section -->
+  <header class="wiki-hero">
+    <div class="wiki-hero-inner">
+      <h1 class="wiki-hero-title">Hacker Dojo Wiki</h1>
+      <p class="wiki-hero-subtitle">
+        Community knowledge base — equipment guides, bylaws, policies, and operational docs for members and visitors.
+      </p>
+      <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank" class="wiki-github-cta">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        Edit this wiki on GitHub →
+      </a>
+    </div>
+  </header>
+
+  <!-- Search & Category Filter Section -->
+  <section class="wiki-search-section">
+    <div class="wiki-search-card">
+      <div class="wiki-search-input-wrapper">
+        <svg class="wiki-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" id="wiki-search-input" class="wiki-search-input" placeholder="Search articles, bylaws, equipment guides… (press / to focus)" autocomplete="off">
+        <button type="button" id="wiki-search-clear" class="wiki-search-clear" onclick="clearSearch()">✕</button>
+        <span class="wiki-search-shortcut">/</span>
+      </div>
+
+      <div class="wiki-cat-filters">
+        <button type="button" class="wiki-cat-pill active" onclick="setCategoryFilter('all')">
+          <span>📚</span> All (<span id="count-all">0</span>)
+        </button>
+        <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Overview')">
+          <span>🌟</span> Overview (<span id="count-overview">0</span>)
+        </button>
+        <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Governance')">
+          <span>📜</span> Governance (<span id="count-governance">0</span>)
+        </button>
+        <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Makerspace')">
+          <span>🛠️</span> Makerspace (<span id="count-makerspace">0</span>)
+        </button>
+        <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Tech')">
+          <span>📶</span> Facilities (<span id="count-tech">0</span>)
+        </button>
+        <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Community')">
+          <span>🎟️</span> Membership (<span id="count-community">0</span>)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main App Layout (Sidebar + Article Viewer) -->
+  <main class="wiki-main-layout">
+    <!-- Left Navigation Sidebar -->
+    <aside class="wiki-sidebar">
+      <div class="wiki-sidebar-header">
+        <span class="wiki-sidebar-title">Articles</span>
+        <span class="wiki-article-count" id="wiki-filtered-count">0 articles</span>
+      </div>
+
+      <!-- Bookmarks Quick Section (Shown when user has bookmarks) -->
+      <div id="wiki-bookmarks-section" style="display: none; padding-bottom: 12px; border-bottom: 1px dashed var(--wiki-border);">
+        <div class="wiki-nav-group-title" style="color: #d69e2e; display: flex; align-items: center; gap: 4px;">
+          <span>⭐</span> Bookmarks
+        </div>
+        <div id="wiki-bookmarks-list" class="wiki-nav-group"></div>
+      </div>
+
+      <!-- Grouped Articles Nav -->
+      <div id="wiki-nav-container">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </aside>
+
+    <!-- Main Article Display Card -->
+    <article class="wiki-article-card" id="wiki-article-view">
+      <!-- Article Header -->
+      <header class="wiki-article-header">
+        <div class="wiki-article-meta-row">
+          <div class="wiki-article-cat-badge">
+            <span id="article-cat-icon">📄</span>
+            <span id="article-cat-name">Category</span>
+          </div>
+          <div class="wiki-article-stats">
+            <span id="article-read-time">⏱️ 5 min read</span>
+            <span>•</span>
+            <span id="article-word-count">1,200 words</span>
+          </div>
+        </div>
+
+        <h2 class="wiki-article-title" id="article-title">Article Title</h2>
+
+        <div class="wiki-article-actions">
+          <button type="button" class="wiki-action-btn" id="btn-bookmark" onclick="toggleBookmarkCurrent()">
+            <span id="bookmark-icon">🔖</span>
+            <span id="bookmark-text">Bookmark</span>
+          </button>
+          <button type="button" class="wiki-action-btn" onclick="copyArticleLink()">
+            <span>🔗</span>
+            <span>Copy Link</span>
+          </button>
+          <button type="button" class="wiki-action-btn" onclick="window.print()">
+            <span>🖨️</span>
+            <span>Print</span>
+          </button>
+          <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank" class="wiki-action-btn wiki-action-github">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            <span>Edit on GitHub</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- In-Page Table of Contents -->
+      <nav class="wiki-toc-wrapper" id="article-toc-wrapper" style="display: none;">
+        <div class="wiki-toc-title">
+          <span>📑</span> In this Article
+        </div>
+        <ul class="wiki-toc-list" id="article-toc-list">
+          <!-- Injected dynamically -->
+        </ul>
+      </nav>
+
+      <!-- Article HTML Content -->
+      <div class="wiki-article-body" id="article-content">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Article Footer -->
+      <footer class="wiki-article-footer">
+        <div class="wiki-article-footer-left">
+          <span>See something outdated?</span>
+          <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank">Open a pull request on GitHub →</a>
+          <span style="color:var(--wiki-border);">|</span>
+          <a href="mailto:management@hackerdojo.com?subject=Wiki%20Feedback">Email management@hackerdojo.com</a>
+        </div>
+        <a href="/" class="wiki-article-footer-home">← Hacker Dojo Home</a>
+      </footer>
+    </article>
+  </main>
+
+  <!-- Suggest Edit Modal -->
+  <div class="wiki-modal-overlay" id="edit-modal">
+    <div class="wiki-modal-card wiki-edit-modal-card">
+      <div class="wiki-modal-header">
+        <h3 class="wiki-modal-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          Edit on GitHub
+        </h3>
+        <button type="button" class="wiki-modal-close" onclick="closeEditModal()">✕</button>
+      </div>
+      <div class="wiki-modal-body">
+        <p class="wiki-modal-desc">
+          The Hacker Dojo wiki is maintained on GitHub. To propose a change to <strong><span id="edit-modal-article-title">this article</span></strong>, open a pull request or file an issue.
+        </p>
+        <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank" class="wiki-nexudus-direct-btn" style="background:#24292f; border-color:#24292f;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>Open Pull Request on GitHub</span>
+        </a>
+        <div class="wiki-divider"><span>or send a quick note to the team</span></div>
+        <form class="wiki-login-form" onsubmit="handleEditSubmit(event)">
+          <div class="wiki-form-group">
+            <label class="wiki-form-label">Your Name</label>
+            <input type="text" id="edit-name" class="wiki-form-input" placeholder="Ada Lovelace" required>
+          </div>
+          <div class="wiki-form-group">
+            <label class="wiki-form-label">Your Email</label>
+            <input type="email" id="edit-email" class="wiki-form-input" placeholder="member@hackerdojo.com" required>
+          </div>
+          <div class="wiki-form-group">
+            <label class="wiki-form-label">Suggested Revision</label>
+            <textarea id="edit-notes" class="wiki-textarea" placeholder="Explain what should be updated, added, or corrected…" required></textarea>
+          </div>
+          <button type="submit" class="wiki-submit-btn">Send via Email</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Image Lightbox -->
+  <div class="wiki-lightbox" id="wiki-lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Wiki enlarged image">
+  </div>
+</div>
+
+<!-- Wiki Interactive Application Script -->
+<script>
+(function() {
+  // State
+  let articles = window.HACKER_DOJO_WIKI || [];
+  let currentArticleId = 'main-page';
+  let activeCategory = 'all';
+  let searchQuery = '';
+  let onlyNexudus = false;
+  let bookmarks = [];
+  let memberSession = null;
+
+  // Initialize
+  function init() {
+    loadMemberSession();
+    loadBookmarks();
+    updateCategoryCounts();
+    setupKeyboardShortcuts();
+    setupEventListeners();
+
+    // Check URL hash for direct deep linking
+    const hash = window.location.hash.replace('#', '').replace('/', '');
+    if (hash) {
+      const match = articles.find(a => a.id === hash);
+      if (match) {
+        currentArticleId = match.id;
+      }
+    }
+
+    renderSidebar();
+    renderCurrentArticle();
+    renderAuthWidget();
+  }
+
+  // Member Session — reads Nexudus cookies set by hackerdojo.spaces.nexudus.com
+  // Nexudus sets cookies like: NexudusFullName, NexudusUserName, NexudusLoggedIn
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  function loadMemberSession() {
+    // Try cookies from Nexudus first (set when member is signed in on nexudus.com)
+    const fullName  = getCookie('NexudusFullName') || getCookie('NexudusUserName');
+    const loggedIn  = getCookie('NexudusLoggedIn') || getCookie('NexudusToken');
+
+    if (fullName || loggedIn) {
+      memberSession = {
+        loggedIn: true,
+        name: fullName || 'Dojo Member',
+        tier: 'Nexudus Member',
+        source: 'cookie'
+      };
+    } else {
+      memberSession = null;
+    }
+  }
+
+  function renderAuthWidget() {
+    const banner  = document.getElementById('wiki-member-banner');
+    const nameEl  = document.getElementById('wiki-member-name');
+    if (!banner) return;
+
+    if (memberSession && memberSession.loggedIn) {
+      nameEl.textContent = memberSession.name;
+      banner.style.display = 'block';
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+
+  // Bookmarks
+  function loadBookmarks() {
+    try {
+      const saved = localStorage.getItem('hd_wiki_bookmarks');
+      if (saved) bookmarks = JSON.parse(saved);
+    } catch(e) {}
+  }
+
+  function saveBookmarks() {
+    try {
+      localStorage.setItem('hd_wiki_bookmarks', JSON.stringify(bookmarks));
+    } catch(e) {}
+  }
+
+  window.toggleBookmarkCurrent = function() {
+    const idx = bookmarks.indexOf(currentArticleId);
+    if (idx > -1) {
+      bookmarks.splice(idx, 1);
+      showToast('Bookmark removed');
+    } else {
+      bookmarks.push(currentArticleId);
+      showToast('Article saved to bookmarks! ⭐');
+    }
+    saveBookmarks();
+    updateBookmarkButton();
+    renderBookmarksSidebar();
+  };
+
+  function updateBookmarkButton() {
+    const btn = document.getElementById('btn-bookmark');
+    const icon = document.getElementById('bookmark-icon');
+    const text = document.getElementById('bookmark-text');
+    if (bookmarks.includes(currentArticleId)) {
+      btn.classList.add('bookmarked');
+      icon.textContent = '★';
+      text.textContent = 'Saved';
+    } else {
+      btn.classList.remove('bookmarked');
+      icon.textContent = '🔖';
+      text.textContent = 'Bookmark';
+    }
+  }
+
+  function renderBookmarksSidebar() {
+    const container = document.getElementById('wiki-bookmarks-section');
+    const list = document.getElementById('wiki-bookmarks-list');
+    if (!bookmarks.length) {
+      container.style.display = 'none';
+      return;
+    }
+    container.style.display = 'block';
+    list.innerHTML = '';
+    bookmarks.forEach(id => {
+      const art = articles.find(a => a.id === id);
+      if (art) {
+        const item = document.createElement('a');
+        item.href = `#${art.id}`;
+        item.className = 'wiki-nav-item' + (art.id === currentArticleId ? ' active' : '');
+        item.innerHTML = `
+          <div class="wiki-nav-item-left">
+            <span class="wiki-nav-item-icon">${art.icon}</span>
+            <span class="wiki-nav-item-text">${art.title}</span>
+          </div>
+        `;
+        item.onclick = (e) => { e.preventDefault(); navigateTo(art.id); };
+        list.appendChild(item);
+      }
+    });
+  }
+
+  // Counts & Filters
+  function updateCategoryCounts() {
+    document.getElementById('count-all').textContent = articles.length;
+    document.getElementById('count-overview').textContent = articles.filter(a => a.category === 'Overview').length;
+    document.getElementById('count-governance').textContent = articles.filter(a => a.category === 'Governance').length;
+    document.getElementById('count-makerspace').textContent = articles.filter(a => a.category === 'Makerspace').length;
+    document.getElementById('count-tech').textContent = articles.filter(a => a.category === 'Tech').length;
+    document.getElementById('count-community').textContent = articles.filter(a => a.category === 'Community').length;
+    document.getElementById('count-nexudus').textContent = articles.filter(a => a.nexudus !== null).length;
+  }
+
+  window.setCategoryFilter = function(cat) {
+    activeCategory = cat;
+    onlyNexudus = false;
+    document.querySelectorAll('.wiki-cat-pill').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    renderSidebar();
+  };
+
+  window.toggleNexudusFilter = function() {
+    onlyNexudus = !onlyNexudus;
+    activeCategory = 'all';
+    document.querySelectorAll('.wiki-cat-pill').forEach(btn => btn.classList.remove('active'));
+    const btn = document.getElementById('pill-nexudus-btn');
+    if (onlyNexudus) {
+      btn.classList.add('active');
+    } else {
+      document.querySelector('.wiki-cat-pill').classList.add('active');
+    }
+    renderSidebar();
+  };
+
+  // Search
+  const searchInput = document.getElementById('wiki-search-input');
+  const searchClear = document.getElementById('wiki-search-clear');
+
+  searchInput.addEventListener('input', function() {
+    searchQuery = this.value.trim().toLowerCase();
+    searchClear.style.display = searchQuery ? 'block' : 'none';
+    renderSidebar();
+  });
+
+  window.clearSearch = function() {
+    searchInput.value = '';
+    searchQuery = '';
+    searchClear.style.display = 'none';
+    renderSidebar();
+    searchInput.focus();
+  };
+
+  function filterArticles() {
+    return articles.filter(art => {
+      // Category filter
+      if (activeCategory !== 'all' && art.category !== activeCategory) {
+        return false;
+      }
+      // Nexudus only filter
+      if (onlyNexudus && !art.nexudus) {
+        return false;
+      }
+      // Search filter
+      if (searchQuery) {
+        const inTitle = art.title.toLowerCase().includes(searchQuery);
+        const inExcerpt = art.excerpt.toLowerCase().includes(searchQuery);
+        const inHtml = art.html.toLowerCase().includes(searchQuery);
+        const inCat = art.category_label.toLowerCase().includes(searchQuery);
+        return inTitle || inExcerpt || inHtml || inCat;
+      }
+      return true;
+    });
+  }
+
+  // Render Sidebar
+  function renderSidebar() {
+    const navContainer = document.getElementById('wiki-nav-container');
+    const filteredCount = document.getElementById('wiki-filtered-count');
+    const filtered = filterArticles();
+
+    filteredCount.textContent = `${filtered.length} articles`;
+    renderBookmarksSidebar();
+
+    if (filtered.length === 0) {
+      navContainer.innerHTML = `
+        <div style="padding: 24px 12px; text-align: center; color: var(--wiki-text-muted);">
+          <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+          <p style="margin: 0; font-size: 14px;">No articles match "<strong>${escapeHtml(searchQuery)}</strong>"</p>
+          <button type="button" onclick="clearSearch()" style="margin-top: 10px; background: none; border: 1px solid var(--wiki-border); padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">Clear Search</button>
+        </div>
+      `;
+      return;
+    }
+
+    // Group by category
+    const groups = {};
+    filtered.forEach(art => {
+      if (!groups[art.category_label]) groups[art.category_label] = [];
+      groups[art.category_label].push(art);
+    });
+
+    let html = '';
+    for (const [catLabel, groupArticles] of Object.entries(groups)) {
+      html += `
+        <div class="wiki-nav-group">
+          <div class="wiki-nav-group-title">${catLabel} (${groupArticles.length})</div>
+      `;
+      groupArticles.forEach(art => {
+        const isActive = art.id === currentArticleId;
+        const hasNexudus = art.nexudus ? `<span class="wiki-nav-nexudus-badge">Nexudus</span>` : '';
+        html += `
+          <a href="#${art.id}" class="wiki-nav-item ${isActive ? 'active' : ''}" data-id="${art.id}">
+            <div class="wiki-nav-item-left">
+              <span class="wiki-nav-item-icon">${art.icon}</span>
+              <span class="wiki-nav-item-text">${art.title}</span>
+            </div>
+            ${hasNexudus}
+          </a>
+        `;
+      });
+      html += `</div>`;
+    }
+
+    navContainer.innerHTML = html;
+
+    // Attach click handlers
+    navContainer.querySelectorAll('.wiki-nav-item').forEach(el => {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        navigateTo(this.getAttribute('data-id'));
+      });
+    });
+  }
+
+  // Navigation & Article Rendering
+  function navigateTo(slug) {
+    const art = articles.find(a => a.id === slug);
+    if (!art) return;
+    currentArticleId = art.id;
+    window.location.hash = `#${art.id}`;
+    renderSidebar();
+    renderCurrentArticle();
+
+    // Scroll smoothly to article view
+    const view = document.getElementById('wiki-article-view');
+    if (view && window.innerWidth < 768) {
+      view.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function renderCurrentArticle() {
+    const art = articles.find(a => a.id === currentArticleId) || articles[0];
+    if (!art) return;
+
+    // Header metadata
+    document.getElementById('article-cat-icon').textContent = art.icon;
+    document.getElementById('article-cat-name').textContent = art.category_label;
+    document.getElementById('article-read-time').textContent = `⏱️ ${art.read_time}`;
+    document.getElementById('article-word-count').textContent = `${art.words.toLocaleString()} words`;
+    document.getElementById('article-title').textContent = art.title;
+
+    // Update document title
+    document.title = `${art.title} - Hacker Dojo Wiki`;
+
+    // Bookmark button status
+    updateBookmarkButton();
+
+    // Nexudus Equipment Banner
+    const banner = document.getElementById('article-nexudus-banner');
+    if (art.nexudus) {
+      banner.style.display = 'flex';
+      document.getElementById('nexudus-banner-title').textContent = art.nexudus.title;
+      document.getElementById('nexudus-banner-badge').textContent = art.nexudus.badge;
+      document.getElementById('nexudus-banner-desc').textContent = art.nexudus.desc;
+      const bannerBtn = document.getElementById('nexudus-banner-btn');
+      bannerBtn.href = art.nexudus.url;
+      bannerBtn.textContent = `${art.nexudus.btn_text || '⚡ Book on Nexudus'} →`;
+    } else {
+      banner.style.display = 'none';
+    }
+
+    // Table of Contents
+    const tocWrapper = document.getElementById('article-toc-wrapper');
+    const tocList = document.getElementById('article-toc-list');
+    if (art.toc && art.toc.length > 1) {
+      tocWrapper.style.display = 'block';
+      tocList.innerHTML = art.toc.map(item => `
+        <li class="wiki-toc-item level-${item.level}">
+          <a href="#${item.id}" onclick="jumpToHeading('${item.id}', event)">
+            ${item.level === 3 ? '↳ ' : '• '}${escapeHtml(item.text)}
+          </a>
+        </li>
+      `).join('');
+    } else {
+      tocWrapper.style.display = 'none';
+    }
+
+    // Article Content
+    const contentEl = document.getElementById('article-content');
+    contentEl.innerHTML = art.html;
+
+    // Hook internal links to smooth navigation
+    contentEl.querySelectorAll('a').forEach(a => {
+      const href = a.getAttribute('href');
+      if (href && href.startsWith('#') && !href.startsWith('##')) {
+        const targetSlug = href.replace('#', '');
+        // Check if target is an article
+        const targetArticle = articles.find(artItem => artItem.id === targetSlug);
+        if (targetArticle) {
+          a.onclick = function(e) {
+            e.preventDefault();
+            navigateTo(targetArticle.id);
+          };
+        } else {
+          // In-page section anchor
+          a.onclick = function(e) {
+            e.preventDefault();
+            jumpToHeading(targetSlug, e);
+          };
+        }
+      }
+    });
+
+    // Hook images to Lightbox modal
+    contentEl.querySelectorAll('img.wiki-img').forEach(img => {
+      img.onclick = function() {
+        openLightbox(this.src);
+      };
+    });
+  }
+
+  window.jumpToHeading = function(id, e) {
+    if (e) e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      el.style.backgroundColor = 'rgba(223, 63, 51, 0.1)';
+      setTimeout(() => { el.style.backgroundColor = ''; }, 1200);
+    }
+  };
+
+  // Copy link
+  window.copyArticleLink = function() {
+    const url = `${window.location.origin}${window.location.pathname}#${currentArticleId}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Link copied to clipboard! 📋');
+      });
+    } else {
+      prompt('Copy article link:', url);
+    }
+  };
+
+  // Lightbox
+  window.openLightbox = function(src) {
+    const lb = document.getElementById('wiki-lightbox');
+    document.getElementById('lightbox-img').src = src;
+    lb.classList.add('active');
+  };
+
+  window.closeLightbox = function() {
+    document.getElementById('wiki-lightbox').classList.remove('active');
+  };
+
+  // Modals
+  window.openNexudusModal = function() {
+    document.getElementById('nexudus-modal').classList.add('active');
+  };
+  window.closeNexudusModal = function() {
+    document.getElementById('nexudus-modal').classList.remove('active');
+  };
+
+  window.openEditModal = function() {
+    const art = articles.find(a => a.id === currentArticleId);
+    document.getElementById('edit-modal-article-title').textContent = art ? art.title : 'this article';
+    if (memberSession) {
+      document.getElementById('edit-email').value = memberSession.email || '';
+      document.getElementById('edit-name').value = memberSession.name || '';
+    }
+    document.getElementById('edit-modal').classList.add('active');
+  };
+  window.closeEditModal = function() {
+    document.getElementById('edit-modal').classList.remove('active');
+  };
+
+  window.handleEditSubmit = function(e) {
+    e.preventDefault();
+    const art = articles.find(a => a.id === currentArticleId);
+    const name = document.getElementById('edit-name').value.trim();
+    const email = document.getElementById('edit-email').value.trim();
+    const notes = document.getElementById('edit-notes').value.trim();
+    closeEditModal();
+
+    // Construct pre-filled email to management
+    const articleTitle = art ? art.title : currentArticleId;
+    const subject = encodeURIComponent(`[Wiki Suggestion] ${articleTitle}`);
+    const body = encodeURIComponent(
+      `Hello Hacker Dojo Operations Team,\n\n` +
+      `I have a suggestion/correction for the wiki article "${articleTitle}":\n` +
+      `Page: ${window.location.origin}/wiki/#${currentArticleId}\n\n` +
+      `Proposed Changes / Feedback:\n${notes}\n\n` +
+      `Submitted by: ${name} (${email})\n`
+    );
+    const mailtoUrl = `mailto:management@hackerdojo.com?subject=${subject}&body=${body}`;
+
+    // Open mail client
+    window.location.href = mailtoUrl;
+
+    showToast(`Thank you ${name}! Revision draft opened for management@hackerdojo.com.`);
+  };
+
+  // Toast Notification
+  function showToast(msg) {
+    let toast = document.getElementById('wiki-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'wiki-toast';
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #1a202c;
+        color: #ffffff;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        border: 1px solid #2d3748;
+        z-index: 10000;
+        transition: all 0.3s ease;
+        opacity: 0;
+        transform: translateY(10px);
+      `;
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+    }, 3000);
+  }
+
+  // Keyboard shortcut '/' for search
+  function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      } else if (e.key === 'Escape') {
+        closeNexudusModal();
+        closeEditModal();
+        closeLightbox();
+      }
+    });
+  }
+
+  // Listen to hashchange
+  function setupEventListeners() {
+    window.addEventListener('hashchange', function() {
+      const hash = window.location.hash.replace('#', '').replace('/', '');
+      if (hash && hash !== currentArticleId) {
+        const match = articles.find(a => a.id === hash);
+        if (match) {
+          currentArticleId = match.id;
+          renderSidebar();
+          renderCurrentArticle();
+        }
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    return (str || '').replace(/[&<>"']/g, function(m) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+    });
+  }
+
+  // Run on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
