@@ -20,6 +20,3 @@ Once all pre-requisites are installed, you can preview the website using:
 jekyll serve
 ```
 
-## Silent Auction MVP (Planning)
-
-See [docs/auction](./docs/auction).
