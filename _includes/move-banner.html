@@ -1,0 +1,43 @@
+<!-- Dojo 5.0 site-wide moving banner. Opens the homepage announcement popup (pages/home/move-announcement.html) via /#move -->
+<style>
+#dojo-move-banner{position:relative;overflow:hidden;background:linear-gradient(90deg,#141418 0%,#231a2e 50%,#141418 100%);color:#f2f2f2;font-family:'Saira',Arial,sans-serif;font-size:14px;line-height:1.4;box-shadow:inset 0 0 0 2px #e13838}
+#dojo-move-banner::after{content:'';position:absolute;left:2px;right:2px;bottom:2px;height:2px;background:linear-gradient(90deg,transparent,#e13838 30%,#b794f6 70%,transparent);background-size:200% 100%;animation:dmb-sweep 6s linear infinite}
+#dojo-move-banner[hidden]{display:none}
+#dojo-move-banner .dmb-link{display:flex;align-items:center;justify-content:center;gap:14px;padding:11px 56px;color:inherit;text-decoration:none}
+#dojo-move-banner .dmb-tag{flex:none;font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;background:#e13838;padding:3px 10px 2px;border-radius:999px;box-shadow:0 0 0 0 rgba(225,56,56,.55);animation:dmb-pulse 2.8s ease-out infinite}
+#dojo-move-banner .dmb-text strong{font-family:'Rajdhani',Arial,sans-serif;font-size:17px;font-weight:600;letter-spacing:.2px}
+#dojo-move-banner .dmb-sep{color:rgba(255,255,255,.35);margin:0 8px}
+#dojo-move-banner .dmb-date{color:#d8ccf0;white-space:nowrap}
+#dojo-move-banner .dmb-cta{flex:none;font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:14px;letter-spacing:.6px;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 14px 3px;transition:background .2s,border-color .2s}
+#dojo-move-banner .dmb-cta span{display:inline-block;transition:transform .2s}
+#dojo-move-banner .dmb-link:hover .dmb-cta,#dojo-move-banner .dmb-link:focus-visible .dmb-cta{background:#e13838;border-color:#e13838}
+#dojo-move-banner .dmb-link:hover .dmb-cta span{transform:translateX(3px)}
+#dojo-move-banner .dmb-link:focus-visible{outline:2px solid #b794f6;outline-offset:-4px}
+#dojo-move-banner .dmb-close{position:absolute;top:50%;right:14px;transform:translateY(-50%);width:32px;height:32px;border:0;border-radius:50%;background:transparent;color:rgba(255,255,255,.6);font-size:20px;line-height:1;cursor:pointer}
+#dojo-move-banner .dmb-close:hover,#dojo-move-banner .dmb-close:focus-visible{color:#fff;background:rgba(255,255,255,.1)}
+@keyframes dmb-sweep{from{background-position:200% 0}to{background-position:0 0}}
+@keyframes dmb-pulse{0%{box-shadow:0 0 0 0 rgba(225,56,56,.55)}70%,100%{box-shadow:0 0 0 8px rgba(225,56,56,0)}}
+@media(prefers-reduced-motion:reduce){#dojo-move-banner::after,#dojo-move-banner .dmb-tag{animation:none}}
+@media(max-width:700px){#dojo-move-banner .dmb-link{flex-wrap:wrap;gap:6px 10px;padding:10px 48px 10px 16px;justify-content:flex-start}#dojo-move-banner .dmb-sep,#dojo-move-banner .dmb-extra{display:none}#dojo-move-banner .dmb-text strong{font-size:15px}#dojo-move-banner .dmb-cta{display:none}#dojo-move-banner .dmb-text{display:flex;flex-direction:column}#dojo-move-banner .dmb-date{font-size:13px}}
+</style>
+
+<div id="dojo-move-banner" role="region" aria-label="Moving announcement">
+	<a class="dmb-link" href="/#move">
+		<span class="dmb-tag">Dojo 5.0</span>
+		<span class="dmb-text"><strong>We&rsquo;re moving to Santa Clara</strong><span class="dmb-sep">|</span><span class="dmb-date">Opening Oct 12, 2026</span><span class="dmb-sep">|</span><span class="dmb-extra">11,000+ sq ft of new space</span></span>
+		<span class="dmb-cta">Details <span>&rarr;</span></span>
+	</a>
+	<button class="dmb-close" aria-label="Dismiss banner">&times;</button>
+</div>
+
+<script>
+(function(){
+	var KEY='dojo-move-banner-dismissed';
+	var banner=document.getElementById('dojo-move-banner');
+	try{if(sessionStorage.getItem(KEY)==='1')banner.hidden=true}catch(e){}
+	banner.querySelector('.dmb-close').addEventListener('click',function(){
+		banner.hidden=true;
+		try{sessionStorage.setItem(KEY,'1')}catch(e){}
+	});
+})();
+</script>
