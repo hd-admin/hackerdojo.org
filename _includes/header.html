@@ -32,6 +32,17 @@
 </head>
 <body>
 <main>
+<div id="announcement-banner" onclick="openAnnouncement()" role="button" tabindex="0">
+	<span>Read our announcement about our new HackerDojo location.</span>
+</div>
+
+<div id="announcement-overlay" class="announcement-overlay" onclick="if(event.target === this) closeAnnouncement()">
+	<div class="announcement-modal">
+		<button type="button" class="announcement-close" aria-label="Close announcement" onclick="closeAnnouncement()">&times;</button>
+		<iframe id="announcement-frame" title="Hacker Dojo announcement" data-src="/hacker-dojo-announcement.html"></iframe>
+	</div>
+</div>
+
 <div class="section header-section" style="padding: 0; position: relative">
 	<div id="header">
 		<div id="header-left">
@@ -97,7 +108,88 @@
 	</div>
 </div>
 
+<style>
+	#announcement-banner {
+		background: #df3f33;
+		color: #fff;
+		font-family: 'Rajdhani', sans-serif;
+		font-size: 16px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		text-align: center;
+		padding: 10px 16px;
+		cursor: pointer;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	#announcement-banner:hover { background: #c53529; }
+
+	.announcement-overlay {
+		display: none;
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.7);
+		z-index: 10000;
+		padding: 3vh 3vw;
+		box-sizing: border-box;
+	}
+	.announcement-overlay.announcement-overlay-visible { display: block; }
+
+	.announcement-modal {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		max-width: 1100px;
+		margin: 0 auto;
+		background: #fff;
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+	}
+	.announcement-modal iframe {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+	.announcement-close {
+		position: absolute;
+		top: 8px;
+		right: 12px;
+		z-index: 1;
+		width: 36px;
+		height: 36px;
+		line-height: 32px;
+		font-size: 28px;
+		color: #fff;
+		background: #df3f33;
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+	.announcement-close:hover { background: #c53529; }
+</style>
+
 <script>
+	function openAnnouncement() {
+		var overlay = document.getElementById("announcement-overlay");
+		var frame = document.getElementById("announcement-frame");
+		if (!frame.getAttribute("src")) {
+			frame.setAttribute("src", frame.getAttribute("data-src"));
+		}
+		overlay.classList.add("announcement-overlay-visible");
+		document.body.style.overflow = "hidden";
+	}
+
+	function closeAnnouncement() {
+		document.getElementById("announcement-overlay").classList.remove("announcement-overlay-visible");
+		document.body.style.overflow = "";
+	}
+
+	document.addEventListener("keydown", function(e) {
+		if (e.key === "Escape") closeAnnouncement();
+	});
+
 	function toggleNav() {
 		if(hasClass(getid("mobile-navigation-popup"), "mobile-navigation-popup-visible")) {
 			removeClass("mobile-navigation-popup", "mobile-navigation-popup-visible");
