@@ -155,26 +155,15 @@
 		var overlay = document.getElementById("announcement-overlay");
 		var frame = document.getElementById("announcement-frame");
 		if (!frame.getAttribute("src")) {
+			// Wire before loading: at this point contentDocument is still about:blank.
+			frame.addEventListener("load", function() {
+				var inner = frame.contentDocument && frame.contentDocument.querySelector("#dojo-move .close");
+				if (inner) inner.addEventListener("click", closeAnnouncement);
+			}, { once: true });
 			frame.setAttribute("src", frame.getAttribute("data-src"));
 		}
 		overlay.classList.add("announcement-overlay-visible");
-		wireAnnouncementClose(frame);
 		document.body.style.overflow = "hidden";
-	}
-
-	function wireAnnouncementClose(frame) {
-		var attach = function() {
-			var doc = frame.contentDocument;
-			var inner = doc && doc.querySelector("#dojo-move .close");
-			if (inner) {
-				inner.addEventListener("click", closeAnnouncement);
-			}
-		};
-		if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
-			attach();
-		} else {
-			frame.addEventListener("load", attach, { once: true });
-		}
 	}
 
 	function closeAnnouncement() {
