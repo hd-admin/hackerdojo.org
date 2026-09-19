@@ -408,6 +408,10 @@ body {
 	box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
+#hero-links a:nth-of-type(4) {
+	grid-column: 2;
+}
+
 #hero-icon-bg {
 	width: 680px;
 	margin: auto;
@@ -1291,6 +1295,10 @@ body {
 	#hero-links a {
 		width: 140px;
 		margin: auto;
+	}
+
+	#hero-links a:nth-of-type(4) {
+		grid-column: auto;
 	}
 	
 	#carousel {

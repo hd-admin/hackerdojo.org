@@ -1,0 +1,13 @@
+# docs/ holds planning notes (e.g. docs/auction) that contain example Liquid
+# syntax; building them breaks the GitHub Pages build. Setting `exclude`
+# replaces Jekyll's default list, so the defaults are repeated here.
+exclude:
+  - docs
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - CNAME
