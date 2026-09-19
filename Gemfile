@@ -10,3 +10,9 @@ gem "minima", "~> 2.5"
 group :jekyll_plugins do
   gem "jekyll-feed"
 end
+
+gem "csv"
+gem "base64"
+gem "bigdecimal"
+gem "logger"
+gem "webrick"
