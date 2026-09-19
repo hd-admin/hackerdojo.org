@@ -16,7 +16,7 @@
 			<div id="hero-links">
 				<a href="https://calendly.com/hdfrontdesk/30min" class="button">Take a tour</a>
 
-			  <a href="https://fundrazr.com/52kkYb?ref=sh_2F3E51_ab_0XDyBWOLHcp0XDyBWOLHcp" target="_blank" class="button" style="background-color:#018669; color:white;" >Donate</a>
+			  <a href="https://www.every.org/hacker-dojo" target="_blank" class="button" style="background-color:#018669; color:white;" >Donate</a>
 
 				<a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red">Become a member</a>
 
@@ -27,4 +27,34 @@
 		</div><!-- HERO CONTENT -->
 		<img src="static/images/torii-icon.png" id="hero-icon-bg" />
 	</div>
+
+	<!-- Scroll-down chevron -->
+	<button id="hero-scroll-btn" onclick="heroScrollDown()" aria-label="Scroll down" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:none;border:none;cursor:pointer;animation:heroBounce 1.8s ease-in-out infinite;z-index:10;">
+		<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<polyline points="6 9 12 15 18 9"></polyline>
+		</svg>
+	</button>
 </div>
+
+<style>
+@keyframes heroBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(8px); }
+}
+</style>
+
+<script>
+function heroScrollDown() {
+  const hero = document.querySelector('.hero-section');
+  const target = hero ? hero.offsetTop + hero.offsetHeight : window.innerHeight;
+  window.scrollTo({ top: target, behavior: 'smooth' });
+}
+// Auto-scroll after 5 seconds if user hasn't scrolled
+(function() {
+  var scrolled = false;
+  window.addEventListener('scroll', function() { scrolled = true; }, { once: true });
+  setTimeout(function() {
+    if (!scrolled) heroScrollDown();
+  }, 5000);
+})();
+</script>
