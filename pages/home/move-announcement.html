@@ -1,4 +1,4 @@
-<!-- Dojo 5.0 moving announcement popup. Shows once per browser; reopen any time via hackerdojo.org/#move -->
+<!-- Dojo 5.0 moving announcement popup. Shows once per visit (browser session); reopen any time via hackerdojo.org/#move -->
 <style>
 #dojo-move{--dojo-red:#e13838;--dojo-paper:#f5f5f5;--dojo-soft:#fff;--dojo-line:#dddde2;position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;background:rgba(21,21,27,.6);font-family:'Saira',Arial,sans-serif;color:#202124}
 #dojo-move[hidden]{display:none!important}
@@ -52,8 +52,8 @@
 	<figure class="dm-photos">
 		<figcaption>What do you want to see here?</figcaption>
 		<div class="dm-photo-pair">
-			<img src="/static/images/move/before.webp" alt="The new Santa Clara space today: an empty open floor" width="1086" height="1448">
-			<img src="/static/images/move/after.webp" alt="The same space imagined as Hacker Dojo, with desks, a stage, phone booths, lounge seating and members working" width="1086" height="1448">
+			<img src="/static/images/move/before.webp" alt="The new Santa Clara space today: an empty open floor" width="1086" height="1448" loading="lazy">
+			<img src="/static/images/move/after.webp" alt="The same space imagined as Hacker Dojo, with desks, a stage, phone booths, lounge seating and members working" width="1086" height="1448" loading="lazy">
 		</div>
 	</figure>
 	<div class="dm-content">
@@ -98,17 +98,27 @@
 	var root=document.getElementById('dojo-move');
 	var popup=root.querySelector('.dm-popup');
 	var lastFocus=null;
-	function seen(){try{return localStorage.getItem(KEY)==='1'}catch(e){return false}}
+	function seen(){try{return sessionStorage.getItem(KEY)==='1'}catch(e){return false}}
 	function open(){lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';root.querySelector('.dm-close').focus()}
 	function close(){
 		root.hidden=true;document.body.style.overflow='';
-		try{localStorage.setItem(KEY,'1')}catch(e){}
+		try{sessionStorage.setItem(KEY,'1')}catch(e){}
 		if(location.hash==='#move')history.replaceState(null,'',location.pathname+location.search);
 		if(lastFocus&&lastFocus.focus)lastFocus.focus();
 	}
 	root.querySelector('.dm-close').addEventListener('click',close);
 	root.addEventListener('click',function(e){if(!popup.contains(e.target))close()});
-	document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!root.hidden)close()});
+	document.addEventListener('keydown',function(e){
+		if(root.hidden)return;
+		if(e.key==='Escape'){close();return}
+		if(e.key!=='Tab')return;
+		// Keep keyboard focus inside the popup while it's open
+		var f=popup.querySelectorAll('a[href],button,summary');
+		var first=f[0],last=f[f.length-1];
+		if(!popup.contains(document.activeElement)){e.preventDefault();first.focus()}
+		else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+		else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+	});
 	var primary=root.querySelector('.dm-primary');
 	if(primary)primary.addEventListener('click',function(){
 		var help=root.querySelector('.dm-help');help.open=true;help.scrollIntoView({behavior:'smooth',block:'center'});help.querySelector('summary').focus();
