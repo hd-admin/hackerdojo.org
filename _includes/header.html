@@ -141,10 +141,7 @@
 		height: 100%;
 		max-width: 1100px;
 		margin: 0 auto;
-		background: #fff;
-		border-radius: 8px;
-		overflow: hidden;
-		box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+		background: transparent;
 	}
 	.announcement-modal iframe {
 		display: block;
@@ -153,6 +150,7 @@
 		border: 0;
 	}
 	.announcement-close {
+		display: none;
 		position: absolute;
 		top: 8px;
 		right: 12px;
@@ -178,11 +176,31 @@
 			frame.setAttribute("src", frame.getAttribute("data-src"));
 		}
 		overlay.classList.add("announcement-overlay-visible");
+		wireAnnouncementClose(frame);
 		document.body.style.overflow = "hidden";
+	}
+
+	function wireAnnouncementClose(frame) {
+		var attach = function() {
+			var doc = frame.contentDocument;
+			var inner = doc && doc.querySelector("#dojo-move .close");
+			if (inner) {
+				inner.addEventListener("click", closeAnnouncement);
+			} else {
+				document.querySelector(".announcement-close").style.display = "block";
+			}
+		};
+		if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
+			attach();
+		} else {
+			frame.addEventListener("load", attach, { once: true });
+		}
 	}
 
 	function closeAnnouncement() {
 		document.getElementById("announcement-overlay").classList.remove("announcement-overlay-visible");
+		// Reload next time so the announcement's own close button doesn't leave it hidden.
+		document.getElementById("announcement-frame").removeAttribute("src");
 		document.body.style.overflow = "";
 	}
 
