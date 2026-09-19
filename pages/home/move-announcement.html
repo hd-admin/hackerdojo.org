@@ -1,0 +1,129 @@
+<!-- Dojo 5.0 moving announcement popup. Shows once per visit (browser session); reopen any time via hackerdojo.org/#move -->
+<style>
+#dojo-move{--dojo-red:#e13838;--dojo-paper:#f5f5f5;--dojo-soft:#fff;--dojo-line:#dddde2;position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;background:rgba(21,21,27,.6);font-family:'Saira',Arial,sans-serif;color:#202124}
+#dojo-move[hidden]{display:none!important}
+#dojo-move *{box-sizing:border-box}
+#dojo-move .dm-popup{background:var(--dojo-paper);width:100%;max-width:690px;margin:auto;border-radius:14px;overflow:hidden;box-shadow:0 18px 55px rgba(0,0,0,.3)}
+#dojo-move .dm-top{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--dojo-line)}
+#dojo-move .dm-brand{font-family:'Rajdhani',Arial,sans-serif;font-size:21px;font-weight:500;letter-spacing:1px;text-transform:uppercase}
+#dojo-move button{font:inherit;cursor:pointer}
+#dojo-move .dm-close{border:0;background:transparent;color:inherit;width:36px;height:36px;font-size:26px;line-height:1}
+#dojo-move .dm-intro{background:linear-gradient(180deg,var(--dojo-paper) 10%,#e2daef 100%);text-align:center;padding:30px 28px 26px}
+#dojo-move .dm-eyebrow{font-family:'Rajdhani',Arial,sans-serif;color:#46545a;background:var(--dojo-soft);display:inline-block;padding:3px 9px;border-radius:5px;letter-spacing:1px;font-size:12px;font-weight:500;margin:0 0 10px}
+#dojo-move h1{font-family:'Rajdhani',Arial,sans-serif;font-size:46px;letter-spacing:-.6px;line-height:1.08;font-weight:500;margin:0 0 12px;color:inherit}
+#dojo-move p{font-size:14px;line-height:1.55;margin:0 0 12px}
+#dojo-move .dm-intro p:not(.dm-eyebrow){max-width:520px;margin:0 auto;font-size:15px}
+#dojo-move .dm-intro p.dm-more{margin-top:10px;font-size:13px;color:#5b4a78}
+#dojo-move figure{margin:0}
+#dojo-move .dm-photos{background:#141418;padding:0 0 4px}
+#dojo-move .dm-photos figcaption{font-family:'Rajdhani',Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:.3px;color:#fff;text-align:center;padding:12px 16px 10px}
+#dojo-move .dm-photo-pair{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+#dojo-move .dm-photo-pair img{display:block;width:100%;height:auto}
+@media(max-width:520px){#dojo-move .dm-photos figcaption{font-size:20px}}
+#dojo-move .dm-content{padding:24px 30px 26px}
+#dojo-move .dm-destination{display:flex;gap:20px;align-items:center;margin-bottom:22px}
+#dojo-move .dm-date{font-family:'Rajdhani',Arial,sans-serif;background:var(--dojo-red);color:#fff;min-width:80px;text-align:center;border-radius:12px;padding:10px 13px;font-size:12px;letter-spacing:1px}
+#dojo-move .dm-date b{display:block;font-size:32px;font-weight:500;line-height:1.1}
+#dojo-move .dm-address{font-family:'Rajdhani',Arial,sans-serif;font-size:20px;font-weight:500;line-height:1.5}
+#dojo-move .dm-address span{font-family:'Saira',Arial,sans-serif;font-size:12px;font-weight:400}
+#dojo-move .dm-meeting{background:var(--dojo-soft);border-left:3px solid var(--dojo-red);border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:16px}
+#dojo-move .dm-meeting p{margin:4px 0 0;font-size:13px}
+#dojo-move .dm-meeting strong{font-size:14px;font-weight:500}
+#dojo-move .dm-meeting a{display:inline-block;color:inherit;text-decoration:underline;text-underline-offset:3px;font-size:14px;padding:6px 0}
+#dojo-move details{border-bottom:1px solid var(--dojo-line)}
+#dojo-move summary{cursor:pointer;padding:14px 0;font-family:'Rajdhani',Arial,sans-serif;font-size:18px;font-weight:500;color:#bb252d}
+#dojo-move details p{font-size:13px}
+#dojo-move .dm-footer{margin-top:22px;display:flex;gap:14px;align-items:center;justify-content:space-between}
+#dojo-move .dm-primary{font-family:'Rajdhani',Arial,sans-serif;text-transform:uppercase;letter-spacing:.6px;background:var(--dojo-red);color:#fff;border:0;border-radius:12px;padding:13px 20px;font-size:14px}
+#dojo-move .dm-primary:hover{background:#c72f2f}
+#dojo-move .dm-signoff{font-size:12px;line-height:1.5;max-width:270px;margin:0}
+@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:36px}#dojo-move .dm-top{padding:12px 22px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
+</style>
+
+<div id="dojo-move" hidden>
+<section class="dm-popup" role="dialog" aria-modal="true" aria-labelledby="dojo-move-title">
+	<div class="dm-top"><div class="dm-brand">Hacker Dojo</div><button class="dm-close" aria-label="Close announcement">&times;</button></div>
+	<div class="dm-intro">
+		<p class="dm-eyebrow">OUR NEXT CHAPTER &middot; DOJO 5.0</p>
+		<h1 id="dojo-move-title">Big news. We&rsquo;re moving.</h1>
+		<p>A new home for the community you love. Join us in Santa Clara beginning <strong>October 12, 2026.</strong></p>
+		<p class="dm-more">More details will be released on Wednesday, September 23.</p>
+	</div>
+	<figure class="dm-photos">
+		<figcaption>What do you want to see here?</figcaption>
+		<div class="dm-photo-pair">
+			<img src="/static/images/move/before.webp" alt="The new Santa Clara space today: an empty open floor" width="1086" height="1448" loading="lazy">
+			<img src="/static/images/move/after.webp" alt="The same space imagined as Hacker Dojo, with desks, a stage, phone booths, lounge seating and members working" width="1086" height="1448" loading="lazy">
+		</div>
+	</figure>
+	<div class="dm-content">
+		<div class="dm-destination">
+			<div class="dm-date">OCT<b>12</b>2026</div>
+			<div class="dm-address">3200 Patrick Henry Drive, Ste 250<br><span>Santa Clara, CA 95054</span><br><span>11,000+ sq ft &middot; Double the space!</span></div>
+		</div>
+		<div class="dm-meeting">
+			<strong>Members meeting &middot; September 23 at 6:00 PM</strong>
+			<p>Join us Wednesday for more details, FAQs, and a reference webpage with the steps to prepare for the move.</p>
+			<p><strong>Help us build the FAQ ahead of time.</strong> What would you like to know about the move? Share your questions so we can address what matters most to our community.</p>
+			<a href="https://docs.google.com/forms/d/e/1FAIpQLSfTUfvHFbZlxaq_JAcraa0--zfJPDG9PzD9TNUg5xKJZrrDBA/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">Submit your questions &nearr;</a>
+		</div>
+		<details>
+			<summary>Memberships, pricing &amp; tours</summary>
+			<p>All memberships will transfer to the new location. We&rsquo;ll announce new access instructions and clear guidance on anything members need to do before the move.</p>
+			<p>Pricing will change at the new location. Anyone who signs up by <strong>October 31, 2026</strong> will be grandfathered into the current monthly and annual rates.</p>
+			<p>Three open house tours are planned, beginning Thursday, September 24. The full schedule will be announced.</p>
+		</details>
+		<details class="dm-help">
+			<summary>Help us plan the move &middot; October 1&ndash;15</summary>
+			<p>We need everyone&rsquo;s help with packing, organizing, transporting, construction, cleaning, setting up infrastructure, and making 5.0 come alive.</p>
+			<p><strong>Desks tentatively scheduled to move October 10&ndash;11</strong>, with the goal of being ready to work on Monday, October 12.</p>
+		</details>
+		<details>
+			<summary>Team updates &amp; our new youth program</summary>
+			<p>Qi will be departing Hacker Dojo. We&rsquo;re grateful for his contributions and wish him the best in his future endeavors.</p>
+			<p>Tiyanna will be the point of contact for Operations and the Dojo 5.0 move. The board will join the move team and handle backend systems as we build a strong member-based team.</p>
+			<p>Eva Carrender is now our Youth Program Director. A classroom separate from the main member space will allow us to launch an onsite youth program.</p>
+		</details>
+		<div class="dm-footer">
+			<p class="dm-signoff">This is your community. Make it your own.<br>Thank you for bearing with us as we upgrade.</p>
+			<!-- <button class="dm-primary">See how to help &rarr;</button> -->
+		</div>
+	</div>
+</section>
+</div>
+
+<script>
+(function(){
+	var KEY='dojo-move-dismissed';
+	var root=document.getElementById('dojo-move');
+	var popup=root.querySelector('.dm-popup');
+	var lastFocus=null;
+	function seen(){try{return sessionStorage.getItem(KEY)==='1'}catch(e){return false}}
+	function open(){lastFocus=document.activeElement;root.hidden=false;document.body.style.overflow='hidden';root.querySelector('.dm-close').focus()}
+	function close(){
+		root.hidden=true;document.body.style.overflow='';
+		try{sessionStorage.setItem(KEY,'1')}catch(e){}
+		if(location.hash==='#move')history.replaceState(null,'',location.pathname+location.search);
+		if(lastFocus&&lastFocus.focus)lastFocus.focus();
+	}
+	root.querySelector('.dm-close').addEventListener('click',close);
+	root.addEventListener('click',function(e){if(!popup.contains(e.target))close()});
+	document.addEventListener('keydown',function(e){
+		if(root.hidden)return;
+		if(e.key==='Escape'){close();return}
+		if(e.key!=='Tab')return;
+		// Keep keyboard focus inside the popup while it's open
+		var f=popup.querySelectorAll('a[href],button,summary');
+		var first=f[0],last=f[f.length-1];
+		if(!popup.contains(document.activeElement)){e.preventDefault();first.focus()}
+		else if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+		else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+	});
+	var primary=root.querySelector('.dm-primary');
+	if(primary)primary.addEventListener('click',function(){
+		var help=root.querySelector('.dm-help');help.open=true;help.scrollIntoView({behavior:'smooth',block:'center'});help.querySelector('summary').focus();
+	});
+	window.addEventListener('hashchange',function(){if(location.hash==='#move')open()});
+	if(location.hash==='#move'||!seen())open();
+})();
+</script>
