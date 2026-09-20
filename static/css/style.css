@@ -23,6 +23,11 @@ body {
 	position: relative;
 }
 
+/* Let main shrink to the viewport; otherwise wide content (e.g. the 100vw carousel) widens the whole page */
+main {
+	min-width: 0;
+}
+
 .button {
 	background: #fff;
 	color:#000;
@@ -623,6 +628,8 @@ body {
 
 .press-logos img {
 	height: 40px;
+	max-width: 100%;
+	object-fit: contain;
 }
 
 .press-links {
@@ -1070,7 +1077,6 @@ body {
   display: flex;
   flex-direction: row;
   max-width: 960px;
-  width:100%;
   margin:auto;
 	background: #000;
 	margin-top: auto;
@@ -1511,7 +1517,6 @@ body {
 		text-transform: uppercase;
 		letter-spacing: 0.8px;
     color:white;
-    width:100%;
     margin:auto;
     padding:20px;
 
