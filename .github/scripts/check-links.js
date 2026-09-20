@@ -32,6 +32,15 @@ const broken = [];
 for (const file of htmlFiles(root)) {
   const html = fs.readFileSync(file, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
   const page = '/' + path.relative(root, file).split(path.sep).join('/');
+
+  // Links to a spot on the same page, e.g. href="#apply". Links carrying a fragment to another
+  // page are left alone: some, like the banner's /#move, are handled by scripts rather than an id.
+  const ids = new Set([...html.matchAll(/\sid\s*=\s*["']([^"']+)["']/gi)].map(m => m[1]));
+  for (const [, fragment] of html.matchAll(/\shref\s*=\s*["']#([^"']+)["']/gi)) {
+    checked++;
+    if (!ids.has(fragment) && fragment !== 'top') broken.push(`${page}: #${fragment} (no element with that id)`);
+  }
+
   for (const [, url] of html.matchAll(/\s(?:href|src)\s*=\s*["']([^"']+)["']/gi)) {
     if (external.test(url) || url.includes('{{')) continue;
     const clean = decodeURI(url.split(/[?#]/)[0]);

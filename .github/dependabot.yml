@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # Opens a pull request when an action used in .github/workflows falls behind.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3

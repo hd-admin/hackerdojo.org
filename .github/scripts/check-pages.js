@@ -1,6 +1,7 @@
-// Loads every page of the built site at phone and desktop widths, and fails if any page can
-// be scrolled sideways.
-// Usage: node .github/scripts/check-overflow.js <site-dir>   (needs the playwright package)
+// Loads every page of the built site at phone and desktop widths and fails if a page can be
+// scrolled sideways, hits a JavaScript error, fails to load one of its own files, or has a
+// missing or duplicate title.
+// Usage: node .github/scripts/check-pages.js <site-dir>   (needs the playwright package)
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -89,6 +90,21 @@ async function check(browser, base, { url, width, phone }) {
       try { sessionStorage.setItem('dojo-move-dismissed', '1'); } catch (e) {}
     });
     const page = await context.newPage();
+    // Problems with the page itself. Anything loaded from another site (fonts, CDNs, the
+    // analytics we block above) is out of our hands, so only same-origin failures count.
+    const problems = [];
+    const ours = u => u.startsWith(base);
+    page.on('pageerror', e => problems.push(`JavaScript error: ${e.message.split('\n')[0]}`));
+    page.on('console', m => {
+      const from = m.location() && m.location().url;
+      if (m.type() === 'error' && (!from || ours(from))) problems.push(`console error: ${m.text().slice(0, 200)}`);
+    });
+    page.on('requestfailed', r => {
+      if (ours(r.url())) problems.push(`failed to load ${r.url().slice(base.length)} (${(r.failure() || {}).errorText})`);
+    });
+    page.on('response', r => {
+      if (ours(r.url()) && r.status() >= 400) problems.push(`${r.status()} for ${r.url().slice(base.length)}`);
+    });
     await page.goto(base + url, { waitUntil: 'load', timeout: 30000 }).catch(e => {
       console.log(`  note: ${url} at ${width}px didn't finish loading (${e.message.split('\n')[0]}); measuring anyway`);
     });
@@ -103,7 +119,7 @@ async function check(browser, base, { url, width, phone }) {
       ]),
       new Promise(resolve => setTimeout(resolve, 5000)),
     ]).then(() => true));
-    return await page.evaluate(measure);
+    return { ...(await page.evaluate(measure)), title: await page.title(), problems };
   } finally {
     await context.close();
   }
@@ -127,24 +143,63 @@ async function check(browser, base, { url, width, phone }) {
   server.closeAllConnections();
   server.close();
 
-  const pageCount = new Set(jobs.map(j => j.url)).size;
-  console.log(`Checked ${pageCount} pages at ${viewports.length} widths (${jobs.length} checks)`);
+  const urls = [...new Set(jobs.map(j => j.url))];
+  console.log(`Checked ${urls.length} pages at ${viewports.length} widths (${jobs.length} checks)`);
   if (Math.max(...results.filter(r => !r.phone).map(r => r.scrollbar)) <= 0) {
     console.log('::warning::Desktop checks ran without a scrollbar, so width: 100vw overflows were not tested');
   }
-  const failures = results
+  let failed = false;
+
+  // Sideways scroll
+  const tooWide = results
     .filter(r => r.overflow > 0)
     .sort((a, b) => a.url.localeCompare(b.url) || a.width - b.width || a.phone - b.phone);
-  if (!failures.length) {
+  if (tooWide.length) {
+    failed = true;
+    console.log(`${tooWide.length} of them scroll sideways:`);
+    for (const f of tooWide) {
+      console.log(`  ${f.url} at ${f.width}px (${f.phone ? 'phone' : 'desktop'}): ${f.overflow}px too wide`);
+      for (const c of f.culprits) console.log(`      ${c}`);
+    }
+  } else {
     console.log('No page scrolls sideways.');
-    return;
   }
-  console.log(`${failures.length} of them scroll sideways:`);
-  for (const f of failures) {
-    console.log(`  ${f.url} at ${f.width}px (${f.phone ? 'phone' : 'desktop'}): ${f.overflow}px too wide`);
-    for (const c of f.culprits) console.log(`      ${c}`);
+
+  // Errors and failed files, listed once per page however many widths hit them
+  const problems = new Map();
+  for (const r of results) {
+    for (const p of r.problems) problems.set(r.url + '\n' + p, { url: r.url, problem: p });
   }
-  process.exitCode = 1;
+  if (problems.size) {
+    failed = true;
+    console.log(`${problems.size} errors or missing files:`);
+    for (const { url, problem } of [...problems.values()].sort((a, b) => a.url.localeCompare(b.url))) {
+      console.log(`  ${url}: ${problem}`);
+    }
+  } else {
+    console.log('No JavaScript errors, and every page loaded all of its own files.');
+  }
+
+  // Titles: every page needs one, and no two pages should share it
+  const titles = new Map(results.map(r => [r.url, r.title]));
+  const titleProblems = [];
+  for (const url of urls) {
+    const title = (titles.get(url) || '').trim();
+    if (!title) titleProblems.push(`${url}: no title`);
+    else {
+      const shared = urls.filter(o => o !== url && (titles.get(o) || '').trim() === title);
+      if (shared.length) titleProblems.push(`${url}: same title as ${shared.join(', ')} ("${title}")`);
+    }
+  }
+  if (titleProblems.length) {
+    failed = true;
+    console.log(`${titleProblems.length} title problems:`);
+    for (const t of titleProblems) console.log('  ' + t);
+  } else {
+    console.log('Every page has its own title.');
+  }
+
+  if (failed) process.exitCode = 1;
 })().catch(e => {
   console.error(e);
   process.exit(1);
