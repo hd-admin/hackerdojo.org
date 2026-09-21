@@ -15,7 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      # Full history so the image step can diff a pull request against its base branch.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       # The same builder GitHub Pages uses for this site: the github-pages gem, not the repo's Gemfile.
       - name: Build the site like GitHub Pages
@@ -32,6 +35,27 @@ jobs:
       - name: Check internal links and assets
         run: node .github/scripts/check-links.js _site --skip pages
 
+      # Only images this pull request adds or changes, so existing heavy files don't block anything.
+      - name: Check the size of new and changed images
+        if: ${{ !cancelled() && github.event_name == 'pull_request' }}
+        env:
+          LIMIT_KB: 500
+        run: |
+          changed=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" \
+            | grep -Ei '\.(png|jpe?g|gif|webp|avif|svg)$' || true)
+          if [ -z "$changed" ]; then echo "No images added or changed."; exit 0; fi
+          status=0
+          while IFS= read -r image; do
+            kb=$(( $(stat -c%s "$image") / 1024 ))
+            if [ "$kb" -gt "$LIMIT_KB" ]; then
+              echo "::error file=$image::$image is ${kb}KB, over the ${LIMIT_KB}KB limit for new images. Please compress or resize it."
+              status=1
+            else
+              echo "$image: ${kb}KB"
+            fi
+          done <<< "$changed"
+          exit $status
+
       # Runs even if the link check failed, so one run reports both.
       - name: Install Playwright
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
@@ -39,6 +63,6 @@ jobs:
           npm install --no-save --no-package-lock playwright@1.63.0
           npx playwright install --with-deps chromium
 
-      - name: Check for sideways scroll
+      - name: Check pages for errors, titles and sideways scroll
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
-        run: node .github/scripts/check-overflow.js _site
+        run: node .github/scripts/check-pages.js _site
