@@ -1,38 +1,42 @@
-<!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Sign-ups go to the "Move Volunteer Signups" Google Sheet through
-     the Apps Script web app set as volunteer_signup_url in _config.yml. Without it, or if sending fails, the form falls back to email. -->
+<!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Tasks come from _data/volunteer_tasks.yml.
+     Sign-ups go to the "Move Volunteer Signups" Google Sheet through the Apps Script web app set as volunteer_signup_url
+     in _config.yml. Without it, or if sending fails, the form falls back to email. -->
 <style>
-#vol{--vol-red:#e13838;--vol-red-dark:#c62828;--vol-ink:#111;--vol-text:#222;--vol-muted:#444;--vol-soft:#505050;--vol-line:#ececec;--vol-shadow:0 0 1px rgba(0,0,0,.04),0 0 2px rgba(0,0,0,.04),0 0 3px rgba(0,0,0,.02),0 0 5px rgba(0,0,0,.03);font-family:'Saira',Arial,sans-serif;color:var(--vol-text)}
+#vol{--vol-red:#e13838;--vol-red-dark:#c62828;--vol-ink:#111;--vol-text:#222;--vol-muted:#444;--vol-soft:#505050;--vol-line:#ececec;--vol-shadow:0 0 1px rgba(0,0,0,.04),0 0 2px rgba(0,0,0,.04),0 0 3px rgba(0,0,0,.02),0 0 5px rgba(0,0,0,.03);color:var(--vol-text)}
 #vol *{box-sizing:border-box}
 #vol h1,#vol h2,#vol h3{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;color:var(--vol-ink)}
-#vol button{font:inherit}
+#vol button{font-family:inherit}
 #vol button:focus-visible,#vol input:focus-visible,#vol textarea:focus-visible,#vol a:focus-visible{outline:2px solid var(--vol-ink);outline-offset:2px}
 #vol input[type=checkbox]{accent-color:var(--vol-red)}
-#vol .vol-eyebrow{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:20px;letter-spacing:.5px;text-transform:uppercase;color:#df3f33}
+/* Additions to the site's .button.button-red */
+#vol .button{border:0;min-height:44px;cursor:pointer;flex:none}
+#vol .button-red:hover:not(:disabled){background:var(--vol-red-dark)}
+#vol .button:disabled{background:#dcdcdc;color:var(--vol-soft);cursor:default}
 
-#vol .vol-hero{padding:72px 5% 80px;text-align:center;background:linear-gradient(180deg,#f5f5f5 0%,#6d3bdb2e 100%)}
-#vol .vol-hero h1{margin:16px auto 20px;max-width:900px;font-size:64px;line-height:1.1}
+#vol .vol-hero{padding:72px 5% 80px;background:linear-gradient(180deg,#f5f5f5 0%,#6d3bdb2e 100%)}
+#vol .vol-hero .section-title{margin-bottom:16px}
+#vol .vol-hero h1{margin:0 auto 20px;max-width:900px;font-size:64px;line-height:1.1}
 #vol .vol-hero h1 span{color:var(--vol-red)}
 #vol .vol-hero > p{font-size:18px}
 #vol .vol-where{display:inline-flex;flex-direction:column;gap:4px;margin-top:28px;padding:20px 25px;background:#fff;border-radius:12px;box-shadow:var(--vol-shadow);font-size:15px;color:var(--vol-muted)}
 #vol .vol-where strong{font-weight:600;color:var(--vol-ink)}
 
 #vol .vol-main{max-width:1360px;margin:0 auto;padding:56px 40px 64px}
-#vol .vol-heading{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:28px;text-align:center}
-#vol .vol-heading h2{font-size:40px;line-height:1.2}
+#vol .section-header{margin-bottom:28px}
+#vol .section-header .section-title{margin-bottom:8px}
+#vol .section-header h2{font-size:40px;line-height:1.2}
 #vol .vol-layout{display:flex;justify-content:center;align-items:flex-start}
 #vol .vol-list-col{flex:0 1 900px;min-width:0}
 
 #vol .vol-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 20px;margin-bottom:20px;background:#fff;border-radius:12px;box-shadow:0 0 1px rgba(0,0,0,.05),0 0 2px rgba(0,0,0,.07),0 0 3px rgba(0,0,0,.02),0 6px 16px rgba(0,0,0,.06)}
 #vol .vol-bar strong{display:block;font-size:16px;font-weight:600;color:var(--vol-ink)}
 #vol .vol-bar small{font-size:13px;color:var(--vol-soft)}
-#vol .vol-btn{border:0;border-radius:12px;min-height:44px;padding:12px 28px;background:var(--vol-red);color:#fff;cursor:pointer;font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:18px;letter-spacing:.4px;flex:none}
-#vol .vol-btn:hover:not(:disabled){background:var(--vol-red-dark)}
-#vol .vol-btn:disabled{background:#dcdcdc;color:var(--vol-soft);cursor:default}
 
 #vol .vol-cats{display:flex;flex-direction:column;gap:12px}
 #vol .vol-cat{display:flex;align-items:center;gap:20px;width:100%;padding:22px 25px;border:0;border-radius:12px;background:#fff;box-shadow:var(--vol-shadow);text-align:left;cursor:pointer;color:var(--vol-ink);transition:box-shadow .2s ease}
 #vol .vol-cat[aria-expanded=true]{box-shadow:0 0 0 2px var(--vol-red),0 6px 16px rgba(0,0,0,.06)}
-#vol .vol-cat-num{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:22px;color:#df3f33;width:28px;flex:none}
+#vol .vol-num{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:22px;color:#df3f33;flex:none}
+#vol .vol-cat .vol-num{width:28px}
 #vol .vol-cat-text{display:flex;flex-direction:column;gap:2px;flex-grow:1;min-width:0}
 #vol .vol-cat-title{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:24px;line-height:1.2}
 #vol .vol-cat-sub{font-size:14px;color:var(--vol-muted)}
@@ -44,8 +48,9 @@
 #vol .vol-drawer{position:sticky;top:20px;flex:none;width:0;margin-left:0;opacity:0;overflow:hidden;transition:width .35s ease,margin-left .35s ease,opacity .25s ease}
 #vol .vol-drawer.is-open{width:440px;margin-left:28px;opacity:1}
 #vol .vol-panel{width:440px;max-height:calc(100vh - 40px);overflow-y:auto;background:#fff;border-radius:15px;box-shadow:0 0 1px rgba(0,0,0,.05),0 0 2px rgba(0,0,0,.07),0 0 3px rgba(0,0,0,.02),0 8px 24px rgba(0,0,0,.08)}
+#vol .vol-panel:not(.is-active){display:none}
 #vol .vol-panel-head{position:sticky;top:0;z-index:1;display:flex;align-items:flex-start;gap:14px;padding:22px 20px 16px 25px;background:#fff;border-bottom:1px solid var(--vol-line)}
-#vol .vol-panel-head .vol-cat-num{line-height:1.3;width:auto}
+#vol .vol-panel-head .vol-num{line-height:1.3}
 #vol .vol-panel-head > div{flex-grow:1;min-width:0}
 #vol .vol-panel-head h3{font-size:26px;line-height:1.2}
 #vol .vol-panel-count{font-size:13px;color:var(--vol-soft);margin-top:2px}
@@ -68,6 +73,11 @@
 #vol .vol-callout b{display:block;margin-bottom:4px;font-weight:600;color:var(--vol-ink)}
 #vol .vol-note{margin-top:14px;font-size:14px;color:var(--vol-muted);line-height:1.5}
 
+/* Without JavaScript: no picker or form, just every category's tasks in a column */
+#vol:not(.is-js) .vol-list-col,#vol:not(.is-js) .vol-x,#vol:not(.is-js) .vol-all{display:none}
+#vol:not(.is-js) .vol-drawer{position:static;flex:0 1 900px;width:auto;margin:0;opacity:1;overflow:visible;display:flex;flex-direction:column;gap:20px}
+#vol:not(.is-js) .vol-panel{display:block;width:auto;max-height:none}
+
 #vol .vol-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(17,17,17,.45)}
 #vol .vol-modal[hidden]{display:none}
 #vol .vol-dialog{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:#fff;border-radius:15px;box-shadow:0 18px 60px rgba(0,0,0,.25)}
@@ -83,7 +93,7 @@
 #vol form label small{font-size:12px;color:var(--vol-soft)}
 #vol form input,#vol form textarea{width:100%;padding:10px 12px;border:1px solid #8a8a8a;border-radius:6px;font-family:'Saira',Arial,sans-serif;font-size:16px;color:var(--vol-text);background:#fff}
 #vol form textarea{min-height:72px;resize:vertical}
-#vol form .vol-btn{margin-top:4px;font-size:16px;letter-spacing:.8px;text-transform:uppercase;padding:12px 20px}
+#vol form .button{margin-top:4px}
 #vol .vol-fine{font-size:12px;color:var(--vol-soft);line-height:1.5}
 #vol .vol-fine a{color:var(--vol-red-dark);text-decoration:underline}
 #vol .vol-status{font-size:14px;color:#016b54;line-height:1.5}
@@ -97,25 +107,25 @@
 	#vol .vol-hero h1{font-size:40px}
 	#vol .vol-hero > p{font-size:16px}
 	#vol .vol-main{padding:40px 16px 48px}
-	#vol .vol-heading h2{font-size:32px}
+	#vol .section-header h2{font-size:32px}
 	#vol .vol-bar{padding:12px 14px;gap:12px}
 	#vol .vol-bar small{display:none}
-	#vol .vol-btn{padding:10px 18px}
 	#vol .vol-cat{gap:14px;padding:18px 16px}
 	#vol .vol-cat-title{font-size:20px}
 	#vol .vol-pill{display:none}
 	/* On phones and tablets the task drawer becomes a full-screen sheet */
-	#vol .vol-drawer,#vol .vol-drawer.is-open{position:fixed;inset:0;z-index:999;width:auto;margin:0;padding:16px;background:rgba(17,17,17,.45);display:flex;align-items:flex-end;justify-content:center;transition:none}
-	#vol .vol-drawer:not(.is-open){display:none}
-	#vol .vol-panel{width:100%;max-width:560px;max-height:calc(100vh - 32px)}
+	#vol.is-js .vol-drawer,#vol.is-js .vol-drawer.is-open{position:fixed;inset:0;z-index:999;width:auto;margin:0;padding:16px;background:rgba(17,17,17,.45);display:flex;align-items:flex-end;justify-content:center;transition:none}
+	#vol.is-js .vol-drawer:not(.is-open){display:none}
+	#vol.is-js .vol-panel{width:100%;max-width:560px;max-height:calc(100vh - 32px)}
 	#vol .vol-panel-head{padding:18px 14px 14px 18px}
 	#vol .vol-panel-body{padding:4px 18px 20px}
 }
 </style>
 
+{%- assign cats = site.data.volunteer_tasks -%}
 <div id="vol" data-endpoint="{{ site.volunteer_signup_url }}">
-	<section class="vol-hero">
-		<div class="vol-eyebrow">Our next chapter &middot; Built by our community</div>
+	<section class="section vol-hero">
+		<div class="section-title">Our next chapter &middot; Built by our community</div>
 		<h1>Help move the Dojo.<br><span>Make our new space home.</span></h1>
 		<p>Move work starts now. Lend your skills, your time, or a helping hand.</p>
 		<div class="vol-where">
@@ -126,12 +136,12 @@
 	</section>
 
 	<div class="vol-main">
-		<div class="vol-heading">
-			<div class="vol-eyebrow">Volunteer</div>
+		<div class="section-header">
+			<div class="section-title">Volunteer</div>
 			<h2>Find your way to help</h2>
 		</div>
 
-		<noscript><p style="text-align:center;margin-bottom:20px">This sign-up needs JavaScript. You can also email <a href="mailto:moving@hackerdojo.com?subject=Volunteering%20for%20the%20move">moving@hackerdojo.com</a> to tell us how you&rsquo;d like to help.</p></noscript>
+		<noscript><p style="text-align:center;margin-bottom:20px">To sign up, email <a href="mailto:moving@hackerdojo.com?subject=Volunteering%20for%20the%20move">moving@hackerdojo.com</a> with the tasks you&rsquo;d like to help with.</p></noscript>
 
 		<div class="vol-layout">
 			<div class="vol-list-col">
@@ -140,13 +150,61 @@
 						<strong id="vol-count" aria-live="polite">0 tasks selected</strong>
 						<small>Choose tasks, then add your contact details.</small>
 					</div>
-					<button type="button" class="vol-btn" id="vol-continue" aria-haspopup="dialog" disabled>Continue</button>
+					<button type="button" class="button button-red" id="vol-continue" aria-haspopup="dialog" disabled>Continue</button>
 				</div>
-				<div class="vol-cats" id="vol-cats"></div>
+				<div class="vol-cats">
+					{%- for cat in cats %}
+					<button type="button" class="vol-cat" aria-expanded="false" aria-controls="vol-drawer">
+						<span class="vol-num">{{ cat.num }}</span>
+						<span class="vol-cat-text">
+							<span class="vol-cat-title">{{ cat.title }}</span>
+							<span class="vol-cat-sub">{{ cat.sub }}</span>
+						</span>
+						<span class="vol-pill" hidden></span>
+						<span class="vol-arrow" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l7 7-7 7"/></svg></span>
+					</button>
+					{%- endfor %}
+				</div>
 			</div>
 
 			<aside class="vol-drawer" id="vol-drawer" aria-label="Task drawer">
-				<div class="vol-panel" id="vol-panel"></div>
+				{%- for cat in cats %}
+				<div class="vol-panel">
+					<div class="vol-panel-head">
+						<span class="vol-num">{{ cat.num }}</span>
+						<div>
+							<h3>{{ cat.title }}</h3>
+							<div class="vol-panel-count"></div>
+						</div>
+						<button type="button" class="vol-x" aria-label="Close task drawer"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+					</div>
+					<div class="vol-panel-body">
+						{%- if cat.intro %}
+						<p class="vol-intro">{{ cat.intro }} {% if cat.intro_bold %}<b>{{ cat.intro_bold }}</b>{% endif %}</p>
+						{%- endif %}
+						<label class="vol-all"><input type="checkbox" class="vol-all-cb"> Select all in this category</label>
+						{%- for task in cat.tasks %}
+						<label class="vol-task">
+							<input type="checkbox" name="task" value="{{ task.id }}" data-name="{{ task.name | escape }}">
+							<span>
+								<span class="vol-task-name">{{ task.name }}</span>
+								{%- if task.skills %}<span class="vol-task-skills">{{ task.skills }}</span>{% endif %}
+								{%- if task.desc %}<span class="vol-task-desc">{{ task.desc }}</span>{% endif %}
+							</span>
+						</label>
+						{%- endfor %}
+						{%- if cat.callout %}
+						<div class="vol-callout">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M12 9v4"/><path d="M12 16.5v.01"/></svg>
+							<div><b>{{ cat.callout_title }}</b>{{ cat.callout }}</div>
+						</div>
+						{%- endif %}
+						{%- if cat.note %}
+						<p class="vol-note">{{ cat.note }}</p>
+						{%- endif %}
+					</div>
+				</div>
+				{%- endfor %}
 			</aside>
 		</div>
 	</div>
@@ -174,7 +232,7 @@
 				<label><span>Availability <small>(optional)</small></span>
 					<input name="availability" type="text" placeholder="Before, during, or after the move"></label>
 				<div class="vol-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
-				<button type="submit" class="vol-btn" id="vol-submit">I&rsquo;d like to help</button>
+				<button type="submit" class="button button-red" id="vol-submit">I&rsquo;d like to help</button>
 				<p class="vol-fine" id="vol-fine">Questions? Email <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
 				<p class="vol-status" id="vol-status" role="status" hidden></p>
 			</form>
@@ -185,198 +243,67 @@
 <script>
 (function () {
 	var TO = 'moving@hackerdojo.com';
-	var ENDPOINT = (document.getElementById('vol').getAttribute('data-endpoint') || '').trim();
-	// IDs match the "Task list" tab of the sign-ups sheet
-	var IDS = [
-		['infra-network-setup', 'infra-wifi-setup', 'infra-cabling-equipment', 'infra-member-wifi-access', 'infra-door-access', 'infra-cameras', 'infra-power-backup', 'infra-security-review', 'infra-testing', 'infra-documentation', 'infra-ongoing-support'],
-		['packing-inventory', 'packing-sort', 'packing-pack-label', 'packing-materials'],
-		['transport-load-unload', 'transport-vehicle', 'transport-coordinate', 'transport-check-deliveries'],
-		['assembly-desks', 'assembly-shelving', 'assembly-space-planning', 'assembly-installer-coordination'],
-		['cleaning-surfaces', 'cleaning-rooms', 'cleaning-boxes-recycling', 'cleaning-old-space'],
-		['welcome-arrange-spaces', 'welcome-signage', 'welcome-members', 'welcome-volunteer-checkin']
-	];
-	var CATS = [
-		{ num: '01', title: 'Infrastructure & tech setup', sub: '11 volunteer areas · Technical volunteers and hands-on helpers', infra: true, tasks: [
-			['Network setup', 'Fortinet, managed switches, VLANs, firewalls', 'Review existing configurations, set up separate networks for members and building systems, configure switches, and test connectivity and internet failover.'],
-			['Wi-Fi setup', 'Access-point installation, wireless troubleshooting', 'Plan access-point placement, configure member and guest Wi-Fi, check coverage, and test performance in busy areas.'],
-			['Cabling and equipment setup', 'Network cabling, rack organization; helpers welcome', 'Inventory equipment, organize racks, patch connections, label cables and ports, and test network drops.'],
-			['Member Wi-Fi access', 'IronWiFi, RADIUS, membership integrations', 'Configure member login and guest access. Test onboarding, expired memberships, account revocation, and login troubleshooting.'],
-			['Door access setup', 'Kisi administration, access-control experience', 'Configure member access groups and door schedules, check readers with the installer, and test access during connectivity outages.'],
-			['Camera setup', 'Rhombus/Samsung cameras, IP cameras, networking', 'Help position and configure cameras, check views and recording, and set up approved administrator access.'],
-			['Power backup', 'UPS systems and equipment power planning', 'Connect equipment to appropriate battery backups, organize power connections, and test runtime and recovery.'],
-			['Security review', 'Network security, account administration', 'Check network separation, administrator permissions, MFA, and secure storage of recovery credentials.'],
-			['Testing and troubleshooting', 'Any experience level; bring a phone or laptop', 'Test Wi-Fi, member login, guest access, shared equipment, and coverage throughout the space. Help simulate a busy event and report problems.'],
-			['Documentation', 'Clear writing, diagrams, organization', 'Document equipment locations, cable labels, configurations, troubleshooting steps, and member instructions.'],
-			['Ongoing infrastructure support', 'Troubleshooting and willingness to learn', 'Help resolve member issues, maintain documentation, monitor equipment, and share responsibility for routine maintenance.']
-		]},
-		{ num: '02', title: 'Packing & organizing', sub: 'Sort, label, and prepare equipment for the move', tasks: ['Inventory shared supplies and equipment', 'Sort items to keep, donate, or recycle', 'Pack equipment and label boxes by destination', 'Gather boxes, packing materials, and labels'] },
-		{ num: '03', title: 'Transport & moving', sub: 'Help get equipment and furniture to the new space', tasks: ['Load and unload boxes and furniture', 'Offer a truck or van and driving help', 'Coordinate pickup times and transport runs', 'Check deliveries against the moving inventory'] },
-		{ num: '04', title: 'Construction & assembly', sub: 'Help assemble and prepare the new space', note: 'Electrical wiring, door hardware, fire-system connections, and work requiring building approval remain with qualified installers.', tasks: ['Disassemble and reassemble desks', 'Assemble shelving and storage units', 'Measure spaces and plan furniture placement', 'Coordinate approved work with qualified installers'] },
-		{ num: '05', title: 'Cleaning & finishing', sub: 'Make both spaces ready for what comes next', tasks: ['Clean desks, chairs, and shared surfaces', 'Sweep and prepare rooms for setup', 'Break down boxes and sort recycling', 'Help with the final cleanup of the old space'] },
-		{ num: '06', title: 'Setup & welcoming', sub: 'Help members settle into their new home', tasks: ['Arrange lounge, kitchen, and shared work areas', 'Create and place room and wayfinding signs', 'Welcome members and show them around', 'Coordinate volunteer check-in and task assignments'] }
-	].map(function (c, ci) {
-		c.tasks = c.tasks.map(function (t, ti) {
-			var task = Array.isArray(t) ? { name: t[0], skills: t[1], desc: t[2] } : { name: t };
-			task.id = IDS[ci][ti];
-			task.checked = false;
-			return task;
-		});
-		return c;
-	});
-
+	var root = document.getElementById('vol');
+	root.classList.add('is-js');
+	var ENDPOINT = (root.getAttribute('data-endpoint') || '').trim();
 	var $ = function (id) { return document.getElementById(id); };
-	var catsEl = $('vol-cats'), drawer = $('vol-drawer'), panel = $('vol-panel'), modal = $('vol-modal');
-	var continueBtn = $('vol-continue'), form = $('vol-form'), statusEl = $('vol-status');
-	var active = null, catButtons = [];
+	var all = function (sel, el) { return Array.prototype.slice.call((el || root).querySelectorAll(sel)); };
+	var cats = all('.vol-cat'), panels = all('.vol-panel');
+	var drawer = $('vol-drawer'), modal = $('vol-modal'), form = $('vol-form'), statusEl = $('vol-status');
+	var continueBtn = $('vol-continue'), submitBtn = $('vol-submit');
 	var narrow = window.matchMedia('(max-width: 900px)');
+	var active = null;
 
-	function el(tag, cls, text) {
-		var e = document.createElement(tag);
-		if (cls) e.className = cls;
-		if (text != null) e.textContent = text;
-		return e;
-	}
-	function svg(markup) { var s = el('span'); s.innerHTML = markup; return s.firstChild; }
-	var ARROW = '<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l7 7-7 7"/></svg>';
-	var CLOSE = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>';
-	var SHIELD = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M12 9v4"/><path d="M12 16.5v.01"/></svg>';
-
-	function selectedIn(c) { return c.tasks.filter(function (t) { return t.checked; }).length; }
-	function selectedNames() {
-		var out = [];
-		CATS.forEach(function (c) { c.tasks.forEach(function (t) { if (t.checked) out.push(t.name); }); });
-		return out;
-	}
-
-	// Category list
-	CATS.forEach(function (c, i) {
-		var b = el('button', 'vol-cat');
-		b.type = 'button';
-		b.setAttribute('aria-expanded', 'false');
-		b.setAttribute('aria-controls', 'vol-drawer');
-		b.appendChild(el('span', 'vol-cat-num', c.num));
-		var text = el('span', 'vol-cat-text');
-		text.appendChild(el('span', 'vol-cat-title', c.title));
-		text.appendChild(el('span', 'vol-cat-sub', c.sub));
-		b.appendChild(text);
-		var pill = el('span', 'vol-pill');
-		pill.hidden = true;
-		b.appendChild(pill);
-		var arrow = el('span', 'vol-arrow');
-		arrow.appendChild(svg(ARROW));
-		b.appendChild(arrow);
-		b.addEventListener('click', function () { openCat(active === i ? null : i); });
-		catsEl.appendChild(b);
-		catButtons.push({ btn: b, pill: pill });
-	});
+	function taskBoxes(el) { return all('input[name=task]', el); }
+	function checkedBoxes(el) { return taskBoxes(el).filter(function (b) { return b.checked; }); }
 
 	function refresh() {
-		var names = selectedNames(), n = names.length;
+		var picked = checkedBoxes(), n = picked.length;
 		$('vol-count').textContent = n + (n === 1 ? ' task selected' : ' tasks selected');
 		continueBtn.disabled = n === 0;
-		$('vol-summary').textContent = n ? names.join(' · ') : 'No tasks selected yet.';
-		CATS.forEach(function (c, i) {
-			var k = selectedIn(c);
-			catButtons[i].pill.hidden = !k;
-			catButtons[i].pill.textContent = k + ' selected';
-			catButtons[i].btn.setAttribute('aria-expanded', active === i ? 'true' : 'false');
+		$('vol-summary').textContent = n ? picked.map(function (b) { return b.getAttribute('data-name'); }).join(' · ') : 'No tasks selected yet.';
+		panels.forEach(function (p, i) {
+			var total = taskBoxes(p).length, k = checkedBoxes(p).length, pill = cats[i].querySelector('.vol-pill');
+			pill.hidden = !k;
+			pill.textContent = k + ' selected';
+			p.querySelector('.vol-panel-count').textContent = k + ' of ' + total + ' selected';
+			var allBox = p.querySelector('.vol-all-cb');
+			allBox.checked = k === total;
+			allBox.indeterminate = k > 0 && k < total;
+			cats[i].setAttribute('aria-expanded', active === i ? 'true' : 'false');
 		});
-		if (active !== null) {
-			var c = CATS[active], k = selectedIn(c);
-			$('vol-panel-count').textContent = k + ' of ' + c.tasks.length + ' selected';
-			var all = $('vol-all');
-			all.checked = k === c.tasks.length;
-			all.indeterminate = k > 0 && k < c.tasks.length;
-		}
 	}
 
 	function openCat(i) {
 		active = i;
-		panel.textContent = '';
-		if (i === null) {
-			drawer.classList.remove('is-open');
-			drawer.setAttribute('aria-label', 'Task drawer');
-			document.body.style.overflow = '';
-			refresh();
-			return;
-		}
-		var c = CATS[i];
-		drawer.setAttribute('aria-label', c.title + ' tasks');
-
-		var head = el('div', 'vol-panel-head');
-		head.appendChild(el('span', 'vol-cat-num', c.num));
-		var h = el('div');
-		h.appendChild(el('h3', null, c.title));
-		var count = el('div', 'vol-panel-count');
-		count.id = 'vol-panel-count';
-		h.appendChild(count);
-		head.appendChild(h);
-		var x = el('button', 'vol-x');
-		x.type = 'button';
-		x.setAttribute('aria-label', 'Close task drawer');
-		x.appendChild(svg(CLOSE));
-		x.addEventListener('click', function () { var b = catButtons[i].btn; openCat(null); b.focus(); });
-		head.appendChild(x);
-		panel.appendChild(head);
-
-		var body = el('div', 'vol-panel-body');
-		if (c.infra) {
-			var intro = el('p', 'vol-intro', 'Help set up infrastructure at our new location. ');
-			intro.appendChild(el('b', null, 'No technical experience is needed for labeling, inventory, testing, documentation, or coordination.'));
-			body.appendChild(intro);
-		}
-		var allLabel = el('label', 'vol-all');
-		var all = el('input');
-		all.type = 'checkbox';
-		all.id = 'vol-all';
-		all.addEventListener('change', function () {
-			var on = selectedIn(c) !== c.tasks.length;
-			c.tasks.forEach(function (t, ti) { t.checked = on; body.querySelectorAll('.vol-task input')[ti].checked = on; });
-			refresh();
-		});
-		allLabel.appendChild(all);
-		allLabel.appendChild(document.createTextNode('Select all in this category'));
-		body.appendChild(allLabel);
-
-		c.tasks.forEach(function (t) {
-			var row = el('label', 'vol-task');
-			var cb = el('input');
-			cb.type = 'checkbox';
-			cb.checked = t.checked;
-			cb.addEventListener('change', function () { t.checked = cb.checked; refresh(); });
-			row.appendChild(cb);
-			var s = el('span');
-			s.appendChild(el('span', 'vol-task-name', t.name));
-			if (t.skills) s.appendChild(el('span', 'vol-task-skills', t.skills));
-			if (t.desc) s.appendChild(el('span', 'vol-task-desc', t.desc));
-			row.appendChild(s);
-			body.appendChild(row);
-		});
-
-		if (c.infra) {
-			var call = el('div', 'vol-callout');
-			call.appendChild(svg(SHIELD));
-			var d = el('div');
-			d.appendChild(el('b', null, 'Professional installation boundaries'));
-			d.appendChild(document.createTextNode('Electrical wiring, door hardware, fire-system connections, and work requiring building approval should be handled by qualified installers. Members can help coordinate and test these systems.'));
-			call.appendChild(d);
-			body.appendChild(call);
-		}
-		if (c.note) body.appendChild(el('p', 'vol-note', c.note));
-		panel.appendChild(body);
-		panel.scrollTop = 0;
-
-		drawer.classList.add('is-open');
-		if (narrow.matches) document.body.style.overflow = 'hidden';
+		panels.forEach(function (p, j) { p.classList.toggle('is-active', j === i); });
+		drawer.classList.toggle('is-open', i !== null);
+		drawer.setAttribute('aria-label', i === null ? 'Task drawer' : cats[i].querySelector('.vol-cat-title').textContent + ' tasks');
+		document.body.style.overflow = i !== null && narrow.matches ? 'hidden' : '';
 		refresh();
-		x.focus({ preventScroll: !narrow.matches });
+		if (i !== null) {
+			panels[i].scrollTop = 0;
+			panels[i].querySelector('.vol-x').focus({ preventScroll: !narrow.matches });
+		}
+	}
+	function closeCat() {
+		var b = active === null ? null : cats[active];
+		openCat(null);
+		if (b) b.focus();
 	}
 
-	drawer.addEventListener('keydown', function (e) {
-		if (e.key === 'Escape' && active !== null) { var b = catButtons[active].btn; openCat(null); b.focus(); }
-	});
+	cats.forEach(function (b, i) { b.addEventListener('click', function () { openCat(active === i ? null : i); }); });
+	all('.vol-x', drawer).forEach(function (x) { x.addEventListener('click', closeCat); });
+	drawer.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCat(); });
 	// Tapping the dimmed backdrop around the phone sheet closes it
 	drawer.addEventListener('click', function (e) { if (e.target === drawer) openCat(null); });
+	drawer.addEventListener('change', function (e) {
+		if (e.target.classList.contains('vol-all-cb')) {
+			var p = e.target.closest('.vol-panel'), on = checkedBoxes(p).length !== taskBoxes(p).length;
+			taskBoxes(p).forEach(function (b) { b.checked = on; });
+		}
+		refresh();
+	});
 
 	function openModal() {
 		if (continueBtn.disabled) return;
@@ -413,10 +340,10 @@
 		if (!submissionId) submissionId = newId();
 		v.submissionId = submissionId;
 		['fullName', 'email', 'discord', 'experience', 'availability', 'website'].forEach(function (k) { v[k] = f[k].value.trim(); });
-		v.taskIds = [];
-		v.tasks = [];
-		CATS.forEach(function (c) { c.tasks.forEach(function (t) { if (t.checked) { v.taskIds.push(t.id); v.tasks.push(t.name); } }); });
-		v.taskCount = v.taskIds.length;
+		var picked = checkedBoxes();
+		v.taskIds = picked.map(function (b) { return b.value; });
+		v.tasks = picked.map(function (b) { return b.getAttribute('data-name'); });
+		v.taskCount = picked.length;
 		v.source = 'hackerdojo.org/volunteer';
 		return v;
 	}
@@ -426,11 +353,11 @@
 		if (v.availability) lines.push('Availability: ' + v.availability);
 		if (v.experience) lines.push('', 'Experience:', v.experience);
 		lines.push('', 'I’m willing to help with:');
-		CATS.forEach(function (c) {
-			var picked = c.tasks.filter(function (t) { return t.checked; });
+		panels.forEach(function (p) {
+			var picked = checkedBoxes(p);
 			if (picked.length) {
-				lines.push('', c.title + ':');
-				picked.forEach(function (t) { lines.push('- ' + t.name); });
+				lines.push('', p.querySelector('h3').textContent + ':');
+				picked.forEach(function (b) { lines.push('- ' + b.getAttribute('data-name')); });
 			}
 		});
 		return 'mailto:' + TO + '?subject=' + encodeURIComponent('Move volunteer: ' + v.fullName) + '&body=' + encodeURIComponent(lines.join('\n'));
@@ -439,15 +366,15 @@
 		statusEl.textContent = msg;
 		statusEl.classList.toggle('is-error', !!isError);
 		if (link) {
-			statusEl.appendChild(document.createTextNode(' '));
-			var a = el('a', null, link.text);
+			var a = document.createElement('a');
 			a.href = link.href;
+			a.textContent = link.text;
+			statusEl.appendChild(document.createTextNode(' '));
 			statusEl.appendChild(a);
 		}
 		statusEl.hidden = false;
 	}
 
-	var submitBtn = $('vol-submit');
 	form.addEventListener('submit', function (e) {
 		e.preventDefault();
 		var v = values();
@@ -467,11 +394,11 @@
 			})
 			.then(function (res) {
 				if (res && res.ok === false) throw new Error(res.error || res.message || 'error');
-				CATS.forEach(function (c) { c.tasks.forEach(function (t) { t.checked = false; }); });
+				taskBoxes().forEach(function (b) { b.checked = false; });
 				form.reset();
 				submissionId = null;
 				openCat(null);
-				showStatus('Thanks, ' + v.fullName.split(' ')[0] + '! You’re signed up for ' + v.taskIds.length + (v.taskIds.length === 1 ? ' task' : ' tasks') + '. We’ll be in touch by email.');
+				showStatus('Thanks, ' + v.fullName.split(' ')[0] + '! You’re signed up for ' + v.taskCount + (v.taskCount === 1 ? ' task' : ' tasks') + '. We’ll be in touch by email.');
 			})
 			.catch(function (err) {
 				// Show the script's message only when it reads as a sentence, not an error code
