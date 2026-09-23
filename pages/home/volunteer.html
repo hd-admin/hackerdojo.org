@@ -1,0 +1,405 @@
+<!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Sign-ups are sent by email via the visitor's mail app. -->
+<style>
+#vol{--vol-red:#e13838;--vol-red-dark:#c62828;--vol-ink:#111;--vol-text:#222;--vol-muted:#444;--vol-soft:#505050;--vol-line:#ececec;--vol-shadow:0 0 1px rgba(0,0,0,.04),0 0 2px rgba(0,0,0,.04),0 0 3px rgba(0,0,0,.02),0 0 5px rgba(0,0,0,.03);font-family:'Saira',Arial,sans-serif;color:var(--vol-text)}
+#vol *{box-sizing:border-box}
+#vol h1,#vol h2,#vol h3{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;color:var(--vol-ink)}
+#vol button{font:inherit}
+#vol button:focus-visible,#vol input:focus-visible,#vol textarea:focus-visible,#vol a:focus-visible{outline:2px solid var(--vol-ink);outline-offset:2px}
+#vol input[type=checkbox]{accent-color:var(--vol-red)}
+#vol .vol-eyebrow{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:20px;letter-spacing:.5px;text-transform:uppercase;color:#df3f33}
+
+#vol .vol-hero{padding:72px 5% 80px;text-align:center;background:linear-gradient(180deg,#f5f5f5 0%,#6d3bdb2e 100%)}
+#vol .vol-hero h1{margin:16px auto 20px;max-width:900px;font-size:64px;line-height:1.1}
+#vol .vol-hero h1 span{color:var(--vol-red)}
+#vol .vol-hero > p{font-size:18px}
+#vol .vol-where{display:inline-flex;flex-direction:column;gap:4px;margin-top:28px;padding:20px 25px;background:#fff;border-radius:12px;box-shadow:var(--vol-shadow);font-size:15px;color:var(--vol-muted)}
+#vol .vol-where strong{font-weight:600;color:var(--vol-ink)}
+
+#vol .vol-main{max-width:1360px;margin:0 auto;padding:56px 40px 64px}
+#vol .vol-heading{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:28px;text-align:center}
+#vol .vol-heading h2{font-size:40px;line-height:1.2}
+#vol .vol-layout{display:flex;justify-content:center;align-items:flex-start}
+#vol .vol-list-col{flex:0 1 900px;min-width:0}
+
+#vol .vol-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 20px;margin-bottom:20px;background:#fff;border-radius:12px;box-shadow:0 0 1px rgba(0,0,0,.05),0 0 2px rgba(0,0,0,.07),0 0 3px rgba(0,0,0,.02),0 6px 16px rgba(0,0,0,.06)}
+#vol .vol-bar strong{display:block;font-size:16px;font-weight:600;color:var(--vol-ink)}
+#vol .vol-bar small{font-size:13px;color:var(--vol-soft)}
+#vol .vol-btn{border:0;border-radius:12px;min-height:44px;padding:12px 28px;background:var(--vol-red);color:#fff;cursor:pointer;font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:18px;letter-spacing:.4px;flex:none}
+#vol .vol-btn:hover:not(:disabled){background:var(--vol-red-dark)}
+#vol .vol-btn:disabled{background:#dcdcdc;color:var(--vol-soft);cursor:default}
+
+#vol .vol-cats{display:flex;flex-direction:column;gap:12px}
+#vol .vol-cat{display:flex;align-items:center;gap:20px;width:100%;padding:22px 25px;border:0;border-radius:12px;background:#fff;box-shadow:var(--vol-shadow);text-align:left;cursor:pointer;color:var(--vol-ink);transition:box-shadow .2s ease}
+#vol .vol-cat[aria-expanded=true]{box-shadow:0 0 0 2px var(--vol-red),0 6px 16px rgba(0,0,0,.06)}
+#vol .vol-cat-num{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:22px;color:#df3f33;width:28px;flex:none}
+#vol .vol-cat-text{display:flex;flex-direction:column;gap:2px;flex-grow:1;min-width:0}
+#vol .vol-cat-title{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:24px;line-height:1.2}
+#vol .vol-cat-sub{font-size:14px;color:var(--vol-muted)}
+#vol .vol-pill{flex:none;font-size:13px;font-weight:600;color:#fff;background:#444c5a;padding:2px 10px;border-radius:12px}
+#vol .vol-pill[hidden]{display:none}
+#vol .vol-arrow{display:flex;flex:none;color:var(--vol-red);transition:transform .2s ease}
+#vol .vol-cat:hover .vol-arrow{transform:translateX(3px)}
+
+#vol .vol-drawer{position:sticky;top:20px;flex:none;width:0;margin-left:0;opacity:0;overflow:hidden;transition:width .35s ease,margin-left .35s ease,opacity .25s ease}
+#vol .vol-drawer.is-open{width:440px;margin-left:28px;opacity:1}
+#vol .vol-panel{width:440px;max-height:calc(100vh - 40px);overflow-y:auto;background:#fff;border-radius:15px;box-shadow:0 0 1px rgba(0,0,0,.05),0 0 2px rgba(0,0,0,.07),0 0 3px rgba(0,0,0,.02),0 8px 24px rgba(0,0,0,.08)}
+#vol .vol-panel-head{position:sticky;top:0;z-index:1;display:flex;align-items:flex-start;gap:14px;padding:22px 20px 16px 25px;background:#fff;border-bottom:1px solid var(--vol-line)}
+#vol .vol-panel-head .vol-cat-num{line-height:1.3;width:auto}
+#vol .vol-panel-head > div{flex-grow:1;min-width:0}
+#vol .vol-panel-head h3{font-size:26px;line-height:1.2}
+#vol .vol-panel-count{font-size:13px;color:var(--vol-soft);margin-top:2px}
+#vol .vol-x{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:-8px -6px 0 0;flex:none;border:0;border-radius:12px;background:transparent;color:var(--vol-muted);cursor:pointer}
+#vol .vol-panel-body{padding:4px 25px 25px}
+#vol .vol-intro{margin-top:16px;font-size:15px;color:var(--vol-muted);line-height:1.5}
+#vol .vol-intro b{font-weight:600;color:#016b54}
+#vol .vol-all,#vol .vol-task{display:flex;gap:12px;cursor:pointer}
+#vol .vol-all{align-items:center;padding:14px 0;font-size:14px;font-weight:500}
+#vol .vol-all input{width:18px;height:18px;margin:0}
+#vol .vol-task{align-items:flex-start;padding:14px 8px;margin:0 -8px;border-top:1px solid var(--vol-line);border-radius:6px}
+#vol .vol-task:hover{background:#fafafa}
+#vol .vol-task input{width:19px;height:19px;margin:3px 0 0;flex:none}
+#vol .vol-task > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+#vol .vol-task-name{font-size:16px;font-weight:500;color:var(--vol-ink)}
+#vol .vol-task-skills{font-size:13px;color:var(--vol-soft)}
+#vol .vol-task-desc{font-size:14px;color:var(--vol-muted);margin-top:2px;line-height:1.5}
+#vol .vol-callout{display:flex;gap:14px;margin-top:16px;padding:18px 20px;background:#f5f5f5;border-radius:12px;font-size:14px;color:var(--vol-muted);line-height:1.5}
+#vol .vol-callout svg{flex:none;color:#444c5a}
+#vol .vol-callout b{display:block;margin-bottom:4px;font-weight:600;color:var(--vol-ink)}
+#vol .vol-note{margin-top:14px;font-size:14px;color:var(--vol-muted);line-height:1.5}
+
+#vol .vol-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(17,17,17,.45)}
+#vol .vol-modal[hidden]{display:none}
+#vol .vol-dialog{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:#fff;border-radius:15px;box-shadow:0 18px 60px rgba(0,0,0,.25)}
+#vol .vol-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 25px 0}
+#vol .vol-dialog-head h3{font-size:28px;line-height:1.2}
+#vol .vol-dialog-head .vol-x{margin:-8px -10px 0 0}
+#vol form{display:flex;flex-direction:column;gap:14px;padding:16px 25px 25px}
+#vol .vol-summary{padding:14px 16px;background:#f5f5f5;border-radius:12px}
+#vol .vol-summary > div:first-child{font-size:14px;font-weight:600;color:var(--vol-ink);margin-bottom:4px}
+#vol .vol-summary-list{max-height:105px;overflow:auto;font-size:13px;color:var(--vol-muted)}
+#vol .vol-link-btn{margin-top:6px;padding:2px 0;border:0;background:transparent;color:var(--vol-red-dark);font-size:13px;text-decoration:underline;cursor:pointer}
+#vol form label{display:flex;flex-direction:column;gap:6px;font-size:14px}
+#vol form label small{font-size:12px;color:var(--vol-soft)}
+#vol form input,#vol form textarea{width:100%;padding:10px 12px;border:1px solid #8a8a8a;border-radius:6px;font-family:'Saira',Arial,sans-serif;font-size:16px;color:var(--vol-text);background:#fff}
+#vol form textarea{min-height:72px;resize:vertical}
+#vol form .vol-btn{margin-top:4px;font-size:16px;letter-spacing:.8px;text-transform:uppercase;padding:12px 20px}
+#vol .vol-fine{font-size:12px;color:var(--vol-soft);line-height:1.5}
+#vol .vol-fine a{color:var(--vol-red-dark);text-decoration:underline}
+#vol .vol-status{font-size:14px;color:#016b54;line-height:1.5}
+#vol .vol-status[hidden]{display:none}
+
+@media(max-width:900px){
+	#vol .vol-hero{padding:48px 16px 56px}
+	#vol .vol-hero h1{font-size:40px}
+	#vol .vol-hero > p{font-size:16px}
+	#vol .vol-main{padding:40px 16px 48px}
+	#vol .vol-heading h2{font-size:32px}
+	#vol .vol-bar{padding:12px 14px;gap:12px}
+	#vol .vol-bar small{display:none}
+	#vol .vol-btn{padding:10px 18px}
+	#vol .vol-cat{gap:14px;padding:18px 16px}
+	#vol .vol-cat-title{font-size:20px}
+	#vol .vol-pill{display:none}
+	/* On phones and tablets the task drawer becomes a full-screen sheet */
+	#vol .vol-drawer,#vol .vol-drawer.is-open{position:fixed;inset:0;z-index:999;width:auto;margin:0;padding:16px;background:rgba(17,17,17,.45);display:flex;align-items:flex-end;justify-content:center;transition:none}
+	#vol .vol-drawer:not(.is-open){display:none}
+	#vol .vol-panel{width:100%;max-width:560px;max-height:calc(100vh - 32px)}
+	#vol .vol-panel-head{padding:18px 14px 14px 18px}
+	#vol .vol-panel-body{padding:4px 18px 20px}
+}
+</style>
+
+<div id="vol">
+	<section class="vol-hero">
+		<div class="vol-eyebrow">Our next chapter &middot; Built by our community</div>
+		<h1>Help move the Dojo.<br><span>Make our new space home.</span></h1>
+		<p>Move work starts now. Lend your skills, your time, or a helping hand.</p>
+		<div class="vol-where">
+			<strong>3200 Patrick Henry Drive, Suite 250, Santa Clara, CA 95054</strong>
+			<span>Just a quick ten-minute drive from our current location.</span>
+			<span>Help needed starting now and throughout the move.</span>
+		</div>
+	</section>
+
+	<div class="vol-main">
+		<div class="vol-heading">
+			<div class="vol-eyebrow">Volunteer</div>
+			<h2>Find your way to help</h2>
+		</div>
+
+		<noscript><p style="text-align:center;margin-bottom:20px">This sign-up needs JavaScript. You can also email <a href="mailto:info@hackerdojo.com?subject=Volunteering%20for%20the%20move">info@hackerdojo.com</a> to tell us how you&rsquo;d like to help.</p></noscript>
+
+		<div class="vol-layout">
+			<div class="vol-list-col">
+				<div class="vol-bar">
+					<div>
+						<strong id="vol-count" aria-live="polite">0 tasks selected</strong>
+						<small>Choose tasks, then add your contact details.</small>
+					</div>
+					<button type="button" class="vol-btn" id="vol-continue" aria-haspopup="dialog" disabled>Continue</button>
+				</div>
+				<div class="vol-cats" id="vol-cats"></div>
+			</div>
+
+			<aside class="vol-drawer" id="vol-drawer" aria-label="Task drawer">
+				<div class="vol-panel" id="vol-panel"></div>
+			</aside>
+		</div>
+	</div>
+
+	<div class="vol-modal" id="vol-modal" role="dialog" aria-modal="true" aria-labelledby="vol-modal-title" hidden>
+		<div class="vol-dialog">
+			<div class="vol-dialog-head">
+				<h3 id="vol-modal-title">Your volunteer details</h3>
+				<button type="button" class="vol-x" id="vol-modal-close" aria-label="Close sign-up"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+			</div>
+			<form id="vol-form">
+				<div class="vol-summary">
+					<div>I&rsquo;m willing to help with</div>
+					<div class="vol-summary-list" id="vol-summary" aria-live="polite">No tasks selected yet.</div>
+					<button type="button" class="vol-link-btn" id="vol-edit">Edit selections</button>
+				</div>
+				<label><span>Full name <small>(required)</small></span>
+					<input name="fullName" type="text" required autocomplete="name" placeholder="Your full name"></label>
+				<label><span>Email <small>(required)</small></span>
+					<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+				<label><span>Discord username <small>(optional)</small></span>
+					<input name="discord" type="text" placeholder="Your Discord username"></label>
+				<label><span>A little about your experience</span>
+					<textarea name="experience" placeholder="Relevant skills, projects, or what you&rsquo;d like to learn."></textarea></label>
+				<label><span>Availability <small>(optional)</small></span>
+					<input name="availability" type="text" placeholder="Before, during, or after the move"></label>
+				<button type="submit" class="vol-btn">I&rsquo;d like to help</button>
+				<p class="vol-fine">This opens your email app with your sign-up addressed to <a href="mailto:info@hackerdojo.com">info@hackerdojo.com</a>. Just press send.</p>
+				<p class="vol-status" id="vol-status" role="status" hidden></p>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+(function () {
+	var TO = 'info@hackerdojo.com';
+	var CATS = [
+		{ num: '01', title: 'Infrastructure & tech setup', sub: '11 volunteer areas · Technical volunteers and hands-on helpers', infra: true, tasks: [
+			['Network setup', 'Fortinet, managed switches, VLANs, firewalls', 'Review existing configurations, set up separate networks for members and building systems, configure switches, and test connectivity and internet failover.'],
+			['Wi-Fi setup', 'Access-point installation, wireless troubleshooting', 'Plan access-point placement, configure member and guest Wi-Fi, check coverage, and test performance in busy areas.'],
+			['Cabling and equipment setup', 'Network cabling, rack organization; helpers welcome', 'Inventory equipment, organize racks, patch connections, label cables and ports, and test network drops.'],
+			['Member Wi-Fi access', 'IronWiFi, RADIUS, membership integrations', 'Configure member login and guest access. Test onboarding, expired memberships, account revocation, and login troubleshooting.'],
+			['Door access setup', 'Kisi administration, access-control experience', 'Configure member access groups and door schedules, check readers with the installer, and test access during connectivity outages.'],
+			['Camera setup', 'Rhombus/Samsung cameras, IP cameras, networking', 'Help position and configure cameras, check views and recording, and set up approved administrator access.'],
+			['Power backup', 'UPS systems and equipment power planning', 'Connect equipment to appropriate battery backups, organize power connections, and test runtime and recovery.'],
+			['Security review', 'Network security, account administration', 'Check network separation, administrator permissions, MFA, and secure storage of recovery credentials.'],
+			['Testing and troubleshooting', 'Any experience level; bring a phone or laptop', 'Test Wi-Fi, member login, guest access, shared equipment, and coverage throughout the space. Help simulate a busy event and report problems.'],
+			['Documentation', 'Clear writing, diagrams, organization', 'Document equipment locations, cable labels, configurations, troubleshooting steps, and member instructions.'],
+			['Ongoing infrastructure support', 'Troubleshooting and willingness to learn', 'Help resolve member issues, maintain documentation, monitor equipment, and share responsibility for routine maintenance.']
+		]},
+		{ num: '02', title: 'Packing & organizing', sub: 'Sort, label, and prepare equipment for the move', tasks: ['Inventory shared supplies and equipment', 'Sort items to keep, donate, or recycle', 'Pack equipment and label boxes by destination', 'Gather boxes, packing materials, and labels'] },
+		{ num: '03', title: 'Transport & moving', sub: 'Help get equipment and furniture to the new space', tasks: ['Load and unload boxes and furniture', 'Offer a truck or van and driving help', 'Coordinate pickup times and transport runs', 'Check deliveries against the moving inventory'] },
+		{ num: '04', title: 'Construction & assembly', sub: 'Help assemble and prepare the new space', note: 'Electrical wiring, door hardware, fire-system connections, and work requiring building approval remain with qualified installers.', tasks: ['Disassemble and reassemble desks', 'Assemble shelving and storage units', 'Measure spaces and plan furniture placement', 'Coordinate approved work with qualified installers'] },
+		{ num: '05', title: 'Cleaning & finishing', sub: 'Make both spaces ready for what comes next', tasks: ['Clean desks, chairs, and shared surfaces', 'Sweep and prepare rooms for setup', 'Break down boxes and sort recycling', 'Help with the final cleanup of the old space'] },
+		{ num: '06', title: 'Setup & welcoming', sub: 'Help members settle into their new home', tasks: ['Arrange lounge, kitchen, and shared work areas', 'Create and place room and wayfinding signs', 'Welcome members and show them around', 'Coordinate volunteer check-in and task assignments'] }
+	].map(function (c) {
+		c.tasks = c.tasks.map(function (t) {
+			return Array.isArray(t) ? { name: t[0], skills: t[1], desc: t[2], checked: false } : { name: t, checked: false };
+		});
+		return c;
+	});
+
+	var $ = function (id) { return document.getElementById(id); };
+	var catsEl = $('vol-cats'), drawer = $('vol-drawer'), panel = $('vol-panel'), modal = $('vol-modal');
+	var continueBtn = $('vol-continue'), form = $('vol-form'), statusEl = $('vol-status');
+	var active = null, catButtons = [];
+	var narrow = window.matchMedia('(max-width: 900px)');
+
+	function el(tag, cls, text) {
+		var e = document.createElement(tag);
+		if (cls) e.className = cls;
+		if (text != null) e.textContent = text;
+		return e;
+	}
+	function svg(markup) { var s = el('span'); s.innerHTML = markup; return s.firstChild; }
+	var ARROW = '<svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l7 7-7 7"/></svg>';
+	var CLOSE = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg>';
+	var SHIELD = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M12 9v4"/><path d="M12 16.5v.01"/></svg>';
+
+	function selectedIn(c) { return c.tasks.filter(function (t) { return t.checked; }).length; }
+	function selectedNames() {
+		var out = [];
+		CATS.forEach(function (c) { c.tasks.forEach(function (t) { if (t.checked) out.push(t.name); }); });
+		return out;
+	}
+
+	// Category list
+	CATS.forEach(function (c, i) {
+		var b = el('button', 'vol-cat');
+		b.type = 'button';
+		b.setAttribute('aria-expanded', 'false');
+		b.setAttribute('aria-controls', 'vol-drawer');
+		b.appendChild(el('span', 'vol-cat-num', c.num));
+		var text = el('span', 'vol-cat-text');
+		text.appendChild(el('span', 'vol-cat-title', c.title));
+		text.appendChild(el('span', 'vol-cat-sub', c.sub));
+		b.appendChild(text);
+		var pill = el('span', 'vol-pill');
+		pill.hidden = true;
+		b.appendChild(pill);
+		var arrow = el('span', 'vol-arrow');
+		arrow.appendChild(svg(ARROW));
+		b.appendChild(arrow);
+		b.addEventListener('click', function () { openCat(active === i ? null : i); });
+		catsEl.appendChild(b);
+		catButtons.push({ btn: b, pill: pill });
+	});
+
+	function refresh() {
+		var names = selectedNames(), n = names.length;
+		$('vol-count').textContent = n + (n === 1 ? ' task selected' : ' tasks selected');
+		continueBtn.disabled = n === 0;
+		$('vol-summary').textContent = n ? names.join(' · ') : 'No tasks selected yet.';
+		CATS.forEach(function (c, i) {
+			var k = selectedIn(c);
+			catButtons[i].pill.hidden = !k;
+			catButtons[i].pill.textContent = k + ' selected';
+			catButtons[i].btn.setAttribute('aria-expanded', active === i ? 'true' : 'false');
+		});
+		if (active !== null) {
+			var c = CATS[active], k = selectedIn(c);
+			$('vol-panel-count').textContent = k + ' of ' + c.tasks.length + ' selected';
+			var all = $('vol-all');
+			all.checked = k === c.tasks.length;
+			all.indeterminate = k > 0 && k < c.tasks.length;
+		}
+	}
+
+	function openCat(i) {
+		active = i;
+		panel.textContent = '';
+		if (i === null) {
+			drawer.classList.remove('is-open');
+			drawer.setAttribute('aria-label', 'Task drawer');
+			document.body.style.overflow = '';
+			refresh();
+			return;
+		}
+		var c = CATS[i];
+		drawer.setAttribute('aria-label', c.title + ' tasks');
+
+		var head = el('div', 'vol-panel-head');
+		head.appendChild(el('span', 'vol-cat-num', c.num));
+		var h = el('div');
+		h.appendChild(el('h3', null, c.title));
+		var count = el('div', 'vol-panel-count');
+		count.id = 'vol-panel-count';
+		h.appendChild(count);
+		head.appendChild(h);
+		var x = el('button', 'vol-x');
+		x.type = 'button';
+		x.setAttribute('aria-label', 'Close task drawer');
+		x.appendChild(svg(CLOSE));
+		x.addEventListener('click', function () { var b = catButtons[i].btn; openCat(null); b.focus(); });
+		head.appendChild(x);
+		panel.appendChild(head);
+
+		var body = el('div', 'vol-panel-body');
+		if (c.infra) {
+			var intro = el('p', 'vol-intro', 'Help set up infrastructure at our new location. ');
+			intro.appendChild(el('b', null, 'No technical experience is needed for labeling, inventory, testing, documentation, or coordination.'));
+			body.appendChild(intro);
+		}
+		var allLabel = el('label', 'vol-all');
+		var all = el('input');
+		all.type = 'checkbox';
+		all.id = 'vol-all';
+		all.addEventListener('change', function () {
+			var on = selectedIn(c) !== c.tasks.length;
+			c.tasks.forEach(function (t, ti) { t.checked = on; body.querySelectorAll('.vol-task input')[ti].checked = on; });
+			refresh();
+		});
+		allLabel.appendChild(all);
+		allLabel.appendChild(document.createTextNode('Select all in this category'));
+		body.appendChild(allLabel);
+
+		c.tasks.forEach(function (t) {
+			var row = el('label', 'vol-task');
+			var cb = el('input');
+			cb.type = 'checkbox';
+			cb.checked = t.checked;
+			cb.addEventListener('change', function () { t.checked = cb.checked; refresh(); });
+			row.appendChild(cb);
+			var s = el('span');
+			s.appendChild(el('span', 'vol-task-name', t.name));
+			if (t.skills) s.appendChild(el('span', 'vol-task-skills', t.skills));
+			if (t.desc) s.appendChild(el('span', 'vol-task-desc', t.desc));
+			row.appendChild(s);
+			body.appendChild(row);
+		});
+
+		if (c.infra) {
+			var call = el('div', 'vol-callout');
+			call.appendChild(svg(SHIELD));
+			var d = el('div');
+			d.appendChild(el('b', null, 'Professional installation boundaries'));
+			d.appendChild(document.createTextNode('Electrical wiring, door hardware, fire-system connections, and work requiring building approval should be handled by qualified installers. Members can help coordinate and test these systems.'));
+			call.appendChild(d);
+			body.appendChild(call);
+		}
+		if (c.note) body.appendChild(el('p', 'vol-note', c.note));
+		panel.appendChild(body);
+		panel.scrollTop = 0;
+
+		drawer.classList.add('is-open');
+		if (narrow.matches) document.body.style.overflow = 'hidden';
+		refresh();
+		x.focus({ preventScroll: !narrow.matches });
+	}
+
+	drawer.addEventListener('keydown', function (e) {
+		if (e.key === 'Escape' && active !== null) { var b = catButtons[active].btn; openCat(null); b.focus(); }
+	});
+	// Tapping the dimmed backdrop around the phone sheet closes it
+	drawer.addEventListener('click', function (e) { if (e.target === drawer) openCat(null); });
+
+	function openModal() {
+		if (continueBtn.disabled) return;
+		if (active !== null && narrow.matches) openCat(null);
+		statusEl.hidden = true;
+		modal.hidden = false;
+		document.body.style.overflow = 'hidden';
+		$('vol-modal-close').focus();
+	}
+	function closeModal() {
+		modal.hidden = true;
+		document.body.style.overflow = '';
+		continueBtn.focus();
+	}
+	continueBtn.addEventListener('click', openModal);
+	$('vol-modal-close').addEventListener('click', closeModal);
+	$('vol-edit').addEventListener('click', closeModal);
+	modal.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+	modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		var f = form.elements;
+		var lines = ['Name: ' + f.fullName.value.trim(), 'Email: ' + f.email.value.trim()];
+		if (f.discord.value.trim()) lines.push('Discord: ' + f.discord.value.trim());
+		if (f.availability.value.trim()) lines.push('Availability: ' + f.availability.value.trim());
+		if (f.experience.value.trim()) lines.push('', 'Experience:', f.experience.value.trim());
+		lines.push('', 'I’m willing to help with:');
+		CATS.forEach(function (c) {
+			var picked = c.tasks.filter(function (t) { return t.checked; });
+			if (picked.length) {
+				lines.push('', c.title + ':');
+				picked.forEach(function (t) { lines.push('- ' + t.name); });
+			}
+		});
+		var subject = 'Move volunteer: ' + f.fullName.value.trim();
+		window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
+		statusEl.textContent = 'Thanks! Your email app should now be open with your sign-up. Press send to finish. If nothing opened, email ' + TO + ' with the tasks above.';
+		statusEl.hidden = false;
+	});
+
+	refresh();
+})();
+</script>
