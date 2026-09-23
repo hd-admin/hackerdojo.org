@@ -11,3 +11,7 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - CNAME
+
+# Move volunteer sign-ups (/volunteer) are sent to this Google Apps Script web app ("Volunteer signups v1"),
+# which adds them to the "Hacker Dojo – Move Volunteer Signups" sheet. Leave it empty to fall back to email.
+volunteer_signup_url: https://script.google.com/macros/s/AKfycbyWdLS0Irx0dZReGRlIVql82pOY4FLb07oEcZter4EbGFMMNDG_DZUxUQr4x-HbPkM_/exec

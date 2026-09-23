@@ -1,4 +1,5 @@
-<!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Sign-ups are sent by email via the visitor's mail app. -->
+<!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Sign-ups go to the "Move Volunteer Signups" Google Sheet through
+     the Apps Script web app set as volunteer_signup_url in _config.yml. Without it, or if sending fails, the form falls back to email. -->
 <style>
 #vol{--vol-red:#e13838;--vol-red-dark:#c62828;--vol-ink:#111;--vol-text:#222;--vol-muted:#444;--vol-soft:#505050;--vol-line:#ececec;--vol-shadow:0 0 1px rgba(0,0,0,.04),0 0 2px rgba(0,0,0,.04),0 0 3px rgba(0,0,0,.02),0 0 5px rgba(0,0,0,.03);font-family:'Saira',Arial,sans-serif;color:var(--vol-text)}
 #vol *{box-sizing:border-box}
@@ -87,6 +88,9 @@
 #vol .vol-fine a{color:var(--vol-red-dark);text-decoration:underline}
 #vol .vol-status{font-size:14px;color:#016b54;line-height:1.5}
 #vol .vol-status[hidden]{display:none}
+#vol .vol-status.is-error{color:var(--vol-red-dark)}
+#vol .vol-status a{color:inherit;text-decoration:underline}
+#vol .vol-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 @media(max-width:900px){
 	#vol .vol-hero{padding:48px 16px 56px}
@@ -109,7 +113,7 @@
 }
 </style>
 
-<div id="vol">
+<div id="vol" data-endpoint="{{ site.volunteer_signup_url }}">
 	<section class="vol-hero">
 		<div class="vol-eyebrow">Our next chapter &middot; Built by our community</div>
 		<h1>Help move the Dojo.<br><span>Make our new space home.</span></h1>
@@ -169,8 +173,9 @@
 					<textarea name="experience" placeholder="Relevant skills, projects, or what you&rsquo;d like to learn."></textarea></label>
 				<label><span>Availability <small>(optional)</small></span>
 					<input name="availability" type="text" placeholder="Before, during, or after the move"></label>
-				<button type="submit" class="vol-btn">I&rsquo;d like to help</button>
-				<p class="vol-fine">This opens your email app with your sign-up addressed to <a href="mailto:info@hackerdojo.com">info@hackerdojo.com</a>. Just press send.</p>
+				<div class="vol-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+				<button type="submit" class="vol-btn" id="vol-submit">I&rsquo;d like to help</button>
+				<p class="vol-fine" id="vol-fine">Questions? Email <a href="mailto:info@hackerdojo.com">info@hackerdojo.com</a>.</p>
 				<p class="vol-status" id="vol-status" role="status" hidden></p>
 			</form>
 		</div>
@@ -180,6 +185,16 @@
 <script>
 (function () {
 	var TO = 'info@hackerdojo.com';
+	var ENDPOINT = (document.getElementById('vol').getAttribute('data-endpoint') || '').trim();
+	// IDs match the "Task list" tab of the sign-ups sheet
+	var IDS = [
+		['infra-network-setup', 'infra-wifi-setup', 'infra-cabling-equipment', 'infra-member-wifi-access', 'infra-door-access', 'infra-cameras', 'infra-power-backup', 'infra-security-review', 'infra-testing', 'infra-documentation', 'infra-ongoing-support'],
+		['packing-inventory', 'packing-sort', 'packing-pack-label', 'packing-materials'],
+		['transport-load-unload', 'transport-vehicle', 'transport-coordinate', 'transport-check-deliveries'],
+		['assembly-desks', 'assembly-shelving', 'assembly-space-planning', 'assembly-installer-coordination'],
+		['cleaning-surfaces', 'cleaning-rooms', 'cleaning-boxes-recycling', 'cleaning-old-space'],
+		['welcome-arrange-spaces', 'welcome-signage', 'welcome-members', 'welcome-volunteer-checkin']
+	];
 	var CATS = [
 		{ num: '01', title: 'Infrastructure & tech setup', sub: '11 volunteer areas · Technical volunteers and hands-on helpers', infra: true, tasks: [
 			['Network setup', 'Fortinet, managed switches, VLANs, firewalls', 'Review existing configurations, set up separate networks for members and building systems, configure switches, and test connectivity and internet failover.'],
@@ -199,9 +214,12 @@
 		{ num: '04', title: 'Construction & assembly', sub: 'Help assemble and prepare the new space', note: 'Electrical wiring, door hardware, fire-system connections, and work requiring building approval remain with qualified installers.', tasks: ['Disassemble and reassemble desks', 'Assemble shelving and storage units', 'Measure spaces and plan furniture placement', 'Coordinate approved work with qualified installers'] },
 		{ num: '05', title: 'Cleaning & finishing', sub: 'Make both spaces ready for what comes next', tasks: ['Clean desks, chairs, and shared surfaces', 'Sweep and prepare rooms for setup', 'Break down boxes and sort recycling', 'Help with the final cleanup of the old space'] },
 		{ num: '06', title: 'Setup & welcoming', sub: 'Help members settle into their new home', tasks: ['Arrange lounge, kitchen, and shared work areas', 'Create and place room and wayfinding signs', 'Welcome members and show them around', 'Coordinate volunteer check-in and task assignments'] }
-	].map(function (c) {
-		c.tasks = c.tasks.map(function (t) {
-			return Array.isArray(t) ? { name: t[0], skills: t[1], desc: t[2], checked: false } : { name: t, checked: false };
+	].map(function (c, ci) {
+		c.tasks = c.tasks.map(function (t, ti) {
+			var task = Array.isArray(t) ? { name: t[0], skills: t[1], desc: t[2] } : { name: t };
+			task.id = IDS[ci][ti];
+			task.checked = false;
+			return task;
 		});
 		return c;
 	});
@@ -379,13 +397,23 @@
 	modal.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
 	modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
 
-	form.addEventListener('submit', function (e) {
-		e.preventDefault();
-		var f = form.elements;
-		var lines = ['Name: ' + f.fullName.value.trim(), 'Email: ' + f.email.value.trim()];
-		if (f.discord.value.trim()) lines.push('Discord: ' + f.discord.value.trim());
-		if (f.availability.value.trim()) lines.push('Availability: ' + f.availability.value.trim());
-		if (f.experience.value.trim()) lines.push('', 'Experience:', f.experience.value.trim());
+	if (!ENDPOINT) $('vol-fine').innerHTML = 'This opens your email app with your sign-up addressed to <a href="mailto:' + TO + '">' + TO + '</a>. Just press send.';
+
+	function values() {
+		var f = form.elements, v = {};
+		['fullName', 'email', 'discord', 'experience', 'availability', 'website'].forEach(function (k) { v[k] = f[k].value.trim(); });
+		v.taskIds = [];
+		v.tasks = [];
+		CATS.forEach(function (c) { c.tasks.forEach(function (t) { if (t.checked) { v.taskIds.push(t.id); v.tasks.push(t.name); } }); });
+		v.taskCount = v.taskIds.length;
+		v.source = 'hackerdojo.org/volunteer';
+		return v;
+	}
+	function mailtoFor(v) {
+		var lines = ['Name: ' + v.fullName, 'Email: ' + v.email];
+		if (v.discord) lines.push('Discord: ' + v.discord);
+		if (v.availability) lines.push('Availability: ' + v.availability);
+		if (v.experience) lines.push('', 'Experience:', v.experience);
 		lines.push('', 'I’m willing to help with:');
 		CATS.forEach(function (c) {
 			var picked = c.tasks.filter(function (t) { return t.checked; });
@@ -394,10 +422,53 @@
 				picked.forEach(function (t) { lines.push('- ' + t.name); });
 			}
 		});
-		var subject = 'Move volunteer: ' + f.fullName.value.trim();
-		window.location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
-		statusEl.textContent = 'Thanks! Your email app should now be open with your sign-up. Press send to finish. If nothing opened, email ' + TO + ' with the tasks above.';
+		return 'mailto:' + TO + '?subject=' + encodeURIComponent('Move volunteer: ' + v.fullName) + '&body=' + encodeURIComponent(lines.join('\n'));
+	}
+	function showStatus(msg, isError, link) {
+		statusEl.textContent = msg;
+		statusEl.classList.toggle('is-error', !!isError);
+		if (link) {
+			statusEl.appendChild(document.createTextNode(' '));
+			var a = el('a', null, link.text);
+			a.href = link.href;
+			statusEl.appendChild(a);
+		}
 		statusEl.hidden = false;
+	}
+
+	var submitBtn = $('vol-submit');
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		var v = values();
+		if (!ENDPOINT) {
+			window.location.href = mailtoFor(v);
+			showStatus('Thanks! Your email app should now be open with your sign-up. Press send to finish. If nothing opened, email ' + TO + ' with the tasks above.');
+			return;
+		}
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Sending…';
+		statusEl.hidden = true;
+		// text/plain keeps this a "simple" request, so the browser skips the CORS preflight Apps Script can't answer
+		fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v) })
+			.then(function (r) {
+				if (!r.ok) throw new Error('error');
+				return r.json().catch(function () { return {}; });
+			})
+			.then(function (res) {
+				if (res && res.ok === false) throw new Error(res.error || res.message || 'error');
+				CATS.forEach(function (c) { c.tasks.forEach(function (t) { t.checked = false; }); });
+				form.reset();
+				openCat(null);
+				showStatus('Thanks, ' + v.fullName.split(' ')[0] + '! You’re signed up for ' + v.taskIds.length + (v.taskIds.length === 1 ? ' task' : ' tasks') + '. We’ll be in touch by email.');
+			})
+			.catch(function (err) {
+				var msg = err && err.message && err.message !== 'error' && !/fetch|network|JSON/i.test(err.message) ? err.message + ' ' : 'We couldn’t save your sign-up. ';
+				showStatus(msg, true, { text: 'Send it by email instead', href: mailtoFor(v) });
+			})
+			.then(function () {
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'I’d like to help';
+			});
 	});
 
 	refresh();
