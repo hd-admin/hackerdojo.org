@@ -399,8 +399,19 @@
 
 	if (!ENDPOINT) $('vol-fine').innerHTML = 'This opens your email app with your sign-up addressed to <a href="mailto:' + TO + '">' + TO + '</a>. Just press send.';
 
+	// One ID per sign-up, kept across retries so the script can tell a resend from a new sign-up
+	var submissionId = null;
+	function newId() {
+		if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0;
+			return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+		});
+	}
 	function values() {
 		var f = form.elements, v = {};
+		if (!submissionId) submissionId = newId();
+		v.submissionId = submissionId;
 		['fullName', 'email', 'discord', 'experience', 'availability', 'website'].forEach(function (k) { v[k] = f[k].value.trim(); });
 		v.taskIds = [];
 		v.tasks = [];
@@ -458,11 +469,14 @@
 				if (res && res.ok === false) throw new Error(res.error || res.message || 'error');
 				CATS.forEach(function (c) { c.tasks.forEach(function (t) { t.checked = false; }); });
 				form.reset();
+				submissionId = null;
 				openCat(null);
 				showStatus('Thanks, ' + v.fullName.split(' ')[0] + '! You’re signed up for ' + v.taskIds.length + (v.taskIds.length === 1 ? ' task' : ' tasks') + '. We’ll be in touch by email.');
 			})
 			.catch(function (err) {
-				var msg = err && err.message && err.message !== 'error' && !/fetch|network|JSON/i.test(err.message) ? err.message + ' ' : 'We couldn’t save your sign-up. ';
+				// Show the script's message only when it reads as a sentence, not an error code
+				var m = err && err.message;
+				var msg = m && / /.test(m) && !/fetch|network|JSON/i.test(m) ? m + ' ' : 'We couldn’t save your sign-up. ';
 				showStatus(msg, true, { text: 'Send it by email instead', href: mailtoFor(v) });
 			})
 			.then(function () {
