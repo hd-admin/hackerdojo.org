@@ -128,6 +128,30 @@
   #hd5 .hd5-cta { background-image: linear-gradient(135deg, #6d3bdb18 0%, #fff0df 100%); border-radius: 20px; padding: 60px 40px; }
   #hd5 .hd5-cta-title { font-family: "Rajdhani"; font-size: 40px; font-weight: 600; color: #111; margin-bottom: 12px; }
 
+  /* Question pop-up — same look as the volunteer sign-up pop-up */
+  #hd5 button.button { border: 0; cursor: pointer; }
+  #hd5 .hd5-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(17,17,17,.45); text-align: left; }
+  #hd5 .hd5-modal[hidden] { display: none; }
+  #hd5 .hd5-dialog { width: 460px; max-width: 100%; max-height: calc(100vh - 32px); overflow: auto; background: #fff; border-radius: 15px; box-shadow: 0 18px 60px rgba(0,0,0,.25); }
+  #hd5 .hd5-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 22px 25px 0; }
+  #hd5 .hd5-dialog-head h3 { font-family: "Rajdhani"; font-size: 28px; font-weight: 600; line-height: 1.2; color: #111; margin: 0; }
+  #hd5 .hd5-x { margin: -8px -10px 0 0; width: 40px; height: 40px; border: 0; background: transparent; color: #111; font-size: 26px; line-height: 1; cursor: pointer; }
+  #hd5 .hd5-form { display: flex; flex-direction: column; gap: 14px; padding: 16px 25px 25px; }
+  #hd5 .hd5-form label, #hd5 .hd5-form fieldset { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #222; }
+  #hd5 .hd5-form fieldset { border: 0; margin: 0; padding: 0; }
+  #hd5 .hd5-form legend { padding: 0; margin-bottom: 6px; }
+  #hd5 .hd5-form small { font-size: 12px; color: #505050; }
+  #hd5 .hd5-form input[type=text], #hd5 .hd5-form input[type=email], #hd5 .hd5-form select, #hd5 .hd5-form textarea { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #8a8a8a; border-radius: 6px; font-family: "Saira", Arial, sans-serif; font-size: 16px; color: #222; background: #fff; }
+  #hd5 .hd5-form textarea { min-height: 96px; resize: vertical; }
+  #hd5 .hd5-roles { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  #hd5 .hd5-roles label { flex-direction: row; align-items: center; gap: 6px; font-size: 15px; }
+  #hd5 .hd5-fine { font-size: 12px; color: #505050; line-height: 1.5; margin: 0; }
+  #hd5 .hd5-fine a, #hd5 .hd5-status a { color: #c62828; text-decoration: underline; }
+  #hd5 .hd5-status { font-size: 14px; color: #016b54; line-height: 1.5; margin: 0; }
+  #hd5 .hd5-status[hidden] { display: none; }
+  #hd5 .hd5-status.is-error { color: #c62828; }
+  #hd5 .hd5-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
   @media only screen and (max-width: 960px) {
     #hd5 .hd5-hero { padding: 40px 20px 60px; }
     #hd5 .hd5-title { font-size: 38px; }
@@ -145,7 +169,7 @@
   }
 </style>
 
-<div id="hd5">
+<div id="hd5" data-question-endpoint="{{ site.move_question_url }}">
 
 <!-- Hero -->
 <div class="section hero-section hd5-hero">
@@ -327,8 +351,51 @@
       <div class="hd5-tagline">Move team</div>
       <div class="hd5-cta-title">Ask a question</div>
       <div class="section-description" style="max-width: 480px; margin: 0 auto 30px;">Ask the move team about membership, access, equipment or volunteering. Your questions help us build the FAQ.</div>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTUfvHFbZlxaq_JAcraa0--zfJPDG9PzD9TNUg5xKJZrrDBA/viewform?usp=dialog" class="button button-red" target="_blank" rel="noopener noreferrer">Ask a question</a>
+      <!-- Without script this opens an email; the script below turns it into the pop-up form -->
+      <a href="mailto:moving@hackerdojo.com?subject=Question%20about%20the%20move" class="button button-red" id="hd5-ask-open" aria-haspopup="dialog">Ask a question</a>
+      <p class="hd5-status" id="hd5-ask-done" role="status" hidden style="margin-top: 16px; text-align: center;"></p>
     </div>
+  </div>
+</div>
+
+<!-- Question pop-up -->
+<div class="hd5-modal" id="hd5-modal" role="dialog" aria-modal="true" aria-labelledby="hd5-modal-title" hidden>
+  <div class="hd5-dialog">
+    <div class="hd5-dialog-head">
+      <h3 id="hd5-modal-title">Ask the move team</h3>
+      <button type="button" class="hd5-x" id="hd5-modal-close" aria-label="Close question form">&times;</button>
+    </div>
+    <form class="hd5-form" id="hd5-form">
+      <label><span>Your name <small>(required)</small></span>
+        <input name="name" type="text" required autocomplete="name" placeholder="Your full name"></label>
+      <label><span>Email <small>(required, so we can reply)</small></span>
+        <input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+      <fieldset>
+        <legend>Are you a current member, visitor, or volunteer? <small>(required)</small></legend>
+        <div class="hd5-roles">
+          <label><input type="radio" name="role" value="Member" required> Member</label>
+          <label><input type="radio" name="role" value="Visitor"> Visitor</label>
+          <label><input type="radio" name="role" value="Volunteer"> Volunteer</label>
+        </div>
+      </fieldset>
+      <label><span>Topic <small>(required)</small></span>
+        <select name="topic" required>
+          <option value="">Choose a topic</option>
+          <option>Membership &amp; Fees</option>
+          <option>Access &amp; Hours</option>
+          <option>Equipment &amp; Tools</option>
+          <option>Events &amp; Workshops</option>
+          <option>Rules &amp; Policies</option>
+          <option>Projects &amp; Collaboration</option>
+          <option>Other</option>
+        </select></label>
+      <label><span>Your question <small>(required)</small></span>
+        <textarea name="question" required placeholder="What would you like to know about the move?"></textarea></label>
+      <div class="hd5-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit" class="button button-red" id="hd5-submit">Send question</button>
+      <p class="hd5-fine" id="hd5-fine">Your question goes to the move team at <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
+      <p class="hd5-status" id="hd5-status" role="status" hidden></p>
+    </form>
   </div>
 </div>
 
@@ -346,5 +413,109 @@
     m.style.left = ((idx + 0.5) / days * 100) + '%';
     m.innerHTML = '<span>Today</span>';
     document.getElementById('hd5-gantt').appendChild(m);
+  })();
+
+  // Question pop-up. Questions go to the Apps Script web app set as move_question_url in _config.yml,
+  // which adds them to a Google Sheet. Without it, or if sending fails, the form falls back to email.
+  (function () {
+    var TO = 'moving@hackerdojo.com';
+    var $ = function (id) { return document.getElementById(id); };
+    var ENDPOINT = ($('hd5').getAttribute('data-question-endpoint') || '').trim();
+    var opener = $('hd5-ask-open'), modal = $('hd5-modal'), form = $('hd5-form');
+    var submitBtn = $('hd5-submit'), statusEl = $('hd5-status'), doneEl = $('hd5-ask-done');
+    var submissionId = null;
+
+    function newId() {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+      });
+    }
+    function values() {
+      var f = form.elements, v = {};
+      ['name', 'email', 'topic', 'question', 'website'].forEach(function (k) { v[k] = f[k].value.trim(); });
+      var role = form.querySelector('input[name=role]:checked');
+      v.role = role ? role.value : '';
+      if (!submissionId) submissionId = newId();
+      v.submissionId = submissionId;
+      v.source = 'hackerdojo.org/hackerdojo5';
+      return v;
+    }
+    function mailtoFor(v) {
+      var body = ['Name: ' + v.name, 'Email: ' + v.email, 'I am a: ' + v.role, 'Topic: ' + v.topic, '', v.question].join('\n');
+      return 'mailto:' + TO + '?subject=' + encodeURIComponent('Move question: ' + v.topic) + '&body=' + encodeURIComponent(body);
+    }
+    function showStatus(msg, isError, link) {
+      statusEl.textContent = msg;
+      statusEl.classList.toggle('is-error', !!isError);
+      if (link) {
+        var a = document.createElement('a');
+        a.href = link.href;
+        a.textContent = link.text;
+        statusEl.appendChild(document.createTextNode(' '));
+        statusEl.appendChild(a);
+      }
+      statusEl.hidden = false;
+    }
+    function openModal(e) {
+      e.preventDefault();
+      statusEl.hidden = true;
+      doneEl.hidden = true;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      form.elements.name.focus();
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      opener.focus();
+    }
+    function finish(msg) {
+      form.reset();
+      submissionId = null;
+      closeModal();
+      doneEl.textContent = msg;
+      doneEl.hidden = false;
+    }
+
+    opener.addEventListener('click', openModal);
+    $('hd5-modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    if (!ENDPOINT) $('hd5-fine').innerHTML = 'This opens your email app with your question addressed to <a href="mailto:' + TO + '">' + TO + '</a>. Just press send.';
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = values();
+      if (!ENDPOINT) {
+        window.location.href = mailtoFor(v);
+        showStatus('Your email app should now be open with your question. Press send to finish. If nothing opened, email ' + TO + '.');
+        return;
+      }
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      statusEl.hidden = true;
+      // text/plain keeps this a "simple" request, so the browser skips the CORS preflight Apps Script can't answer
+      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v) })
+        .then(function (r) {
+          if (!r.ok) throw new Error('error');
+          return r.json().catch(function () { return {}; });
+        })
+        .then(function (res) {
+          if (res && res.ok === false) throw new Error(res.error || res.message || 'error');
+          finish('Thanks, ' + v.name.split(' ')[0] + '! Your question is with the move team.');
+        })
+        .catch(function (err) {
+          // Show the script's message only when it reads as a sentence, not an error code
+          var m = err && err.message;
+          var msg = m && / /.test(m) && !/fetch|network|JSON/i.test(m) ? m : 'We couldn’t send your question.';
+          showStatus(msg, true, { text: 'Send it by email instead', href: mailtoFor(v) });
+        })
+        .then(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send question';
+        });
+    });
   })();
 </script>
