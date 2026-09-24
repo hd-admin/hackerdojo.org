@@ -1,0 +1,417 @@
+<!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Tasks come from _data/volunteer_tasks.yml.
+     Sign-ups go to the "Move Volunteer Signups" Google Sheet through the Apps Script web app set as volunteer_signup_url
+     in _config.yml. Without it, or if sending fails, the form falls back to email. -->
+<style>
+#vol{--vol-red:#e13838;--vol-red-dark:#c62828;--vol-ink:#111;--vol-text:#222;--vol-muted:#444;--vol-soft:#505050;--vol-line:#ececec;--vol-shadow:0 0 1px rgba(0,0,0,.04),0 0 2px rgba(0,0,0,.04),0 0 3px rgba(0,0,0,.02),0 0 5px rgba(0,0,0,.03);color:var(--vol-text)}
+#vol *{box-sizing:border-box}
+#vol h1,#vol h2,#vol h3{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;color:var(--vol-ink)}
+#vol button{font-family:inherit}
+#vol button:focus-visible,#vol input:focus-visible,#vol textarea:focus-visible,#vol a:focus-visible{outline:2px solid var(--vol-ink);outline-offset:2px}
+#vol input[type=checkbox]{accent-color:var(--vol-red)}
+/* Additions to the site's .button.button-red */
+#vol .button{border:0;min-height:44px;cursor:pointer;flex:none}
+#vol .button-red:hover:not(:disabled){background:var(--vol-red-dark)}
+#vol .button:disabled{background:#dcdcdc;color:var(--vol-soft);cursor:default}
+
+#vol .vol-hero{padding:72px 5% 80px;background:linear-gradient(180deg,#f5f5f5 0%,#6d3bdb2e 100%)}
+#vol .vol-hero .section-title{margin-bottom:16px}
+#vol .vol-hero h1{margin:0 auto 20px;max-width:900px;font-size:64px;line-height:1.1}
+#vol .vol-hero h1 span{color:var(--vol-red)}
+#vol .vol-hero > p{font-size:18px}
+#vol .vol-where{display:inline-flex;flex-direction:column;gap:4px;margin-top:28px;padding:20px 25px;background:#fff;border-radius:12px;box-shadow:var(--vol-shadow);font-size:15px;color:var(--vol-muted)}
+#vol .vol-where strong{font-weight:600;color:var(--vol-ink)}
+
+#vol .vol-main{max-width:1360px;margin:0 auto;padding:56px 40px 64px}
+#vol .section-header{margin-bottom:28px}
+#vol .section-header .section-title{margin-bottom:8px}
+#vol .section-header h2{font-size:40px;line-height:1.2}
+#vol .vol-layout{display:flex;justify-content:center;align-items:flex-start}
+#vol .vol-list-col{flex:0 1 900px;min-width:0}
+
+#vol .vol-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 20px;margin-bottom:20px;background:#fff;border-radius:12px;box-shadow:0 0 1px rgba(0,0,0,.05),0 0 2px rgba(0,0,0,.07),0 0 3px rgba(0,0,0,.02),0 6px 16px rgba(0,0,0,.06)}
+#vol .vol-bar strong{display:block;font-size:16px;font-weight:600;color:var(--vol-ink)}
+#vol .vol-bar small{font-size:13px;color:var(--vol-soft)}
+
+#vol .vol-cats{display:flex;flex-direction:column;gap:12px}
+#vol .vol-cat{display:flex;align-items:center;gap:20px;width:100%;padding:22px 25px;border:0;border-radius:12px;background:#fff;box-shadow:var(--vol-shadow);text-align:left;cursor:pointer;color:var(--vol-ink);transition:box-shadow .2s ease}
+#vol .vol-cat[aria-expanded=true]{box-shadow:0 0 0 2px var(--vol-red),0 6px 16px rgba(0,0,0,.06)}
+#vol .vol-num{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:22px;color:#df3f33;flex:none}
+#vol .vol-cat .vol-num{width:28px}
+#vol .vol-cat-text{display:flex;flex-direction:column;gap:2px;flex-grow:1;min-width:0}
+#vol .vol-cat-title{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;font-size:24px;line-height:1.2}
+#vol .vol-cat-sub{font-size:14px;color:var(--vol-muted)}
+#vol .vol-pill{flex:none;font-size:13px;font-weight:600;color:#fff;background:#444c5a;padding:2px 10px;border-radius:12px}
+#vol .vol-pill[hidden]{display:none}
+#vol .vol-arrow{display:flex;flex:none;color:var(--vol-red);transition:transform .2s ease}
+#vol .vol-cat:hover .vol-arrow{transform:translateX(3px)}
+
+#vol .vol-drawer{position:sticky;top:20px;flex:none;width:0;margin-left:0;opacity:0;overflow:hidden;transition:width .35s ease,margin-left .35s ease,opacity .25s ease}
+#vol .vol-drawer.is-open{width:440px;margin-left:28px;opacity:1}
+#vol .vol-panel{width:440px;max-height:calc(100vh - 40px);overflow-y:auto;background:#fff;border-radius:15px;box-shadow:0 0 1px rgba(0,0,0,.05),0 0 2px rgba(0,0,0,.07),0 0 3px rgba(0,0,0,.02),0 8px 24px rgba(0,0,0,.08)}
+#vol .vol-panel:not(.is-active){display:none}
+#vol .vol-panel-head{position:sticky;top:0;z-index:1;display:flex;align-items:flex-start;gap:14px;padding:22px 20px 16px 25px;background:#fff;border-bottom:1px solid var(--vol-line)}
+#vol .vol-panel-head .vol-num{line-height:1.3}
+#vol .vol-panel-head > div{flex-grow:1;min-width:0}
+#vol .vol-panel-head h3{font-size:26px;line-height:1.2}
+#vol .vol-panel-count{font-size:13px;color:var(--vol-soft);margin-top:2px}
+#vol .vol-x{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:-8px -6px 0 0;flex:none;border:0;border-radius:12px;background:transparent;color:var(--vol-muted);cursor:pointer}
+#vol .vol-panel-body{padding:4px 25px 25px}
+#vol .vol-intro{margin-top:16px;font-size:15px;color:var(--vol-muted);line-height:1.5}
+#vol .vol-intro b{font-weight:600;color:#016b54}
+#vol .vol-all,#vol .vol-task{display:flex;gap:12px;cursor:pointer}
+#vol .vol-all{align-items:center;padding:14px 0;font-size:14px;font-weight:500}
+#vol .vol-all input{width:18px;height:18px;margin:0}
+#vol .vol-task{align-items:flex-start;padding:14px 8px;margin:0 -8px;border-top:1px solid var(--vol-line);border-radius:6px}
+#vol .vol-task:hover{background:#fafafa}
+#vol .vol-task input{width:19px;height:19px;margin:3px 0 0;flex:none}
+#vol .vol-task > span{display:flex;flex-direction:column;gap:3px;min-width:0}
+#vol .vol-task-name{font-size:16px;font-weight:500;color:var(--vol-ink)}
+#vol .vol-task-skills{font-size:13px;color:var(--vol-soft)}
+#vol .vol-task-desc{font-size:14px;color:var(--vol-muted);margin-top:2px;line-height:1.5}
+#vol .vol-callout{display:flex;gap:14px;margin-top:16px;padding:18px 20px;background:#f5f5f5;border-radius:12px;font-size:14px;color:var(--vol-muted);line-height:1.5}
+#vol .vol-callout svg{flex:none;color:#444c5a}
+#vol .vol-callout b{display:block;margin-bottom:4px;font-weight:600;color:var(--vol-ink)}
+#vol .vol-note{margin-top:14px;font-size:14px;color:var(--vol-muted);line-height:1.5}
+
+/* Without JavaScript: no picker or form, just every category's tasks in a column */
+#vol:not(.is-js) .vol-list-col,#vol:not(.is-js) .vol-x,#vol:not(.is-js) .vol-all{display:none}
+#vol:not(.is-js) .vol-drawer{position:static;flex:0 1 900px;width:auto;margin:0;opacity:1;overflow:visible;display:flex;flex-direction:column;gap:20px}
+#vol:not(.is-js) .vol-panel{display:block;width:auto;max-height:none}
+
+#vol .vol-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(17,17,17,.45)}
+#vol .vol-modal[hidden]{display:none}
+#vol .vol-dialog{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:#fff;border-radius:15px;box-shadow:0 18px 60px rgba(0,0,0,.25)}
+#vol .vol-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 25px 0}
+#vol .vol-dialog-head h3{font-size:28px;line-height:1.2}
+#vol .vol-dialog-head .vol-x{margin:-8px -10px 0 0}
+#vol form{display:flex;flex-direction:column;gap:14px;padding:16px 25px 25px}
+#vol .vol-summary{padding:14px 16px;background:#f5f5f5;border-radius:12px}
+#vol .vol-summary > div:first-child{font-size:14px;font-weight:600;color:var(--vol-ink);margin-bottom:4px}
+#vol .vol-summary-list{max-height:105px;overflow:auto;font-size:13px;color:var(--vol-muted)}
+#vol .vol-link-btn{margin-top:6px;padding:2px 0;border:0;background:transparent;color:var(--vol-red-dark);font-size:13px;text-decoration:underline;cursor:pointer}
+#vol form label{display:flex;flex-direction:column;gap:6px;font-size:14px}
+#vol form label small{font-size:12px;color:var(--vol-soft)}
+#vol form input,#vol form textarea{width:100%;padding:10px 12px;border:1px solid #8a8a8a;border-radius:6px;font-family:'Saira',Arial,sans-serif;font-size:16px;color:var(--vol-text);background:#fff}
+#vol form textarea{min-height:72px;resize:vertical}
+#vol form .button{margin-top:4px}
+#vol .vol-fine{font-size:12px;color:var(--vol-soft);line-height:1.5}
+#vol .vol-fine a{color:var(--vol-red-dark);text-decoration:underline}
+#vol .vol-status{font-size:14px;color:#016b54;line-height:1.5}
+#vol .vol-status[hidden]{display:none}
+#vol .vol-status.is-error{color:var(--vol-red-dark)}
+#vol .vol-status a{color:inherit;text-decoration:underline}
+#vol .vol-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+@media(max-width:900px){
+	#vol .vol-hero{padding:48px 16px 56px}
+	#vol .vol-hero h1{font-size:40px}
+	#vol .vol-hero > p{font-size:16px}
+	#vol .vol-main{padding:40px 16px 48px}
+	#vol .section-header h2{font-size:32px}
+	#vol .vol-bar{padding:12px 14px;gap:12px}
+	#vol .vol-bar small{display:none}
+	#vol .vol-cat{gap:14px;padding:18px 16px}
+	#vol .vol-cat-title{font-size:20px}
+	#vol .vol-pill{display:none}
+	/* On phones and tablets the task drawer becomes a full-screen sheet */
+	#vol.is-js .vol-drawer,#vol.is-js .vol-drawer.is-open{position:fixed;inset:0;z-index:999;width:auto;margin:0;padding:16px;background:rgba(17,17,17,.45);display:flex;align-items:flex-end;justify-content:center;transition:none}
+	#vol.is-js .vol-drawer:not(.is-open){display:none}
+	#vol.is-js .vol-panel{width:100%;max-width:560px;max-height:calc(100vh - 32px)}
+	#vol .vol-panel-head{padding:18px 14px 14px 18px}
+	#vol .vol-panel-body{padding:4px 18px 20px}
+}
+</style>
+
+{%- assign cats = site.data.volunteer_tasks -%}
+<div id="vol" data-endpoint="{{ site.volunteer_signup_url }}">
+	<section class="section vol-hero">
+		<div class="section-title">Our next chapter &middot; Built by our community</div>
+		<h1>Help move the Dojo.<br><span>Make our new space home.</span></h1>
+		<p>Move work starts now. Lend your skills, your time, or a helping hand.</p>
+		<div class="vol-where">
+			<strong>3200 Patrick Henry Drive, Suite 250, Santa Clara, CA 95054</strong>
+			<span>Just a quick ten-minute drive from our current location.</span>
+			<span>Help needed starting now and throughout the move.</span>
+		</div>
+	</section>
+
+	<div class="vol-main">
+		<div class="section-header">
+			<div class="section-title">Volunteer</div>
+			<h2>Find your way to help</h2>
+		</div>
+
+		<noscript><p style="text-align:center;margin-bottom:20px">To sign up, email <a href="mailto:moving@hackerdojo.com?subject=Volunteering%20for%20the%20move">moving@hackerdojo.com</a> with the tasks you&rsquo;d like to help with.</p></noscript>
+
+		<div class="vol-layout">
+			<div class="vol-list-col">
+				<div class="vol-bar">
+					<div>
+						<strong id="vol-count" aria-live="polite">0 tasks selected</strong>
+						<small>Choose tasks, then add your contact details.</small>
+					</div>
+					<button type="button" class="button button-red" id="vol-continue" aria-haspopup="dialog" disabled>Continue</button>
+				</div>
+				<div class="vol-cats">
+					{%- for cat in cats %}
+					<button type="button" class="vol-cat" aria-expanded="false" aria-controls="vol-drawer">
+						<span class="vol-num">{{ cat.num }}</span>
+						<span class="vol-cat-text">
+							<span class="vol-cat-title">{{ cat.title }}</span>
+							<span class="vol-cat-sub">{{ cat.sub }}</span>
+						</span>
+						<span class="vol-pill" hidden></span>
+						<span class="vol-arrow" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l7 7-7 7"/></svg></span>
+					</button>
+					{%- endfor %}
+				</div>
+			</div>
+
+			<aside class="vol-drawer" id="vol-drawer" aria-label="Task drawer">
+				{%- for cat in cats %}
+				<div class="vol-panel">
+					<div class="vol-panel-head">
+						<span class="vol-num">{{ cat.num }}</span>
+						<div>
+							<h3>{{ cat.title }}</h3>
+							<div class="vol-panel-count"></div>
+						</div>
+						<button type="button" class="vol-x" aria-label="Close task drawer"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+					</div>
+					<div class="vol-panel-body">
+						{%- if cat.intro %}
+						<p class="vol-intro">{{ cat.intro }} {% if cat.intro_bold %}<b>{{ cat.intro_bold }}</b>{% endif %}</p>
+						{%- endif %}
+						<label class="vol-all"><input type="checkbox" class="vol-all-cb"> Select all in this category</label>
+						{%- for task in cat.tasks %}
+						<label class="vol-task">
+							<input type="checkbox" name="task" value="{{ task.id }}" data-name="{{ task.name | escape }}">
+							<span>
+								<span class="vol-task-name">{{ task.name }}</span>
+								{%- if task.skills %}<span class="vol-task-skills">{{ task.skills }}</span>{% endif %}
+								{%- if task.desc %}<span class="vol-task-desc">{{ task.desc }}</span>{% endif %}
+							</span>
+						</label>
+						{%- endfor %}
+						{%- if cat.callout %}
+						<div class="vol-callout">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M12 9v4"/><path d="M12 16.5v.01"/></svg>
+							<div><b>{{ cat.callout_title }}</b>{{ cat.callout }}</div>
+						</div>
+						{%- endif %}
+						{%- if cat.note %}
+						<p class="vol-note">{{ cat.note }}</p>
+						{%- endif %}
+					</div>
+				</div>
+				{%- endfor %}
+			</aside>
+		</div>
+	</div>
+
+	<div class="vol-modal" id="vol-modal" role="dialog" aria-modal="true" aria-labelledby="vol-modal-title" hidden>
+		<div class="vol-dialog">
+			<div class="vol-dialog-head">
+				<h3 id="vol-modal-title">Your volunteer details</h3>
+				<button type="button" class="vol-x" id="vol-modal-close" aria-label="Close sign-up"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+			</div>
+			<form id="vol-form">
+				<div class="vol-summary">
+					<div>I&rsquo;m willing to help with</div>
+					<div class="vol-summary-list" id="vol-summary" aria-live="polite">No tasks selected yet.</div>
+					<button type="button" class="vol-link-btn" id="vol-edit">Edit selections</button>
+				</div>
+				<label><span>Full name <small>(required)</small></span>
+					<input name="fullName" type="text" required autocomplete="name" placeholder="Your full name"></label>
+				<label><span>Email <small>(required)</small></span>
+					<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+				<label><span>Discord username <small>(optional)</small></span>
+					<input name="discord" type="text" placeholder="Your Discord username"></label>
+				<label><span>A little about your experience</span>
+					<textarea name="experience" placeholder="Relevant skills, projects, or what you&rsquo;d like to learn."></textarea></label>
+				<label><span>Availability <small>(optional)</small></span>
+					<input name="availability" type="text" placeholder="Before, during, or after the move"></label>
+				<div class="vol-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+				<button type="submit" class="button button-red" id="vol-submit">I&rsquo;d like to help</button>
+				<p class="vol-fine" id="vol-fine">Questions? Email <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
+				<p class="vol-status" id="vol-status" role="status" hidden></p>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+(function () {
+	var TO = 'moving@hackerdojo.com';
+	var root = document.getElementById('vol');
+	root.classList.add('is-js');
+	var ENDPOINT = (root.getAttribute('data-endpoint') || '').trim();
+	var $ = function (id) { return document.getElementById(id); };
+	var all = function (sel, el) { return Array.prototype.slice.call((el || root).querySelectorAll(sel)); };
+	var cats = all('.vol-cat'), panels = all('.vol-panel');
+	var drawer = $('vol-drawer'), modal = $('vol-modal'), form = $('vol-form'), statusEl = $('vol-status');
+	var continueBtn = $('vol-continue'), submitBtn = $('vol-submit');
+	var narrow = window.matchMedia('(max-width: 900px)');
+	var active = null;
+
+	function taskBoxes(el) { return all('input[name=task]', el); }
+	function checkedBoxes(el) { return taskBoxes(el).filter(function (b) { return b.checked; }); }
+
+	function refresh() {
+		var picked = checkedBoxes(), n = picked.length;
+		$('vol-count').textContent = n + (n === 1 ? ' task selected' : ' tasks selected');
+		continueBtn.disabled = n === 0;
+		$('vol-summary').textContent = n ? picked.map(function (b) { return b.getAttribute('data-name'); }).join(' · ') : 'No tasks selected yet.';
+		panels.forEach(function (p, i) {
+			var total = taskBoxes(p).length, k = checkedBoxes(p).length, pill = cats[i].querySelector('.vol-pill');
+			pill.hidden = !k;
+			pill.textContent = k + ' selected';
+			p.querySelector('.vol-panel-count').textContent = k + ' of ' + total + ' selected';
+			var allBox = p.querySelector('.vol-all-cb');
+			allBox.checked = k === total;
+			allBox.indeterminate = k > 0 && k < total;
+			cats[i].setAttribute('aria-expanded', active === i ? 'true' : 'false');
+		});
+	}
+
+	function openCat(i) {
+		active = i;
+		panels.forEach(function (p, j) { p.classList.toggle('is-active', j === i); });
+		drawer.classList.toggle('is-open', i !== null);
+		drawer.setAttribute('aria-label', i === null ? 'Task drawer' : cats[i].querySelector('.vol-cat-title').textContent + ' tasks');
+		document.body.style.overflow = i !== null && narrow.matches ? 'hidden' : '';
+		refresh();
+		if (i !== null) {
+			panels[i].scrollTop = 0;
+			panels[i].querySelector('.vol-x').focus({ preventScroll: !narrow.matches });
+		}
+	}
+	function closeCat() {
+		var b = active === null ? null : cats[active];
+		openCat(null);
+		if (b) b.focus();
+	}
+
+	cats.forEach(function (b, i) { b.addEventListener('click', function () { openCat(active === i ? null : i); }); });
+	all('.vol-x', drawer).forEach(function (x) { x.addEventListener('click', closeCat); });
+	drawer.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCat(); });
+	// Tapping the dimmed backdrop around the phone sheet closes it
+	drawer.addEventListener('click', function (e) { if (e.target === drawer) openCat(null); });
+	drawer.addEventListener('change', function (e) {
+		if (e.target.classList.contains('vol-all-cb')) {
+			var p = e.target.closest('.vol-panel'), on = checkedBoxes(p).length !== taskBoxes(p).length;
+			taskBoxes(p).forEach(function (b) { b.checked = on; });
+		}
+		refresh();
+	});
+
+	function openModal() {
+		if (continueBtn.disabled) return;
+		if (active !== null && narrow.matches) openCat(null);
+		statusEl.hidden = true;
+		modal.hidden = false;
+		document.body.style.overflow = 'hidden';
+		$('vol-modal-close').focus();
+	}
+	function closeModal() {
+		modal.hidden = true;
+		document.body.style.overflow = '';
+		continueBtn.focus();
+	}
+	continueBtn.addEventListener('click', openModal);
+	$('vol-modal-close').addEventListener('click', closeModal);
+	$('vol-edit').addEventListener('click', closeModal);
+	modal.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+	modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+
+	if (!ENDPOINT) $('vol-fine').innerHTML = 'This opens your email app with your sign-up addressed to <a href="mailto:' + TO + '">' + TO + '</a>. Just press send.';
+
+	// One ID per sign-up, kept across retries so the script can tell a resend from a new sign-up
+	var submissionId = null;
+	function newId() {
+		if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+			var r = Math.random() * 16 | 0;
+			return (c === 'x' ? r : (r & 3 | 8)).toString(16);
+		});
+	}
+	function values() {
+		var f = form.elements, v = {};
+		if (!submissionId) submissionId = newId();
+		v.submissionId = submissionId;
+		['fullName', 'email', 'discord', 'experience', 'availability', 'website'].forEach(function (k) { v[k] = f[k].value.trim(); });
+		var picked = checkedBoxes();
+		v.taskIds = picked.map(function (b) { return b.value; });
+		v.tasks = picked.map(function (b) { return b.getAttribute('data-name'); });
+		v.taskCount = picked.length;
+		v.source = 'hackerdojo.org/volunteer';
+		return v;
+	}
+	function mailtoFor(v) {
+		var lines = ['Name: ' + v.fullName, 'Email: ' + v.email];
+		if (v.discord) lines.push('Discord: ' + v.discord);
+		if (v.availability) lines.push('Availability: ' + v.availability);
+		if (v.experience) lines.push('', 'Experience:', v.experience);
+		lines.push('', 'I’m willing to help with:');
+		panels.forEach(function (p) {
+			var picked = checkedBoxes(p);
+			if (picked.length) {
+				lines.push('', p.querySelector('h3').textContent + ':');
+				picked.forEach(function (b) { lines.push('- ' + b.getAttribute('data-name')); });
+			}
+		});
+		return 'mailto:' + TO + '?subject=' + encodeURIComponent('Move volunteer: ' + v.fullName) + '&body=' + encodeURIComponent(lines.join('\n'));
+	}
+	function showStatus(msg, isError, link) {
+		statusEl.textContent = msg;
+		statusEl.classList.toggle('is-error', !!isError);
+		if (link) {
+			var a = document.createElement('a');
+			a.href = link.href;
+			a.textContent = link.text;
+			statusEl.appendChild(document.createTextNode(' '));
+			statusEl.appendChild(a);
+		}
+		statusEl.hidden = false;
+	}
+
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		var v = values();
+		if (!ENDPOINT) {
+			window.location.href = mailtoFor(v);
+			showStatus('Thanks! Your email app should now be open with your sign-up. Press send to finish. If nothing opened, email ' + TO + ' with the tasks above.');
+			return;
+		}
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Sending…';
+		statusEl.hidden = true;
+		// text/plain keeps this a "simple" request, so the browser skips the CORS preflight Apps Script can't answer
+		fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v) })
+			.then(function (r) {
+				if (!r.ok) throw new Error('error');
+				return r.json().catch(function () { return {}; });
+			})
+			.then(function (res) {
+				if (res && res.ok === false) throw new Error(res.error || res.message || 'error');
+				taskBoxes().forEach(function (b) { b.checked = false; });
+				form.reset();
+				submissionId = null;
+				openCat(null);
+				showStatus('Thanks, ' + v.fullName.split(' ')[0] + '! You’re signed up for ' + v.taskCount + (v.taskCount === 1 ? ' task' : ' tasks') + '. We’ll be in touch by email.');
+			})
+			.catch(function (err) {
+				// Show the script's message only when it reads as a sentence, not an error code
+				var m = err && err.message;
+				var msg = m && / /.test(m) && !/fetch|network|JSON/i.test(m) ? m + ' ' : 'We couldn’t save your sign-up. ';
+				showStatus(msg, true, { text: 'Send it by email instead', href: mailtoFor(v) });
+			})
+			.then(function () {
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'I’d like to help';
+			});
+	});
+
+	refresh();
+})();
+</script>

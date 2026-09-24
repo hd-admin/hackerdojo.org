@@ -1,0 +1,104 @@
+# Task categories and tasks on /volunteer (pages/home/volunteer.html).
+# Each task `id` must match a row on the "Task list" tab of the Move Volunteer Signups sheet;
+# the sign-ups web app only accepts IDs listed there. Add a task in both places.
+# Optional per category: `intro` + `intro_bold` (above the tasks), `callout_title` + `callout` (boxed note below them), `note`.
+# Optional per task: `skills` and `desc`.
+
+- num: "01"
+  title: Infrastructure & tech setup
+  sub: 11 volunteer areas · Technical volunteers and hands-on helpers
+  intro: Help set up infrastructure at our new location.
+  intro_bold: No technical experience is needed for labeling, inventory, testing, documentation, or coordination.
+  callout_title: Professional installation boundaries
+  callout: Electrical wiring, door hardware, fire-system connections, and work requiring building approval should be handled by qualified installers. Members can help coordinate and test these systems.
+  tasks:
+    - id: infra-network-setup
+      name: Network setup
+      skills: Fortinet, managed switches, VLANs, firewalls
+      desc: Review existing configurations, set up separate networks for members and building systems, configure switches, and test connectivity and internet failover.
+    - id: infra-wifi-setup
+      name: Wi-Fi setup
+      skills: Access-point installation, wireless troubleshooting
+      desc: Plan access-point placement, configure member and guest Wi-Fi, check coverage, and test performance in busy areas.
+    - id: infra-cabling-equipment
+      name: Cabling and equipment setup
+      skills: Network cabling, rack organization; helpers welcome
+      desc: Inventory equipment, organize racks, patch connections, label cables and ports, and test network drops.
+    - id: infra-member-wifi-access
+      name: Member Wi-Fi access
+      skills: IronWiFi, RADIUS, membership integrations
+      desc: Configure member login and guest access. Test onboarding, expired memberships, account revocation, and login troubleshooting.
+    - id: infra-door-access
+      name: Door access setup
+      skills: Kisi administration, access-control experience
+      desc: Configure member access groups and door schedules, check readers with the installer, and test access during connectivity outages.
+    - id: infra-cameras
+      name: Camera setup
+      skills: Rhombus/Samsung cameras, IP cameras, networking
+      desc: Help position and configure cameras, check views and recording, and set up approved administrator access.
+    - id: infra-power-backup
+      name: Power backup
+      skills: UPS systems and equipment power planning
+      desc: Connect equipment to appropriate battery backups, organize power connections, and test runtime and recovery.
+    - id: infra-security-review
+      name: Security review
+      skills: Network security, account administration
+      desc: Check network separation, administrator permissions, MFA, and secure storage of recovery credentials.
+    - id: infra-testing
+      name: Testing and troubleshooting
+      skills: Any experience level; bring a phone or laptop
+      desc: Test Wi-Fi, member login, guest access, shared equipment, and coverage throughout the space. Help simulate a busy event and report problems.
+    - id: infra-documentation
+      name: Documentation
+      skills: Clear writing, diagrams, organization
+      desc: Document equipment locations, cable labels, configurations, troubleshooting steps, and member instructions.
+    - id: infra-ongoing-support
+      name: Ongoing infrastructure support
+      skills: Troubleshooting and willingness to learn
+      desc: Help resolve member issues, maintain documentation, monitor equipment, and share responsibility for routine maintenance.
+
+- num: "02"
+  title: Packing & organizing
+  sub: Sort, label, and prepare equipment for the move
+  tasks:
+    - { id: packing-inventory, name: Inventory shared supplies and equipment }
+    - { id: packing-sort, name: "Sort items to keep, donate, or recycle" }
+    - { id: packing-pack-label, name: Pack equipment and label boxes by destination }
+    - { id: packing-materials, name: "Gather boxes, packing materials, and labels" }
+
+- num: "03"
+  title: Transport & moving
+  sub: Help get equipment and furniture to the new space
+  tasks:
+    - { id: transport-load-unload, name: Load and unload boxes and furniture }
+    - { id: transport-vehicle, name: Offer a truck or van and driving help }
+    - { id: transport-coordinate, name: Coordinate pickup times and transport runs }
+    - { id: transport-check-deliveries, name: Check deliveries against the moving inventory }
+
+- num: "04"
+  title: Construction & assembly
+  sub: Help assemble and prepare the new space
+  note: Electrical wiring, door hardware, fire-system connections, and work requiring building approval remain with qualified installers.
+  tasks:
+    - { id: assembly-desks, name: Disassemble and reassemble desks }
+    - { id: assembly-shelving, name: Assemble shelving and storage units }
+    - { id: assembly-space-planning, name: Measure spaces and plan furniture placement }
+    - { id: assembly-installer-coordination, name: Coordinate approved work with qualified installers }
+
+- num: "05"
+  title: Cleaning & finishing
+  sub: Make both spaces ready for what comes next
+  tasks:
+    - { id: cleaning-surfaces, name: "Clean desks, chairs, and shared surfaces" }
+    - { id: cleaning-rooms, name: Sweep and prepare rooms for setup }
+    - { id: cleaning-boxes-recycling, name: Break down boxes and sort recycling }
+    - { id: cleaning-old-space, name: Help with the final cleanup of the old space }
+
+- num: "06"
+  title: Setup & welcoming
+  sub: Help members settle into their new home
+  tasks:
+    - { id: welcome-arrange-spaces, name: "Arrange lounge, kitchen, and shared work areas" }
+    - { id: welcome-signage, name: Create and place room and wayfinding signs }
+    - { id: welcome-members, name: Welcome members and show them around }
+    - { id: welcome-volunteer-checkin, name: Coordinate volunteer check-in and task assignments }
