@@ -3,6 +3,8 @@
 # replaces Jekyll's default list, so the defaults are repeated here.
 exclude:
   - docs
+  # pages/ holds partials that the top-level pages include; they aren't pages on their own
+  - pages
   - Gemfile
   - Gemfile.lock
   - node_modules
