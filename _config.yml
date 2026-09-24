@@ -18,4 +18,4 @@ volunteer_signup_url: https://script.google.com/macros/s/AKfycbyWdLS0Irx0dZReGRl
 
 # Move questions (the "Ask a question" pop-up on /hackerdojo5/) are sent to this Google Apps Script web app,
 # which adds them to the move questions sheet. Leave it empty to fall back to email.
-move_question_url:
+move_question_url: "https://script.google.com/macros/s/AKfycbznG7JfRRelKXFmPapBXwYoEPRInTq-KXDBpaOCvNLdO7VpCDhNUN_mlkD3lztQt1JO/exec"

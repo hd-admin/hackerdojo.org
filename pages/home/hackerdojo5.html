@@ -390,7 +390,7 @@
           <option>Other</option>
         </select></label>
       <label><span>Your question <small>(required)</small></span>
-        <textarea name="question" required placeholder="What would you like to know about the move?"></textarea></label>
+        <textarea name="question" required maxlength="5000" placeholder="What would you like to know about the move?"></textarea></label>
       <div class="hd5-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
       <button type="submit" class="button button-red" id="hd5-submit">Send question</button>
       <p class="hd5-fine" id="hd5-fine">Your question goes to the move team at <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
@@ -439,7 +439,7 @@
       v.role = role ? role.value : '';
       if (!submissionId) submissionId = newId();
       v.submissionId = submissionId;
-      v.source = 'hackerdojo.org/hackerdojo5';
+      v.source = window.location.href;
       return v;
     }
     function mailtoFor(v) {
@@ -460,6 +460,8 @@
     }
     function openModal(e) {
       e.preventDefault();
+      // One ID per question, kept across retries so the script can skip a resend
+      if (!submissionId) submissionId = newId();
       statusEl.hidden = true;
       doneEl.hidden = true;
       modal.hidden = false;
@@ -496,21 +498,23 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
       statusEl.hidden = true;
-      // text/plain keeps this a "simple" request, so the browser skips the CORS preflight Apps Script can't answer
-      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v) })
+      // text/plain keeps this a "simple" request, so the browser skips the CORS preflight Apps Script can't answer.
+      // Apps Script answers from a redirected URL, which fetch follows.
+      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v), redirect: 'follow' })
         .then(function (r) {
-          if (!r.ok) throw new Error('error');
-          return r.json().catch(function () { return {}; });
+          if (!r.ok) throw new Error('network');
+          return r.json();
         })
         .then(function (res) {
-          if (res && res.ok === false) throw new Error(res.error || res.message || 'error');
-          finish('Thanks, ' + v.name.split(' ')[0] + '! Your question is with the move team.');
+          if (res && res.ok === true) {
+            finish('Thanks, ' + v.name.split(' ')[0] + '! Your question is with the move team.');
+          } else {
+            // The script explains what to fix (e.g. a missing field); keep what the person typed
+            showStatus((res && res.error) || 'Something went wrong. Please try again.', true);
+          }
         })
-        .catch(function (err) {
-          // Show the script's message only when it reads as a sentence, not an error code
-          var m = err && err.message;
-          var msg = m && / /.test(m) && !/fetch|network|JSON/i.test(m) ? m : 'We couldn’t send your question.';
-          showStatus(msg, true, { text: 'Send it by email instead', href: mailtoFor(v) });
+        .catch(function () {
+          showStatus('Couldn’t send, please try again.', true, { text: 'Or send it by email', href: mailtoFor(v) });
         })
         .then(function () {
           submitBtn.disabled = false;
