@@ -78,29 +78,10 @@
 #vol:not(.is-js) .vol-drawer{position:static;flex:0 1 900px;width:auto;margin:0;opacity:1;overflow:visible;display:flex;flex-direction:column;gap:20px}
 #vol:not(.is-js) .vol-panel{display:block;width:auto;max-height:none}
 
-#vol .vol-modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(17,17,17,.45)}
-#vol .vol-modal[hidden]{display:none}
-#vol .vol-dialog{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:#fff;border-radius:15px;box-shadow:0 18px 60px rgba(0,0,0,.25)}
-#vol .vol-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 25px 0}
-#vol .vol-dialog-head h3{font-size:28px;line-height:1.2}
-#vol .vol-dialog-head .vol-x{margin:-8px -10px 0 0}
-#vol form{display:flex;flex-direction:column;gap:14px;padding:16px 25px 25px}
 #vol .vol-summary{padding:14px 16px;background:#f5f5f5;border-radius:12px}
 #vol .vol-summary > div:first-child{font-size:14px;font-weight:600;color:var(--vol-ink);margin-bottom:4px}
 #vol .vol-summary-list{max-height:105px;overflow:auto;font-size:13px;color:var(--vol-muted)}
 #vol .vol-link-btn{margin-top:6px;padding:2px 0;border:0;background:transparent;color:var(--vol-red-dark);font-size:13px;text-decoration:underline;cursor:pointer}
-#vol form label{display:flex;flex-direction:column;gap:6px;font-size:14px}
-#vol form label small{font-size:12px;color:var(--vol-soft)}
-#vol form input,#vol form textarea{width:100%;padding:10px 12px;border:1px solid #8a8a8a;border-radius:6px;font-family:'Saira',Arial,sans-serif;font-size:16px;color:var(--vol-text);background:#fff}
-#vol form textarea{min-height:72px;resize:vertical}
-#vol form .button{margin-top:4px}
-#vol .vol-fine{font-size:12px;color:var(--vol-soft);line-height:1.5}
-#vol .vol-fine a{color:var(--vol-red-dark);text-decoration:underline}
-#vol .vol-status{font-size:14px;color:#016b54;line-height:1.5}
-#vol .vol-status[hidden]{display:none}
-#vol .vol-status.is-error{color:var(--vol-red-dark)}
-#vol .vol-status a{color:inherit;text-decoration:underline}
-#vol .vol-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 @media(max-width:900px){
 	#vol .vol-hero{padding:48px 16px 56px}
@@ -209,13 +190,13 @@
 		</div>
 	</div>
 
-	<div class="vol-modal" id="vol-modal" role="dialog" aria-modal="true" aria-labelledby="vol-modal-title" hidden>
-		<div class="vol-dialog">
-			<div class="vol-dialog-head">
+	<div class="modal" id="vol-modal" role="dialog" aria-modal="true" aria-labelledby="vol-modal-title" hidden>
+		<div class="modal-dialog">
+			<div class="modal-head">
 				<h3 id="vol-modal-title">Your volunteer details</h3>
-				<button type="button" class="vol-x" id="vol-modal-close" aria-label="Close sign-up"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+				<button type="button" class="modal-close" id="vol-modal-close" aria-label="Close sign-up"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
 			</div>
-			<form id="vol-form">
+			<form class="modal-form" id="vol-form">
 				<div class="vol-summary">
 					<div>I&rsquo;m willing to help with</div>
 					<div class="vol-summary-list" id="vol-summary" aria-live="polite">No tasks selected yet.</div>
@@ -231,10 +212,10 @@
 					<textarea name="experience" placeholder="Relevant skills, projects, or what you&rsquo;d like to learn."></textarea></label>
 				<label><span>Availability <small>(optional)</small></span>
 					<input name="availability" type="text" placeholder="Before, during, or after the move"></label>
-				<div class="vol-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+				<div class="form-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
 				<button type="submit" class="button button-red" id="vol-submit">I&rsquo;d like to help</button>
-				<p class="vol-fine" id="vol-fine">Questions? Email <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
-				<p class="vol-status" id="vol-status" role="status" hidden></p>
+				<p class="form-fine" id="vol-fine">Questions? Email <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
+				<p class="form-status" id="vol-status" role="status" hidden></p>
 			</form>
 		</div>
 	</div>
