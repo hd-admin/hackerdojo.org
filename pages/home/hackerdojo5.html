@@ -371,11 +371,10 @@
       <label><span>Email <small>(required, so we can reply)</small></span>
         <input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
       <fieldset>
-        <legend>Are you a current member, visitor, or volunteer? <small>(required)</small></legend>
+        <legend>Are you a current member? <small>(required)</small></legend>
         <div class="hd5-roles">
           <label><input type="radio" name="role" value="Member" required> Member</label>
-          <label><input type="radio" name="role" value="Visitor"> Visitor</label>
-          <label><input type="radio" name="role" value="Volunteer"> Volunteer</label>
+          <label><input type="radio" name="role" value="Non-member"> Non-member</label>
         </div>
       </fieldset>
       <label><span>Topic <small>(required)</small></span>
@@ -443,7 +442,7 @@
       return v;
     }
     function mailtoFor(v) {
-      var body = ['Name: ' + v.name, 'Email: ' + v.email, 'I am a: ' + v.role, 'Topic: ' + v.topic, '', v.question].join('\n');
+      var body = ['Name: ' + v.name, 'Email: ' + v.email, 'Member: ' + v.role, 'Topic: ' + v.topic, '', v.question].join('\n');
       return 'mailto:' + TO + '?subject=' + encodeURIComponent('Move question: ' + v.topic) + '&body=' + encodeURIComponent(body);
     }
     function showStatus(msg, isError, link) {
