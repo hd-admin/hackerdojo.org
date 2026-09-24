@@ -15,3 +15,7 @@ exclude:
 # Move volunteer sign-ups (/volunteer) are sent to this Google Apps Script web app ("Volunteer signups v1"),
 # which adds them to the "Hacker Dojo – Move Volunteer Signups" sheet. Leave it empty to fall back to email.
 volunteer_signup_url: https://script.google.com/macros/s/AKfycbyWdLS0Irx0dZReGRlIVql82pOY4FLb07oEcZter4EbGFMMNDG_DZUxUQr4x-HbPkM_/exec
+
+# Move questions (the "Ask a question" pop-up on /hackerdojo5/) are sent to this Google Apps Script web app,
+# which adds them to the move questions sheet. Leave it empty to fall back to email.
+move_question_url: "https://script.google.com/macros/s/AKfycbznG7JfRRelKXFmPapBXwYoEPRInTq-KXDBpaOCvNLdO7VpCDhNUN_mlkD3lztQt1JO/exec"
