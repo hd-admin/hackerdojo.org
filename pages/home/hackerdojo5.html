@@ -1,40 +1,12 @@
 <style>
   /* ── Dojo 5.0 move page ──
-     Built on style.css (.section, .hero-section, .simplecard, .pricebox, .big-price-*, .button, …).
-     Only what style.css doesn't have is added here, scoped to #hd5. */
+     Built on style.css: .section, .page-hero, .simplecard, .pricebox, .big-price-*, .faq-*, .cta-*, .modal*, .button, …
+     Only what's unique to this page is added here, scoped to #hd5. */
 
-  #hd5 .hd5-hero { padding: 60px 40px 80px; }
-  #hd5 .hd5-tagline {
-    font-family: "Rajdhani";
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    background: #fff;
-    color: #516368;
-    display: inline-block;
-    padding: 3px 10px 2px;
-    border-radius: 6px;
-    margin-bottom: 16px;
-  }
-  #hd5 .hd5-title {
-    font-family: "Rajdhani";
-    font-size: 54px;
-    font-weight: 600;
-    color: #111;
-    line-height: 1.15;
-    max-width: 700px;
-    margin: 0 auto 14px;
-  }
-  #hd5 .hd5-title span { color: #e13838; }
-  #hd5 .hd5-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 26px;
-  }
-  #hd5 .hd5-buttons .button { min-width: 140px; }
+  #hd5 .page-hero-title { max-width: 700px; margin-left: auto; margin-right: auto; }
+  #hd5 .page-hero-desc { max-width: 620px; }
+  #hd5 .cta-buttons { margin-top: 26px; }
+  #hd5 .cta-buttons .button { min-width: 140px; }
 
   #hd5 .hd5-grid { display: grid; gap: 10px; }
   #hd5 .hd5-grid-four { grid-template-columns: 1fr 1fr 1fr 1fr; }
@@ -115,48 +87,15 @@
   #hd5 .hd5-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 14px 0; padding: 0; list-style: none; }
   #hd5 .hd5-chips li { font-family: "Rajdhani"; font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; background: #fff0df; padding: 5px 10px 4px; border-radius: 8px; }
 
-  /* FAQ — same look as the pricing page FAQ, using <details> so it needs no script */
-  #hd5 .faq-list { max-width: 700px; margin: auto; text-align: left; }
-  #hd5 .faq-item { background: #fff; border-radius: 12px; margin-bottom: 10px; box-shadow: 0px 0px 1px rgba(0,0,0,0.04), 0px 0px 2px rgba(0,0,0,0.04), 0px 0px 3px rgba(0,0,0,0.02), 0px 0px 5px rgba(0,0,0,0.03); overflow: hidden; }
-  #hd5 .faq-question { font-family: "Rajdhani"; font-size: 18px; font-weight: 600; color: #111; padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
-  #hd5 .faq-question::-webkit-details-marker { display: none; }
-  #hd5 .faq-question::after { content: "+"; font-size: 22px; font-weight: 400; color: #df3f33; flex-shrink: 0; margin-left: 12px; transition: 0.2s; }
-  #hd5 .faq-item[open] .faq-question::after { transform: rotate(45deg); }
-  #hd5 .faq-answer { font-size: 15px; color: #444; line-height: 1.7; padding: 0 22px 20px; }
-
-  /* Contact — same look as the pricing page's closing call to action */
-  #hd5 .hd5-cta { background-image: linear-gradient(135deg, #6d3bdb18 0%, #fff0df 100%); border-radius: 20px; padding: 60px 40px; }
-  #hd5 .hd5-cta-title { font-family: "Rajdhani"; font-size: 40px; font-weight: 600; color: #111; margin-bottom: 12px; }
-
-  /* Question pop-up — same look as the volunteer sign-up pop-up */
-  #hd5 button.button { border: 0; cursor: pointer; }
-  #hd5 .hd5-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(17,17,17,.45); text-align: left; }
-  #hd5 .hd5-modal[hidden] { display: none; }
-  #hd5 .hd5-dialog { width: 460px; max-width: 100%; max-height: calc(100vh - 32px); overflow: auto; background: #fff; border-radius: 15px; box-shadow: 0 18px 60px rgba(0,0,0,.25); }
-  #hd5 .hd5-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 22px 25px 0; }
-  #hd5 .hd5-dialog-head h3 { font-family: "Rajdhani"; font-size: 28px; font-weight: 600; line-height: 1.2; color: #111; margin: 0; }
-  #hd5 .hd5-x { margin: -8px -10px 0 0; width: 40px; height: 40px; border: 0; background: transparent; color: #111; font-size: 26px; line-height: 1; cursor: pointer; }
-  #hd5 .hd5-form { display: flex; flex-direction: column; gap: 14px; padding: 16px 25px 25px; }
-  #hd5 .hd5-form label, #hd5 .hd5-form fieldset { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: #222; }
-  #hd5 .hd5-form fieldset { border: 0; margin: 0; padding: 0; }
-  #hd5 .hd5-form legend { padding: 0; margin-bottom: 6px; }
-  #hd5 .hd5-form small { font-size: 12px; color: #505050; }
-  #hd5 .hd5-form input[type=text], #hd5 .hd5-form input[type=email], #hd5 .hd5-form select, #hd5 .hd5-form textarea { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #8a8a8a; border-radius: 6px; font-family: "Saira", Arial, sans-serif; font-size: 16px; color: #222; background: #fff; }
-  #hd5 .hd5-form textarea { min-height: 96px; resize: vertical; }
+  /* Member / non-member choice in the question pop-up */
+  #hd5 .modal-form fieldset { display: flex; flex-direction: column; gap: 6px; font-size: 14px; border: 0; margin: 0; padding: 0; }
+  #hd5 .modal-form legend { padding: 0; margin-bottom: 6px; }
   #hd5 .hd5-roles { display: flex; flex-wrap: wrap; gap: 8px 18px; }
   #hd5 .hd5-roles label { flex-direction: row; align-items: center; gap: 6px; font-size: 15px; }
-  #hd5 .hd5-fine { font-size: 12px; color: #505050; line-height: 1.5; margin: 0; }
-  #hd5 .hd5-fine a, #hd5 .hd5-status a { color: #c62828; text-decoration: underline; }
-  #hd5 .hd5-status { font-size: 14px; color: #016b54; line-height: 1.5; margin: 0; }
-  #hd5 .hd5-status[hidden] { display: none; }
-  #hd5 .hd5-status.is-error { color: #c62828; }
-  #hd5 .hd5-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
   @media only screen and (max-width: 960px) {
-    #hd5 .hd5-hero { padding: 40px 20px 60px; }
-    #hd5 .hd5-title { font-size: 38px; }
-    #hd5 .hd5-buttons { flex-direction: column; align-items: center; }
-    #hd5 .hd5-buttons .button { width: 220px; box-sizing: border-box; text-align: center; }
+    #hd5 .cta-buttons { flex-direction: column; align-items: center; }
+    #hd5 .cta-buttons .button { width: 220px; box-sizing: border-box; text-align: center; }
     #hd5 .hd5-grid { grid-template-columns: 1fr; }
     #hd5 .hd5-chart { display: none; }
     #hd5 .hd5-keep { grid-template-columns: 1fr; }
@@ -164,19 +103,17 @@
     #hd5 th, #hd5 td { padding: 12px 10px; }
     #hd5 tbody th, #hd5 td { font-size: 17px; }
     #hd5 caption { padding: 16px 10px 4px; }
-    #hd5 .hd5-cta { padding: 40px 20px; }
-    #hd5 .hd5-cta-title { font-size: 30px; }
   }
 </style>
 
 <div id="hd5" data-question-endpoint="{{ site.move_question_url }}">
 
 <!-- Hero -->
-<div class="section hero-section hd5-hero">
-  <div class="hd5-tagline">Our next chapter · Dojo 5.0</div>
-  <div class="hd5-title">We’re moving to <span>3200 Patrick Henry Drive.</span></div>
-  <div class="section-description" style="max-width: 620px; margin: auto;">The move runs September 24 – October 15, 2026. Below you’ll find the key dates, what happens to your membership, and how you can help get the new Dojo ready.</div>
-  <div class="hd5-buttons">
+<div class="section page-hero">
+  <div class="page-hero-tagline">Our next chapter · Dojo 5.0</div>
+  <div class="page-hero-title">We’re moving to <span>3200 Patrick Henry Drive.</span></div>
+  <div class="page-hero-desc">The move runs September 24 – October 15, 2026. Below you’ll find the key dates, what happens to your membership, and how you can help get the new Dojo ready.</div>
+  <div class="cta-buttons">
     <a href="https://calendly.com/hdfrontdesk/hacker-dojo-5-0-preview" class="button button-green">Take a preview tour</a>
     <a href="/volunteer/" class="button button-red">Volunteer for the move</a>
   </div>
@@ -292,7 +229,7 @@
       </table>
     </div>
 
-    <div class="hd5-buttons">
+    <div class="cta-buttons">
       <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red">Start your membership</a>
       <a href="/pricing/" class="button">See all plans</a>
     </div>
@@ -347,25 +284,25 @@
 <!-- Ask a question -->
 <div class="section" id="hd5-ask" style="padding-top: 0; padding-bottom: 80px;">
   <div class="section-content">
-    <div class="hd5-cta">
-      <div class="hd5-tagline">Move team</div>
-      <div class="hd5-cta-title">Ask a question</div>
-      <div class="section-description" style="max-width: 480px; margin: 0 auto 30px;">Ask the move team about membership, access, equipment or volunteering. Your questions help us build the FAQ.</div>
+    <div class="cta-box">
+      <div class="page-hero-tagline">Move team</div>
+      <div class="cta-title">Ask a question</div>
+      <div class="cta-desc">Ask the move team about membership, access, equipment or volunteering. Your questions help us build the FAQ.</div>
       <!-- Without script this opens an email; the script below turns it into the pop-up form -->
       <a href="mailto:moving@hackerdojo.com?subject=Question%20about%20the%20move" class="button button-red" id="hd5-ask-open" aria-haspopup="dialog">Ask a question</a>
-      <p class="hd5-status" id="hd5-ask-done" role="status" hidden style="margin-top: 16px; text-align: center;"></p>
+      <p class="form-status" id="hd5-ask-done" role="status" hidden style="margin-top: 16px; text-align: center;"></p>
     </div>
   </div>
 </div>
 
 <!-- Question pop-up -->
-<div class="hd5-modal" id="hd5-modal" role="dialog" aria-modal="true" aria-labelledby="hd5-modal-title" hidden>
-  <div class="hd5-dialog">
-    <div class="hd5-dialog-head">
+<div class="modal" id="hd5-modal" role="dialog" aria-modal="true" aria-labelledby="hd5-modal-title" hidden>
+  <div class="modal-dialog">
+    <div class="modal-head">
       <h3 id="hd5-modal-title">Ask the move team</h3>
-      <button type="button" class="hd5-x" id="hd5-modal-close" aria-label="Close question form">&times;</button>
+      <button type="button" class="modal-close" id="hd5-modal-close" aria-label="Close question form"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
     </div>
-    <form class="hd5-form" id="hd5-form">
+    <form class="modal-form" id="hd5-form">
       <label><span>Your name <small>(required)</small></span>
         <input name="name" type="text" required autocomplete="name" placeholder="Your full name"></label>
       <label><span>Email <small>(required, so we can reply)</small></span>
@@ -390,10 +327,10 @@
         </select></label>
       <label><span>Your question <small>(required)</small></span>
         <textarea name="question" required maxlength="5000" placeholder="What would you like to know about the move?"></textarea></label>
-      <div class="hd5-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <div class="form-hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
       <button type="submit" class="button button-red" id="hd5-submit">Send question</button>
-      <p class="hd5-fine" id="hd5-fine">Your question goes to the move team at <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
-      <p class="hd5-status" id="hd5-status" role="status" hidden></p>
+      <p class="form-fine" id="hd5-fine">Your question goes to the move team at <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a>.</p>
+      <p class="form-status" id="hd5-status" role="status" hidden></p>
     </form>
   </div>
 </div>
