@@ -1,0 +1,351 @@
+<style>
+  /* ── Dojo 5.0 move page ──
+     Built on style.css (.section, .hero-section, .simplecard, .pricebox, .big-price-*, .button, …).
+     Only what style.css doesn't have is added here, scoped to #hd5. */
+
+  #hd5 .hd5-hero { padding: 60px 40px 80px; }
+  #hd5 .hd5-tagline {
+    font-family: "Rajdhani";
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: #fff;
+    color: #516368;
+    display: inline-block;
+    padding: 3px 10px 2px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+  }
+  #hd5 .hd5-title {
+    font-family: "Rajdhani";
+    font-size: 54px;
+    font-weight: 600;
+    color: #111;
+    line-height: 1.15;
+    max-width: 700px;
+    margin: 0 auto 14px;
+  }
+  #hd5 .hd5-title span { color: #e13838; }
+  #hd5 .hd5-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+  #hd5 .hd5-buttons .button { min-width: 140px; }
+
+  #hd5 .hd5-grid { display: grid; gap: 10px; }
+  #hd5 .hd5-grid-four { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  #hd5 .hd5-facts { max-width: 900px; margin: 40px auto 0; }
+  #hd5 .simplecard { padding: 20px; }
+  #hd5 .simplecard-desc { font-size: 14px; color: #444; }
+  #hd5 .simplecard-desc a, #hd5 .faq-answer a { color: #df3f33; }
+  #hd5 .section-small-title { margin-bottom: 6px; }
+
+  /* Small tag ("Tentative", "Coming soon") */
+  #hd5 .hd5-tag {
+    display: inline-block;
+    font-family: "Rajdhani";
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: #ffe6c1;
+    padding: 4px 10px 3px;
+    border-radius: 8px;
+    margin: 6px 0;
+  }
+
+  /* Schedule chart: 28 day columns, Mon Sep 21 – Sun Oct 18 */
+  #hd5 .hd5-chart { overflow-x: auto; margin-bottom: 10px; }
+  #hd5 .hd5-gantt {
+    min-width: 820px;
+    display: grid;
+    grid-template-columns: repeat(28, 1fr);
+    grid-template-rows: auto repeat(5, 38px);
+    row-gap: 8px;
+    position: relative;
+    text-align: left;
+    font-family: "Rajdhani";
+    font-size: 15px;
+    font-weight: 600;
+  }
+  #hd5 .hd5-gantt small { font-family: "Saira"; font-size: 13px; font-weight: 400; color: #444; margin-left: 6px; }
+  #hd5 .hd5-tick {
+    grid-row: 1;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-left: 2px solid #ffe6c1;
+    padding: 2px 0 10px 6px;
+    white-space: nowrap;
+  }
+  #hd5 .hd5-tick small { font-family: "Rajdhani"; font-size: 12px; margin-left: 2px; }
+  #hd5 .hd5-bar { border-radius: 6px; display: flex; align-items: center; padding: 0 12px; white-space: nowrap; overflow: hidden; }
+  #hd5 .hd5-move { background: #ffe6c1; }
+  #hd5 .hd5-desk { background: #e13838; padding: 0; }
+  #hd5 .hd5-mark { justify-self: center; align-self: center; width: 14px; height: 14px; transform: rotate(45deg); border-radius: 2px; background: #018669; }
+  #hd5 .hd5-mark.meet { background: #111; }
+  #hd5 .hd5-mark.open { width: 18px; height: 18px; }
+  #hd5 .hd5-lbl { align-self: center; padding: 0 8px; white-space: nowrap; }
+  #hd5 .hd5-lbl.left { justify-self: end; text-align: right; }
+  #hd5 .hd5-today { position: absolute; top: 0; bottom: 0; border-left: 2px dashed #df3f33; pointer-events: none; }
+  #hd5 .hd5-today span { position: absolute; top: -2px; left: 6px; background: #df3f33; color: #fff; font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; padding: 3px 6px 2px; border-radius: 4px; }
+
+  /* Membership */
+  #hd5 .hd5-keep { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; margin-bottom: 10px; }
+  #hd5 .hd5-keep .big-price-number { color: #018669; }
+  #hd5 .hd5-keep p { font-size: 16px; color: #444; text-align: left; margin: 0; }
+  #hd5 .hd5-table { padding: 0; overflow-x: auto; }
+  #hd5 table { width: 100%; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+  #hd5 caption, #hd5 thead th { font-family: "Rajdhani"; font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: #505050; }
+  #hd5 caption { text-align: left; padding: 18px 20px 6px; }
+  #hd5 th, #hd5 td { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; }
+  #hd5 tbody tr:last-child > * { border-bottom: 0; }
+  #hd5 tbody th, #hd5 td { font-family: "Rajdhani"; font-size: 20px; font-weight: 600; }
+  #hd5 td { color: #444; }
+  #hd5 td.yours { color: #018669; background: #f0f8f5; }
+  #hd5 thead .yours { background: #f0f8f5; }
+  #hd5 td small { font-family: "Saira"; font-size: 13px; font-weight: 400; color: #444; margin-left: 4px; }
+  #hd5 td.none { font-family: "Saira"; font-size: 14px; font-weight: 400; }
+
+  /* Volunteer task list */
+  #hd5 .hd5-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 14px 0; padding: 0; list-style: none; }
+  #hd5 .hd5-chips li { font-family: "Rajdhani"; font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; background: #fff0df; padding: 5px 10px 4px; border-radius: 8px; }
+
+  /* FAQ — same look as the pricing page FAQ, using <details> so it needs no script */
+  #hd5 .faq-list { max-width: 700px; margin: auto; text-align: left; }
+  #hd5 .faq-item { background: #fff; border-radius: 12px; margin-bottom: 10px; box-shadow: 0px 0px 1px rgba(0,0,0,0.04), 0px 0px 2px rgba(0,0,0,0.04), 0px 0px 3px rgba(0,0,0,0.02), 0px 0px 5px rgba(0,0,0,0.03); overflow: hidden; }
+  #hd5 .faq-question { font-family: "Rajdhani"; font-size: 18px; font-weight: 600; color: #111; padding: 18px 22px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+  #hd5 .faq-question::-webkit-details-marker { display: none; }
+  #hd5 .faq-question::after { content: "+"; font-size: 22px; font-weight: 400; color: #df3f33; flex-shrink: 0; margin-left: 12px; transition: 0.2s; }
+  #hd5 .faq-item[open] .faq-question::after { transform: rotate(45deg); }
+  #hd5 .faq-answer { font-size: 15px; color: #444; line-height: 1.7; padding: 0 22px 20px; }
+
+  /* Contact — same look as the pricing page's closing call to action */
+  #hd5 .hd5-cta { background-image: linear-gradient(135deg, #6d3bdb18 0%, #fff0df 100%); border-radius: 20px; padding: 60px 40px; }
+  #hd5 .hd5-cta-title { font-family: "Rajdhani"; font-size: 40px; font-weight: 600; color: #111; margin-bottom: 12px; }
+
+  @media only screen and (max-width: 960px) {
+    #hd5 .hd5-hero { padding: 40px 20px 60px; }
+    #hd5 .hd5-title { font-size: 38px; }
+    #hd5 .hd5-buttons { flex-direction: column; align-items: center; }
+    #hd5 .hd5-buttons .button { width: 220px; box-sizing: border-box; text-align: center; }
+    #hd5 .hd5-grid { grid-template-columns: 1fr; }
+    #hd5 .hd5-chart { display: none; }
+    #hd5 .hd5-keep { grid-template-columns: 1fr; }
+    #hd5 .hd5-keep p { text-align: center; }
+    #hd5 th, #hd5 td { padding: 12px 10px; }
+    #hd5 tbody th, #hd5 td { font-size: 17px; }
+    #hd5 caption { padding: 16px 10px 4px; }
+    #hd5 .hd5-cta { padding: 40px 20px; }
+    #hd5 .hd5-cta-title { font-size: 30px; }
+  }
+</style>
+
+<div id="hd5">
+
+<!-- Hero -->
+<div class="section hero-section hd5-hero">
+  <div class="hd5-tagline">Our next chapter · Dojo 5.0</div>
+  <div class="hd5-title">We’re moving to <span>3200 Patrick Henry Drive.</span></div>
+  <div class="section-description" style="max-width: 620px; margin: auto;">The move runs September 24 – October 15, 2026. Below you’ll find the key dates, what happens to your membership, and how you can help get the new Dojo ready.</div>
+  <div class="hd5-buttons">
+    <a href="https://calendly.com/hdfrontdesk/hacker-dojo-5-0-preview" class="button button-green">Take a preview tour</a>
+    <a href="/volunteer/" class="button button-red">Volunteer for the move</a>
+    <a href="#hd5-contact" class="button">Ask a question</a>
+  </div>
+  <div class="hd5-grid grid-three hd5-facts">
+    <div class="simplecard">
+      <div class="section-small-title">New address</div>
+      <div class="location-title">3200 Patrick Henry Drive, Suite 250</div>
+      <div class="location-address">Santa Clara, CA 95054</div>
+    </div>
+    <div class="simplecard">
+      <div class="section-small-title">Target opening</div>
+      <div class="location-title">Monday, October 12</div>
+      <div class="location-address">Our goal for workspaces to be ready</div>
+    </div>
+    <div class="simplecard">
+      <div class="section-small-title">Our new space</div>
+      <div class="location-title">11,000+ sq ft</div>
+      <div class="location-address">Twice the space we have now</div>
+    </div>
+  </div>
+</div>
+
+<!-- Key dates -->
+<div class="section" id="hd5-dates">
+  <div class="section-header">
+    <div class="section-title">Key dates for your move</div>
+    <div class="section-description" style="max-width: 620px; margin: auto;">The move runs September 24 – October 15. We’re aiming to have workspaces ready on October 12. The desk-move dates are still tentative.</div>
+  </div>
+  <div class="section-content">
+    <div class="pricebox hd5-chart" role="img" aria-label="Schedule, one column per day from Monday September 21 to Sunday October 18: preview tours on September 25, September 29 and October 2, members meeting Wednesday October 7 at 6 PM, moving and setup September 24 through October 15, tentative desk move Saturday and Sunday October 10 to 11, target opening Monday October 12.">
+      <div class="hd5-gantt" id="hd5-gantt">
+        <span class="hd5-tick" style="grid-column:1/8">Sep 21 <small>Mon</small></span>
+        <span class="hd5-tick" style="grid-column:8/15">Sep 28 <small>Mon</small></span>
+        <span class="hd5-tick" style="grid-column:15/22">Oct 5 <small>Mon</small></span>
+        <span class="hd5-tick" style="grid-column:22/29">Oct 12 <small>Mon</small></span>
+
+        <span class="hd5-mark" style="grid-row:2;grid-column:5/6"></span>
+        <span class="hd5-mark" style="grid-row:2;grid-column:9/10"></span>
+        <span class="hd5-mark" style="grid-row:2;grid-column:12/13"></span>
+        <span class="hd5-lbl" style="grid-row:2;grid-column:13/26">Preview tours <small>Sep 25, Sep 29 · Oct 2</small></span>
+
+        <span class="hd5-lbl left" style="grid-row:3;grid-column:4/17">Members meeting <small>Wed, Oct 7 · 6 PM</small></span>
+        <span class="hd5-mark meet" style="grid-row:3;grid-column:17/18"></span>
+
+        <span class="hd5-bar hd5-move" style="grid-row:4;grid-column:4/26">Moving &amp; setup <small>Sep 24 – Oct 15 · packing, transport, construction, cleaning</small></span>
+
+        <span class="hd5-lbl left" style="grid-row:5;grid-column:8/20">Desk move <small>Sat–Sun, Oct 10–11 · tentative</small></span>
+        <span class="hd5-bar hd5-desk" style="grid-row:5;grid-column:20/22"></span>
+
+        <span class="hd5-mark open" style="grid-row:6;grid-column:22/23"></span>
+        <span class="hd5-lbl" style="grid-row:6;grid-column:23/29">Doors open <small>Mon, Oct 12</small></span>
+      </div>
+    </div>
+
+    <div class="hd5-grid hd5-grid-four">
+      <div class="simplecard">
+        <div class="section-small-title">Sep 25 – Oct 2</div>
+        <div class="simplecard-title">Preview tours</div>
+        <div class="simplecard-desc">See the new space before the move. <a href="https://calendly.com/hdfrontdesk/hacker-dojo-5-0-preview">Sign up for a tour →</a></div>
+      </div>
+      <div class="simplecard">
+        <div class="section-small-title">Wed, Oct 7 · 6 PM</div>
+        <div class="simplecard-title">Members meeting</div>
+        <div class="simplecard-desc">The future of our space: move details and your questions. <a href="https://www.meetup.com/hackerdojo/events/316687609/?eventOrigin=group_calendar">RSVP on Meetup →</a></div>
+      </div>
+      <div class="simplecard">
+        <div class="section-small-title">Oct 10–11</div>
+        <div class="simplecard-title">Desk move</div>
+        <div class="hd5-tag">Tentative</div>
+        <div class="simplecard-desc">Watch for prep instructions before moving your gear.</div>
+      </div>
+      <div class="simplecard">
+        <div class="section-small-title">Mon, Oct 12</div>
+        <div class="simplecard-title">Ready for work</div>
+        <div class="simplecard-desc">Our target for workspaces at the new Dojo.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Membership -->
+<div class="section" id="hd5-membership" style="padding-top: 20px;">
+  <div class="section-header">
+    <div class="section-title">Current members keep their rates</div>
+  </div>
+  <div class="section-content">
+    <div class="pricebox hd5-keep">
+      <div class="big-price-holder">
+        <div class="big-price-number">$0</div>
+        <div class="big-price-text">change</div>
+      </div>
+      <p>Your membership moves with you at your current rate. The new prices below apply only to <strong>new members who join after November 1, 2026</strong>.</p>
+    </div>
+
+    <div class="pricebox hd5-table">
+      <table>
+        <caption>Monthly rates in USD, except Annual</caption>
+        <thead>
+          <tr>
+            <th scope="col">Membership</th>
+            <th scope="col" class="yours">Current members (locked in)</th>
+            <th scope="col">New members after Nov 1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Standard</th><td class="yours">$150</td><td>$180</td></tr>
+          <tr><th scope="row">Student</th><td class="yours">$75</td><td>$90</td></tr>
+          <tr><th scope="row">Annual</th><td class="yours">$1,350<small>/yr</small></td><td>$1,620<small>/yr</small></td></tr>
+          <tr><th scope="row">Hive</th><td class="yours">$375</td><td>TBD</td></tr>
+          <tr><th scope="row">Dedicated</th><td class="yours">$325</td><td>TBD</td></tr>
+          <tr><th scope="row">Office</th><td class="none">New at Dojo 5.0</td><td>TBD</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="hd5-buttons">
+      <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red">Start your membership</a>
+      <a href="/pricing/" class="button">See all plans</a>
+    </div>
+  </div>
+</div>
+
+<!-- Get involved -->
+<div class="section" id="hd5-help" style="padding-top: 20px;">
+  <div class="section-header">
+    <div class="section-title">Help get the new Dojo ready</div>
+  </div>
+  <div class="section-content">
+    <div class="hd5-grid grid-two">
+      <div class="simplecard">
+        <div class="simplecard-title">Volunteer your time</div>
+        <div class="simplecard-desc">Pitch in on whatever fits your time and skills.</div>
+        <ul class="hd5-chips" aria-label="Kinds of help needed">
+          <li>Packing</li><li>Organizing</li><li>Transport</li><li>Construction</li><li>Cleaning</li><li>Infrastructure</li>
+        </ul>
+        <a href="/volunteer/" class="button button-red">See volunteer tasks</a>
+      </div>
+      <div class="simplecard">
+        <div class="simplecard-title">Fund an item or project</div>
+        <div class="simplecard-desc">Pay for a specific part of Dojo 5.0. A funding page listing individual items and projects you can pay for is on the way.</div>
+        <div class="hd5-tag">Funding page coming soon</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section" id="hd5-faq" style="padding-top: 20px; padding-bottom: 40px;">
+  <div class="section-header">
+    <div class="section-title">What members need to know</div>
+  </div>
+  <div class="faq-list">
+    <details class="faq-item" open>
+      <summary class="faq-question">Will my membership transfer?</summary>
+      <div class="faq-answer">Yes. Memberships transfer to the new location at your current rate. New access instructions and prep steps will follow.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">When should I move my desk or equipment?</summary>
+      <div class="faq-answer">Desks are tentatively scheduled to move October 10–11. Wait for detailed instructions before you arrange transport for your belongings.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-question">Can I see the new space before the move?</summary>
+      <div class="faq-answer">Yes. We’re holding preview tours on September 25, September 29 and October 2. <a href="https://calendly.com/hdfrontdesk/hacker-dojo-5-0-preview">Sign up for a tour</a>.</div>
+    </details>
+  </div>
+</div>
+
+<!-- Contact -->
+<div class="section" id="hd5-contact" style="padding-top: 0; padding-bottom: 80px;">
+  <div class="section-content">
+    <div class="hd5-cta">
+      <div class="hd5-tagline">Move team</div>
+      <div class="hd5-cta-title">Questions about the move?</div>
+      <div class="section-description" style="max-width: 480px; margin: 0 auto 30px;">Write to the move team about membership, access, equipment or volunteering.</div>
+      <a href="mailto:moving@hackerdojo.com" class="button">moving@hackerdojo.com</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+  // "Today" marker on the schedule chart (Mon Sep 21 is column 1 of 28)
+  (function () {
+    var start = new Date(2026, 8, 21), days = 28;
+    var now = new Date(); now.setHours(0, 0, 0, 0);
+    var idx = Math.round((now - start) / 864e5);
+    if (idx < 0 || idx >= days) return;
+    var m = document.createElement('div');
+    m.className = 'hd5-today';
+    m.style.left = ((idx + 0.5) / days * 100) + '%';
+    m.innerHTML = '<span>Today</span>';
+    document.getElementById('hd5-gantt').appendChild(m);
+  })();
+</script>
