@@ -1,0 +1,92 @@
+<div class="section testimonial-section">
+	
+	<div class="section-header">
+		<div class="section-title">WHAT PEOPLE SAY ABOUT THE DOJO</div>
+	</div>
+	
+	<div class="section-content">
+		<div class="testimonials">
+			
+			<div id="testimonial_2" class="testimonial" data-tilt style="background: #e6e6fa;">
+				<div class="testimonial-content">
+					<div class="testimonial-text"><span>If you need a place to hack, if you need a place to meet people, if you need a place to drink beers on fridays. For me, the Hacker Dojo was my first home in the valley.</span>
+					</div>
+					<div class="testimonial-name">Eric Migicovsky</div>
+					<div class="testimonial-info">Founder of Pebble</div>
+					
+					<div class="testimonial-opening-sign">"</div>
+					<div class="testimonial-closing-sign">"</div>
+				</div>
+			</div>
+			
+			<div id="testimonial_1" class="testimonial visible" data-tilt style="background: #FFE2C4;">
+				<div class="testimonial-content">
+					<div class="testimonial-text">
+						<span>I want to share a good cause - a non-profit hacker space community that supports what I hold near and dear: mentorship of tech and the love of sharing tech.</span>
+					</div>
+					<div class="testimonial-name">Steve Wozniak</div>
+					<div class="testimonial-info">Co-Founder of Apple</div>
+					
+					<div class="testimonial-opening-sign">"</div>
+					<div class="testimonial-closing-sign">"</div>
+				</div>
+			</div>
+			
+			<div id="testimonial_3" class="testimonial" data-tilt style="background: #eed8ea;">
+				<div class="testimonial-content">
+					<div class="testimonial-text">
+						<span>The people there wanted to be there because they loved tech, they loved the future, and they loved getting together with other people with similar sets of values.</span>
+					</div>
+					<div class="testimonial-name">Chris Messina</div>
+					<div class="testimonial-info">Inventor of Hashtag</div>
+					
+					<div class="testimonial-opening-sign">"</div>
+					<div class="testimonial-closing-sign">"</div>
+				</div>
+			</div>
+			
+			<div id="testimonial_4" class="testimonial" data-tilt style="background:#ffdbd5;">
+				<div class="testimonial-content">
+					<div class="testimonial-text">
+						<span>I had ambitions of running a startup one day but I didn't have the tools or the know how to get there, and the Hacker Dojo became my training ground.</span>
+					</div>
+					<div class="testimonial-name">Austin Allred</div>
+					<div class="testimonial-info">Founder of Lambda School</div>
+					
+					<div class="testimonial-opening-sign">"</div>
+					<div class="testimonial-closing-sign">"</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="testimonial-faces">
+			<div id="testimonial-face-2" class="testimonial-face" onMouseOver="showTestimonial(2)" onMouseOut="" onclick="showTestimonial(2)">
+				<img src="static/images/testimonials/eric.jpg"  />
+			</div>
+			
+			<div id="testimonial-face-1" class="testimonial-face testimonial-face-selected" onMouseOver="showTestimonial(1)" onMouseOut="" onclick="showTestimonial(1)">
+				<img src="static/images/testimonials/woz.jpg"  />
+			</div>
+			
+			<div id="testimonial-face-3" class="testimonial-face" onMouseOver="showTestimonial(3)" onMouseOut="" onclick="showTestimonial(3)">
+				<img src="static/images/testimonials/messina.jpg"  />
+			</div>
+			
+			<div id="testimonial-face-4" class="testimonial-face" onMouseOver="showTestimonial(4)" onMouseOut="" onclick="showTestimonial(4)">
+				<img src="static/images/testimonials/allred.jpg"  />
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		function showTestimonial(number) {
+			for(i = 0; i < 10; i++){
+				removeClass("testimonial_" + i,"visible");
+				removeClass("testimonial-face-" + i,"testimonial-face-selected");
+			}
+			
+			addClass("testimonial-face-" + number, "testimonial-face-selected");
+			addClass("testimonial_" + number,"visible");
+		}
+	</script>
+</div>

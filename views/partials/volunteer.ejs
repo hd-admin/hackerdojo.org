@@ -104,8 +104,7 @@
 </style>
 
 
-{%- assign cats = site.data.volunteer_tasks -%}
-<div id="vol" data-endpoint="{{ site.volunteer_signup_url }}">
+<div id="vol" data-endpoint="<%= volunteerSignupUrl %>">
 	<section class="section vol-hero">
 		<div class="section-title">Our next chapter &middot; Built by our community</div>
 		<h1>Help move the Dojo.<br><span>Make our new space home.</span></h1>
@@ -135,21 +134,55 @@
 					<button type="button" class="button button-red" id="vol-continue" aria-haspopup="dialog" disabled>Continue</button>
 				</div>
 				<div class="vol-cats">
-					{%- for cat in cats %}{%- endfor %}
+					<% (cats || []).forEach(function(cat) { %>
+					<button type="button" class="vol-cat" aria-expanded="false" aria-controls="vol-drawer">
+						<span class="vol-num"><%= cat.num %></span>
+						<span class="vol-cat-text">
+							<span class="vol-cat-title"><%= cat.title %></span>
+							<span class="vol-cat-sub"><%= cat.sub %></span>
+						</span>
+						<span class="vol-pill" hidden></span>
+						<span class="vol-arrow" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l7 7-7 7"/></svg></span>
+					</button>
+					<% }); %>
 				</div>
 			</div>
 
 			<aside class="vol-drawer" id="vol-drawer" aria-label="Task drawer">
-				{%- for cat in cats %}{%- endfor %}
-						{%- if cat.callout %}
+				<% (cats || []).forEach(function(cat) { %>
+				<div class="vol-panel">
+					<div class="vol-panel-head">
+						<span class="vol-num"><%= cat.num %></span>
+						<div>
+							<h3><%= cat.title %></h3>
+							<div class="vol-panel-count"></div>
+						</div>
+						<button type="button" class="vol-x" aria-label="Close task drawer"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+					</div>
+					<div class="vol-panel-body">
+						<% if (cat.intro) { %>
+						<p class="vol-intro"><%= cat.intro %> <% if (cat.intro_bold) { %><b><%= cat.intro_bold %></b><% } %></p>
+						<% } %>
+						<label class="vol-all"><input type="checkbox" class="vol-all-cb"> Select all in this category</label>
+						<% (cat.tasks || []).forEach(function(task) { %>
+						<label class="vol-task">
+							<input type="checkbox" name="task" value="<%= task.id %>" data-name="<%= task.name %>">
+							<span>
+								<span class="vol-task-name"><%= task.name %></span>
+								<% if (task.skills) { %><span class="vol-task-skills"><%= task.skills %></span><% } %>
+								<% if (task.desc) { %><span class="vol-task-desc"><%= task.desc %></span><% } %>
+							</span>
+						</label>
+						<% }); %>
+						<% if (cat.callout) { %>
 						<div class="vol-callout">
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M12 9v4"/><path d="M12 16.5v.01"/></svg>
-							<div><b>{{ cat.callout_title }}</b>{{ cat.callout }}</div>
+							<div><b><%= cat.callout_title %></b><%= cat.callout %></div>
 						</div>
-						{%- endif %}
-						{%- if cat.note %}
-						<p class="vol-note">{{ cat.note }}</p>
-						{%- endif %}
+						<% } %>
+						<% if (cat.note) { %>
+						<p class="vol-note"><%= cat.note %></p>
+						<% } %>
 					</div>
 				</div>
 				<% }); %>

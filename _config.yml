@@ -13,6 +13,12 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - CNAME
+  - package.json
+  - package-lock.json
+  - server.js
+  - metadata.json
+  - views
+  - data
 
 # Move volunteer sign-ups (/volunteer) are sent to this Google Apps Script web app ("Volunteer signups v1"),
 # which adds them to the "Hacker Dojo – Move Volunteer Signups" sheet. Leave it empty to fall back to email.

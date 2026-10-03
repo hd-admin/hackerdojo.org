@@ -1,0 +1,16 @@
+{
+  "name": "hackerdojo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node server.js --check"
+  },
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "js-yaml": "^5.4.2"
+  }
+}
