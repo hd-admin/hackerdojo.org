@@ -1,0 +1,1099 @@
+/* ══════════════════════════════════════════════════════════════
+   Hacker Dojo Wiki Stylesheet
+   Modern, responsive, integrated with Nexudus makerspace portal
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --wiki-bg: #f8f9fa;
+  --wiki-surface: #ffffff;
+  --wiki-border: #e2e8f0;
+  --wiki-border-light: #edf2f7;
+  --wiki-text-primary: #1a202c;
+  --wiki-text-secondary: #4a5568;
+  --wiki-text-muted: #718096;
+  --wiki-accent-red: #df3f33;
+  --wiki-accent-red-hover: #c42f24;
+  --wiki-accent-red-subtle: #fff5f5;
+  --wiki-nexudus-purple: #6d3bdb;
+  --wiki-nexudus-purple-subtle: #f3e8ff;
+  --wiki-sidebar-width: 320px;
+  --wiki-toc-width: 260px;
+  --wiki-radius: 12px;
+  --wiki-radius-sm: 8px;
+  --wiki-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --wiki-shadow-lg: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+}
+
+.wiki-container {
+  font-family: 'Saira', sans-serif;
+  color: var(--wiki-text-primary);
+  background: var(--wiki-bg);
+  min-height: calc(100vh - 160px);
+  padding: 0 0 60px 0;
+  position: relative;
+}
+
+/* ═══ Top Hero / Header Bar ═══ */
+.wiki-hero {
+  background: linear-gradient(135deg, #181c24 0%, #0f1218 100%);
+  color: #ffffff;
+  padding: 40px 24px;
+  position: relative;
+  border-bottom: 2px solid #2d3748;
+}
+
+.wiki-hero-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wiki-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.wiki-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.wiki-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(223, 63, 51, 0.15);
+  border: 1px solid rgba(223, 63, 51, 0.4);
+  color: #ff8b82;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.wiki-badge-archive {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #cbd5e0;
+}
+
+.wiki-hero-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: #ffffff;
+}
+
+.wiki-hero-subtitle {
+  font-size: 16px;
+  color: #a0aec0;
+  max-width: 720px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Nexudus Member Action in Hero */
+.wiki-nexudus-hero-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  padding: 10px 16px;
+  border-radius: var(--wiki-radius);
+}
+
+.wiki-member-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--wiki-accent-red);
+  color: #ffffff !important;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.wiki-member-btn:hover {
+  background: var(--wiki-accent-red-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(223, 63, 51, 0.35);
+}
+
+.wiki-member-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.wiki-member-badge .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #48bb78;
+  display: inline-block;
+}
+
+/* ═══ Search & Filter Bar ═══ */
+.wiki-search-section {
+  max-width: 1360px;
+  margin: -24px auto 24px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 10;
+}
+
+.wiki-search-card {
+  background: var(--wiki-surface);
+  border-radius: var(--wiki-radius);
+  box-shadow: var(--wiki-shadow-lg);
+  border: 1px solid var(--wiki-border);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wiki-search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.wiki-search-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--wiki-text-muted);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.wiki-search-input {
+  width: 100%;
+  font-family: 'Saira', sans-serif;
+  font-size: 16px;
+  padding: 14px 44px 14px 48px;
+  border: 2px solid var(--wiki-border);
+  border-radius: 10px;
+  background: #fcfdfd;
+  color: var(--wiki-text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.wiki-search-input:focus {
+  border-color: var(--wiki-accent-red);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(223, 63, 51, 0.12);
+}
+
+.wiki-search-clear {
+  position: absolute;
+  right: 48px;
+  background: none;
+  border: none;
+  color: var(--wiki-text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  padding: 4px;
+}
+
+.wiki-search-shortcut {
+  position: absolute;
+  right: 14px;
+  background: var(--wiki-border-light);
+  border: 1px solid var(--wiki-border);
+  color: var(--wiki-text-muted);
+  font-family: monospace;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Category Filter Pills */
+.wiki-cat-filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.wiki-cat-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.wiki-cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wiki-border-light);
+  border: 1px solid var(--wiki-border);
+  color: var(--wiki-text-secondary);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.wiki-cat-pill:hover {
+  background: #e2e8f0;
+  color: var(--wiki-text-primary);
+}
+
+.wiki-cat-pill.active {
+  background: #1a202c;
+  border-color: #1a202c;
+  color: #ffffff;
+}
+
+.wiki-cat-pill.pill-nexudus {
+  border-color: rgba(109, 59, 219, 0.3);
+  color: var(--wiki-nexudus-purple);
+  background: var(--wiki-nexudus-purple-subtle);
+}
+.wiki-cat-pill.pill-nexudus.active {
+  background: var(--wiki-nexudus-purple);
+  color: #ffffff;
+}
+
+/* ═══ Main App Layout ═══ */
+.wiki-main-layout {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: var(--wiki-sidebar-width) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ═══ Sidebar ═══ */
+.wiki-sidebar {
+  background: var(--wiki-surface);
+  border-radius: var(--wiki-radius);
+  border: 1px solid var(--wiki-border);
+  box-shadow: var(--wiki-shadow);
+  padding: 16px;
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wiki-sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.wiki-sidebar::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+.wiki-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--wiki-border-light);
+}
+
+.wiki-sidebar-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--wiki-text-muted);
+}
+
+.wiki-article-count {
+  font-size: 12px;
+  background: var(--wiki-border-light);
+  color: var(--wiki-text-muted);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+/* Grouped navigation */
+.wiki-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wiki-nav-group-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--wiki-text-muted);
+  padding: 8px 10px 4px;
+}
+
+.wiki-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--wiki-radius-sm);
+  color: var(--wiki-text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.wiki-nav-item:hover {
+  background: var(--wiki-border-light);
+  color: var(--wiki-text-primary);
+}
+
+.wiki-nav-item.active {
+  background: var(--wiki-accent-red-subtle);
+  color: var(--wiki-accent-red);
+  border-left-color: var(--wiki-accent-red);
+  font-weight: 600;
+}
+
+.wiki-nav-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wiki-nav-item-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.wiki-nav-item-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wiki-nav-nexudus-badge {
+  font-size: 10px;
+  background: var(--wiki-nexudus-purple-subtle);
+  color: var(--wiki-nexudus-purple);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Sidebar Nexudus Card */
+.wiki-sidebar-nexudus-card {
+  background: linear-gradient(135deg, #2a1b4e 0%, #171126 100%);
+  border-radius: var(--wiki-radius-sm);
+  padding: 14px;
+  color: #ffffff;
+  margin-top: auto;
+}
+
+.wiki-sidebar-nexudus-card h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #d6bcfa;
+}
+
+.wiki-sidebar-nexudus-card p {
+  font-size: 12px;
+  color: #cbd5e0;
+  line-height: 1.4;
+  margin: 0 0 10px;
+}
+
+.wiki-sidebar-nexudus-card a {
+  display: inline-block;
+  background: #6d3bdb;
+  color: #ffffff !important;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.wiki-sidebar-nexudus-card a:hover {
+  background: #7c4beb;
+}
+
+/* ═══ Main Article Card ═══ */
+.wiki-article-card {
+  background: var(--wiki-surface);
+  border-radius: var(--wiki-radius);
+  border: 1px solid var(--wiki-border);
+  box-shadow: var(--wiki-shadow);
+  padding: 32px 40px;
+  min-height: 500px;
+  position: relative;
+}
+
+/* Article Header */
+.wiki-article-header {
+  border-bottom: 1px solid var(--wiki-border-light);
+  padding-bottom: 24px;
+  margin-bottom: 28px;
+}
+
+.wiki-article-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.wiki-article-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wiki-border-light);
+  color: var(--wiki-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.wiki-article-stats {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--wiki-text-muted);
+}
+
+.wiki-article-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--wiki-text-primary);
+  margin: 0 0 16px;
+}
+
+.wiki-article-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wiki-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid var(--wiki-border);
+  color: var(--wiki-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.wiki-action-btn:hover {
+  background: var(--wiki-border-light);
+  color: var(--wiki-text-primary);
+}
+
+.wiki-action-btn.bookmarked {
+  background: #fffaf0;
+  border-color: #fbd38d;
+  color: #c05621;
+}
+
+/* ═══ Nexudus Article Banner ═══ */
+.wiki-nexudus-banner {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  border: 1px solid #cbd5e0;
+  border-left: 4px solid var(--wiki-nexudus-purple);
+  border-radius: var(--wiki-radius-sm);
+  padding: 16px 20px;
+  margin: 0 0 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wiki-nexudus-banner-info h4 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--wiki-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wiki-nexudus-banner-badge {
+  font-size: 11px;
+  background: var(--wiki-nexudus-purple);
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wiki-nexudus-banner-info p {
+  font-size: 14px;
+  color: var(--wiki-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.wiki-nexudus-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wiki-nexudus-purple);
+  color: #ffffff !important;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.wiki-nexudus-banner-btn:hover {
+  background: #5b28c2;
+  box-shadow: 0 4px 12px rgba(109, 59, 219, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ═══ Table of Contents (Floating / Inline) ═══ */
+.wiki-toc-wrapper {
+  background: #f8fafc;
+  border: 1px solid var(--wiki-border);
+  border-radius: var(--wiki-radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 30px;
+}
+
+.wiki-toc-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--wiki-text-muted);
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wiki-toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.wiki-toc-item {
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.wiki-toc-item.level-3 {
+  padding-left: 16px;
+  font-size: 13px;
+}
+
+.wiki-toc-item a {
+  color: var(--wiki-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.wiki-toc-item a:hover {
+  color: var(--wiki-accent-red);
+  text-decoration: underline;
+}
+
+/* ═══ Article Content Formatting ═══ */
+.wiki-article-body {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2d3748;
+}
+
+.wiki-article-body h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 36px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--wiki-border-light);
+}
+
+.wiki-article-body h3 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 28px 0 12px;
+}
+
+.wiki-article-body h4, .wiki-article-body h5 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 20px 0 8px;
+}
+
+.wiki-article-body p {
+  margin-bottom: 16px;
+}
+
+.wiki-article-body ul, .wiki-article-body ol {
+  margin: 0 0 18px 24px;
+  padding: 0;
+}
+
+.wiki-article-body li {
+  margin-bottom: 8px;
+}
+
+.wiki-article-body strong, .wiki-article-body b {
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.wiki-article-body a {
+  color: var(--wiki-accent-red);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.wiki-article-body a:hover {
+  color: var(--wiki-accent-red-hover);
+}
+
+/* Tables */
+.wiki-article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 14px;
+  background: #ffffff;
+  border: 1px solid var(--wiki-border);
+  border-radius: var(--wiki-radius-sm);
+  overflow: hidden;
+}
+
+.wiki-article-body th {
+  background: #f7fafc;
+  color: #2d3748;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--wiki-border);
+}
+
+.wiki-article-body td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--wiki-border-light);
+  color: #4a5568;
+}
+
+.wiki-article-body tr:last-child td {
+  border-bottom: none;
+}
+
+.wiki-article-body tr:hover td {
+  background: #f8fafc;
+}
+
+/* Code & Pre */
+.wiki-article-body pre, .wiki-article-body code {
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+}
+
+.wiki-article-body code {
+  background: #edf2f7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #805ad5;
+}
+
+.wiki-article-body pre {
+  background: #1a202c;
+  color: #e2e8f0;
+  padding: 16px;
+  border-radius: var(--wiki-radius-sm);
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.wiki-article-body pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* Wiki Images */
+.wiki-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--wiki-radius-sm);
+  border: 1px solid var(--wiki-border);
+  margin: 16px 0;
+  display: block;
+  box-shadow: var(--wiki-shadow);
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+
+.wiki-img:hover {
+  transform: scale(1.01);
+}
+
+.thumb {
+  margin: 16px 0;
+}
+.thumbinner {
+  max-width: 100%;
+  background: #f7fafc;
+  border: 1px solid var(--wiki-border);
+  padding: 6px;
+  border-radius: var(--wiki-radius-sm);
+}
+.thumbcaption {
+  font-size: 13px;
+  color: var(--wiki-text-muted);
+  padding: 6px 4px 2px;
+}
+
+/* ═══ Lightbox Modal for Images ═══ */
+.wiki-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+  padding: 20px;
+}
+
+.wiki-lightbox.active {
+  display: flex;
+}
+
+.wiki-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ═══ Nexudus Login Modal ═══ */
+.wiki-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+  padding: 20px;
+}
+
+.wiki-modal-overlay.active {
+  display: flex;
+}
+
+.wiki-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--wiki-radius);
+  box-shadow: var(--wiki-shadow-lg);
+  border: 1px solid var(--wiki-border);
+  overflow: hidden;
+  animation: modalSlideUp 0.25s ease forwards;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wiki-modal-header {
+  background: linear-gradient(135deg, #181c24 0%, #0f1218 100%);
+  color: #ffffff;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wiki-modal-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wiki-modal-close {
+  background: none;
+  border: none;
+  color: #cbd5e0;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.wiki-modal-close:hover {
+  color: #ffffff;
+}
+
+.wiki-modal-body {
+  padding: 24px;
+}
+
+.wiki-modal-desc {
+  font-size: 14px;
+  color: var(--wiki-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.wiki-nexudus-direct-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--wiki-nexudus-purple);
+  color: #ffffff !important;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(109, 59, 219, 0.25);
+}
+
+.wiki-nexudus-direct-btn:hover {
+  background: #5b28c2;
+  transform: translateY(-1px);
+}
+
+.wiki-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: var(--wiki-text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.wiki-divider::before, .wiki-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--wiki-border);
+}
+
+.wiki-divider span {
+  padding: 0 10px;
+}
+
+.wiki-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wiki-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wiki-form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wiki-text-primary);
+}
+
+.wiki-form-input {
+  padding: 10px 14px;
+  border: 1px solid var(--wiki-border);
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.wiki-form-input:focus {
+  border-color: var(--wiki-accent-red);
+}
+
+.wiki-submit-btn {
+  background: var(--wiki-accent-red);
+  color: #ffffff;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.wiki-submit-btn:hover {
+  background: var(--wiki-accent-red-hover);
+}
+
+.wiki-modal-footer {
+  background: #f8fafc;
+  border-top: 1px solid var(--wiki-border);
+  padding: 14px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--wiki-text-secondary);
+}
+
+.wiki-modal-footer a {
+  color: var(--wiki-accent-red);
+  font-weight: 600;
+}
+
+/* ═══ Edit Suggestion Modal ═══ */
+.wiki-edit-modal-card {
+  max-width: 560px;
+}
+
+.wiki-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--wiki-border);
+  border-radius: 6px;
+  font-family: 'Saira', sans-serif;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+}
+
+.wiki-textarea:focus {
+  border-color: var(--wiki-accent-red);
+}
+
+/* ═══ Responsive Breakpoints ═══ */
+@media (max-width: 1024px) {
+  .wiki-main-layout {
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+  }
+  .wiki-article-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wiki-hero-title {
+    font-size: 28px;
+  }
+  .wiki-main-layout {
+    grid-template-columns: 1fr;
+  }
+  .wiki-sidebar {
+    position: static;
+    max-height: none;
+  }
+  .wiki-article-card {
+    padding: 20px 16px;
+  }
+  .wiki-article-title {
+    font-size: 26px;
+  }
+  .wiki-nexudus-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

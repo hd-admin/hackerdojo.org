@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker Dojo Wiki — Community Knowledge Base</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            dojo: {
+              red: '#df3f33',
+              darkred: '#b82f25',
+              black: '#0f1013',
+              card: '#181a1f',
+              border: '#2a2d35',
+              hover: '#22252c',
+              accent: '#38bdf8',
+              muted: '#94a3b8'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --wiki-bg: #0f1013;
+      --wiki-card-bg: #181a1f;
+      --wiki-border: #2a2d35;
+      --wiki-text: #f1f5f9;
+      --wiki-text-muted: #94a3b8;
+      --wiki-accent: #df3f33;
+      --wiki-accent-light: rgba(223, 63, 51, 0.15);
+    }
+
+    body {
+      background-color: var(--wiki-bg);
+      color: var(--wiki-text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-top: 1rem;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #121316;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2e323b;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #df3f33;
+    }
+
+    .wiki-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 1rem 2rem 1rem;
+    }
+
+    /* Member Banner */
+    .wiki-member-banner {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      border-radius: 0.5rem;
+      padding: 0.65rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: #7dd3fc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Search Section */
+    .wiki-search-card {
+      background: var(--wiki-card-bg);
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .wiki-search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .wiki-search-icon {
+      position: absolute;
+      left: 1rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      color: var(--wiki-text-muted);
+    }
+
+    .wiki-search-input {
+      width: 100%;
+      background: #121316;
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.5rem;
+      padding: 0.75rem 2.5rem 0.75rem 2.75rem;
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .wiki-search-input:focus {
+      border-color: var(--wiki-accent);
+    }
+
+    .wiki-search-clear {
+      position: absolute;
+      right: 3rem;
+      background: transparent;
+      border: none;
+      color: var(--wiki-text-muted);
+      cursor: pointer;
+      font-size: 1rem;
+      display: none;
+    }
+
+    .wiki-search-shortcut {
+      position: absolute;
+      right: 1rem;
+      background: #22252c;
+      border: 1px solid var(--wiki-border);
+      color: var(--wiki-text-muted);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: monospace;
+      pointer-events: none;
+    }
+
+    /* Category Filter Pills */
+    .wiki-cat-filters {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .wiki-cat-pill {
+      background: #121316;
+      border: 1px solid var(--wiki-border);
+      color: var(--wiki-text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.825rem;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+
+    .wiki-cat-pill:hover {
+      border-color: #4b5563;
+      color: #ffffff;
+    }
+
+    .wiki-cat-pill.active {
+      background: var(--wiki-accent);
+      border-color: var(--wiki-accent);
+      color: #ffffff;
+    }
+
+    /* Main Layout Grid */
+    .wiki-main-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .wiki-main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Sidebar Navigation */
+    .wiki-sidebar {
+      background: var(--wiki-card-bg);
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      position: sticky;
+      top: 1rem;
+    }
+
+    .wiki-sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid var(--wiki-border);
+    }
+
+    .wiki-sidebar-title {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--wiki-text-muted);
+    }
+
+    .wiki-article-count {
+      font-size: 0.75rem;
+      background: #22252c;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      color: var(--wiki-text-muted);
+    }
+
+    .wiki-nav-group {
+      margin-bottom: 1rem;
+    }
+
+    .wiki-nav-group-title {
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      margin-bottom: 0.4rem;
+      padding-left: 0.5rem;
+    }
+
+    .wiki-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.65rem;
+      border-radius: 0.375rem;
+      color: #cbd5e1;
+      font-size: 0.875rem;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      margin-bottom: 2px;
+    }
+
+    .wiki-nav-item:hover {
+      background: #22252c;
+      color: #ffffff;
+    }
+
+    .wiki-nav-item.active {
+      background: var(--wiki-accent-light);
+      color: #ff6b6b;
+      font-weight: 600;
+      border-left: 3px solid var(--wiki-accent);
+    }
+
+    .wiki-nav-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wiki-nav-item-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .wiki-nav-item-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wiki-nav-nexudus-badge {
+      font-size: 0.65rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 1px 5px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Article Card */
+    .wiki-article-card {
+      background: var(--wiki-card-bg);
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.75rem;
+      padding: 2.25rem;
+      min-height: 600px;
+    }
+
+    @media (max-width: 640px) {
+      .wiki-article-card {
+        padding: 1.25rem;
+      }
+    }
+
+    .wiki-article-header {
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--wiki-border);
+      margin-bottom: 1.5rem;
+    }
+
+    .wiki-article-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .wiki-article-cat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #22252c;
+      border: 1px solid var(--wiki-border);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .wiki-article-stats {
+      font-size: 0.8rem;
+      color: var(--wiki-text-muted);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .wiki-article-title {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .wiki-article-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .wiki-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #121316;
+      border: 1px solid var(--wiki-border);
+      color: var(--wiki-text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.375rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .wiki-action-btn:hover {
+      background: #22252c;
+      color: #ffffff;
+      border-color: #4b5563;
+    }
+
+    .wiki-action-btn.bookmarked {
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .wiki-action-github {
+      background: #24292f;
+      color: #ffffff;
+      border-color: #333;
+    }
+
+    /* Nexudus Equipment Banner Inside Article */
+    .wiki-nexudus-banner {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(18, 19, 22, 0.8) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 0.6rem;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .wiki-nexudus-badge-tag {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+    }
+
+    .wiki-nexudus-btn {
+      background: #0284c7;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .wiki-nexudus-btn:hover {
+      background: #0369a1;
+    }
+
+    /* Table of Contents */
+    .wiki-toc-wrapper {
+      background: #121316;
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .wiki-toc-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--wiki-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .wiki-toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .wiki-toc-item {
+      font-size: 0.875rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .wiki-toc-item.level-3 {
+      padding-left: 1rem;
+      font-size: 0.825rem;
+    }
+
+    .wiki-toc-item a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .wiki-toc-item a:hover {
+      color: var(--wiki-accent);
+    }
+
+    /* Article Body Formatting */
+    .wiki-article-body {
+      color: #cbd5e1;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .wiki-article-body h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--wiki-border);
+      scroll-margin-top: 20px;
+    }
+
+    .wiki-article-body h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      scroll-margin-top: 20px;
+    }
+
+    .wiki-article-body p {
+      margin-bottom: 1rem;
+    }
+
+    .wiki-article-body ul,
+    .wiki-article-body ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+
+    .wiki-article-body ul {
+      list-style-type: disc;
+    }
+
+    .wiki-article-body ol {
+      list-style-type: decimal;
+    }
+
+    .wiki-article-body li {
+      margin-bottom: 0.4rem;
+    }
+
+    .wiki-article-body code {
+      background: #121316;
+      border: 1px solid #2a2d35;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875em;
+      color: #f43f5e;
+    }
+
+    .wiki-article-body pre {
+      background: #121316;
+      border: 1px solid #2a2d35;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+
+    .wiki-article-body pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      color: #e2e8f0;
+    }
+
+    .wiki-article-body blockquote {
+      border-left: 4px solid var(--wiki-accent);
+      background: rgba(223, 63, 51, 0.05);
+      padding: 0.75rem 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      margin-bottom: 1rem;
+      font-style: italic;
+      color: #e2e8f0;
+    }
+
+    .wiki-warning-box {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #fef08a;
+    }
+
+    .wiki-info-box {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #bae6fd;
+    }
+
+    /* Footer */
+    .wiki-article-footer {
+      margin-top: 2.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--wiki-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--wiki-text-muted);
+    }
+
+    .wiki-article-footer-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .wiki-article-footer-left a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    .wiki-article-footer-left a:hover {
+      text-decoration: underline;
+    }
+
+    .wiki-article-footer-home {
+      color: var(--wiki-text-muted);
+      text-decoration: none;
+    }
+
+    .wiki-article-footer-home:hover {
+      color: #ffffff;
+    }
+
+    /* Modals & Overlay */
+    .wiki-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1rem;
+    }
+
+    .wiki-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wiki-modal-card {
+      background: #181a1f;
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.75rem;
+      width: 100%;
+      max-width: 540px;
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      transform: translateY(20px);
+      transition: transform 0.25s ease;
+    }
+
+    .wiki-modal-overlay.active .wiki-modal-card {
+      transform: translateY(0);
+    }
+
+    .wiki-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .wiki-modal-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .wiki-modal-close {
+      background: transparent;
+      border: none;
+      color: var(--wiki-text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .wiki-modal-close:hover {
+      color: #ffffff;
+    }
+
+    .wiki-modal-desc {
+      color: var(--wiki-text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .wiki-nexudus-direct-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #0284c7;
+      border: 1px solid #0369a1;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      transition: background 0.2s;
+    }
+
+    .wiki-nexudus-direct-btn:hover {
+      background: #0369a1;
+    }
+
+    .wiki-divider {
+      text-align: center;
+      position: relative;
+      margin: 1.25rem 0;
+    }
+
+    .wiki-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--wiki-border);
+    }
+
+    .wiki-divider span {
+      position: relative;
+      background: #181a1f;
+      padding: 0 0.75rem;
+      color: #64748b;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .wiki-form-group {
+      margin-bottom: 1rem;
+    }
+
+    .wiki-form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 0.35rem;
+    }
+
+    .wiki-form-input,
+    .wiki-textarea {
+      width: 100%;
+      background: #121316;
+      border: 1px solid var(--wiki-border);
+      border-radius: 0.375rem;
+      padding: 0.6rem 0.75rem;
+      color: #ffffff;
+      font-size: 0.875rem;
+      outline: none;
+    }
+
+    .wiki-form-input:focus,
+    .wiki-textarea:focus {
+      border-color: var(--wiki-accent);
+    }
+
+    .wiki-textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .wiki-submit-btn {
+      width: 100%;
+      background: var(--wiki-accent);
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0.65rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .wiki-submit-btn:hover {
+      background: var(--wiki-darkred);
+    }
+
+    /* Lightbox */
+    .wiki-lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .wiki-lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wiki-lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wiki-container" id="wiki-app">
+
+    <!-- Member Session Banner (Populated via JS cookie check) -->
+    <div class="wiki-member-banner" id="wiki-member-banner" style="display: none;">
+      <div>
+        <span>👋 Welcome back, <strong id="wiki-member-name">Dojo Member</strong>!</span>
+        <span class="ml-2 text-xs bg-sky-900/50 text-sky-300 border border-sky-700/50 px-2 py-0.5 rounded">Nexudus
+          Verified</span>
+      </div>
+      <a href="https://hackerdojo.spaces.nexudus.com" target="_blank" class="text-xs hover:underline text-sky-400">Open
+        Member Dashboard →</a>
+    </div>
+
+    <!-- Search & Category Filter Section -->
+    <section class="wiki-search-section">
+      <div class="wiki-search-card">
+        <div class="wiki-search-input-wrapper">
+          <svg class="wiki-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" id="wiki-search-input" class="wiki-search-input"
+            placeholder="Search 15+ articles, bylaws, laser cutter, HAM radio, Wi-Fi… (press / to focus)"
+            autocomplete="off">
+          <button type="button" id="wiki-search-clear" class="wiki-search-clear" onclick="clearSearch()">✕</button>
+          <span class="wiki-search-shortcut">/</span>
+        </div>
+
+        <div class="wiki-cat-filters">
+          <button type="button" class="wiki-cat-pill active" onclick="setCategoryFilter('all')">
+            <span>📚</span> All (<span id="count-all">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Overview')">
+            <span>🌟</span> Overview (<span id="count-overview">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Governance')">
+            <span>📜</span> Governance (<span id="count-governance">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Makerspace')">
+            <span>🛠️</span> Makerspace (<span id="count-makerspace">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Facilities')">
+            <span>📶</span> Facilities & Tech (<span id="count-facilities">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Membership')">
+            <span>🎟️</span> Membership & Events (<span id="count-membership">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Community')">
+            <span>🤝</span> Community (<span id="count-community">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" onclick="setCategoryFilter('Marketing')">
+            <span>🎨</span> Marketing & Brand (<span id="count-marketing">0</span>)
+          </button>
+          <button type="button" class="wiki-cat-pill" id="pill-nexudus-btn" onclick="toggleNexudusFilter()">
+            <span>⚡</span> Nexudus Bookable (<span id="count-nexudus">0</span>)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main App Layout (Sidebar + Article Viewer) -->
+    <main class="wiki-main-layout">
+      <!-- Left Navigation Sidebar -->
+      <aside class="wiki-sidebar">
+        <div class="wiki-sidebar-header">
+          <span class="wiki-sidebar-title">Wiki Navigation</span>
+          <span class="wiki-article-count" id="wiki-filtered-count">0 articles</span>
+        </div>
+
+        <!-- Bookmarks Quick Section -->
+        <div id="wiki-bookmarks-section"
+          style="display: none; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px dashed var(--wiki-border);">
+          <div class="wiki-nav-group-title" style="color: #f59e0b; display: flex; align-items: center; gap: 4px;">
+            <span>⭐</span> Bookmarks
+          </div>
+          <div id="wiki-bookmarks-list" class="wiki-nav-group"></div>
+        </div>
+
+        <!-- Grouped Articles Nav -->
+        <div id="wiki-nav-container">
+          <!-- Injected dynamically by JS -->
+        </div>
+      </aside>
+
+      <!-- Main Article Display Card -->
+      <article class="wiki-article-card" id="wiki-article-view">
+        <!-- Article Header -->
+        <header class="wiki-article-header">
+          <div class="wiki-article-meta-row">
+            <div class="wiki-article-cat-badge">
+              <span id="article-cat-icon">📄</span>
+              <span id="article-cat-name">Category</span>
+            </div>
+            <div class="wiki-article-stats">
+              <span id="article-read-time">⏱️ 5 min read</span>
+              <span>•</span>
+              <span id="article-word-count">1,200 words</span>
+            </div>
+          </div>
+
+          <h2 class="wiki-article-title" id="article-title">Article Title</h2>
+
+          <div class="wiki-article-actions">
+            <button type="button" class="wiki-action-btn" id="btn-bookmark" onclick="toggleBookmarkCurrent()">
+              <span id="bookmark-icon">🔖</span>
+              <span id="bookmark-text">Bookmark</span>
+            </button>
+            <button type="button" class="wiki-action-btn" onclick="copyArticleLink()">
+              <span>🔗</span>
+              <span>Copy Link</span>
+            </button>
+            <button type="button" class="wiki-action-btn" onclick="window.print()">
+              <span>🖨️</span>
+              <span>Print</span>
+            </button>
+            <button type="button" class="wiki-action-btn" onclick="openEditModal()">
+              <span>✏️</span>
+              <span>Suggest Revision</span>
+            </button>
+            <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank"
+              class="wiki-action-btn wiki-action-github">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              <span>Edit on GitHub</span>
+            </a>
+          </div>
+        </header>
+
+        <!-- Nexudus Dynamic Equipment Banner -->
+        <div class="wiki-nexudus-banner" id="article-nexudus-banner" style="display: none;">
+          <div>
+            <div class="flex items-center gap-1 font-bold text-sky-400 text-sm">
+              <span id="nexudus-banner-title">Resource Reserved via Nexudus</span>
+              <span class="wiki-nexudus-badge-tag" id="nexudus-banner-badge">Reservation Required</span>
+            </div>
+            <p class="text-xs text-slate-300 mt-1" id="nexudus-banner-desc">
+              Must pass safety checkout before booking.
+            </p>
+          </div>
+          <a href="#" target="_blank" class="wiki-nexudus-btn" id="nexudus-banner-btn">
+            ⚡ Book on Nexudus →
+          </a>
+        </div>
+
+        <!-- In-Page Table of Contents -->
+        <nav class="wiki-toc-wrapper" id="article-toc-wrapper" style="display: none;">
+          <div class="wiki-toc-title">
+            <span>📑</span> In this Article
+          </div>
+          <ul class="wiki-toc-list" id="article-toc-list">
+            <!-- Injected dynamically -->
+          </ul>
+        </nav>
+
+        <!-- Article HTML Content -->
+        <div class="wiki-article-body" id="article-content">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Article Footer -->
+        <footer class="wiki-article-footer">
+          <div class="wiki-article-footer-left">
+            <span>See something outdated?</span>
+            <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank">Open PR on GitHub →</a>
+            <span style="color:var(--wiki-border);">|</span>
+            <a href="mailto:management@hackerdojo.com?subject=Wiki%20Feedback">Email Management</a>
+          </div>
+          <a href="#main-page" class="wiki-article-footer-home" onclick="navigateTo('main-page')">← Back to Overview</a>
+        </footer>
+      </article>
+    </main>
+
+    <!-- Suggest Edit Modal -->
+    <div class="wiki-modal-overlay" id="edit-modal">
+      <div class="wiki-modal-card">
+        <div class="wiki-modal-header">
+          <h3 class="wiki-modal-title">
+            <span>✏️</span> Propose Wiki Revision
+          </h3>
+          <button type="button" class="wiki-modal-close" onclick="closeEditModal()">✕</button>
+        </div>
+        <div class="wiki-modal-body">
+          <p class="wiki-modal-desc">
+            The Hacker Dojo wiki is community-driven. You can submit changes directly on GitHub or send a quick note to
+            operations.
+          </p>
+          <a href="https://github.com/hd-admin/hackerdojo.org" target="_blank" class="wiki-nexudus-direct-btn"
+            style="background:#24292f; border-color:#24292f;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            <span>Open Pull Request on GitHub</span>
+          </a>
+          <div class="wiki-divider"><span>or send notes to management</span></div>
+          <form onsubmit="handleEditSubmit(event)">
+            <div class="wiki-form-group">
+              <label class="wiki-form-label">Your Name</label>
+              <input type="text" id="edit-name" class="wiki-form-input" placeholder="e.g. Ada Lovelace" required>
+            </div>
+            <div class="wiki-form-group">
+              <label class="wiki-form-label">Your Email</label>
+              <input type="email" id="edit-email" class="wiki-form-input" placeholder="member@hackerdojo.com" required>
+            </div>
+            <div class="wiki-form-group">
+              <label class="wiki-form-label">Suggested Revision / Feedback for "<span id="edit-modal-article-title">this
+                  article</span>"</label>
+              <textarea id="edit-notes" class="wiki-textarea" placeholder="Explain what should be updated or added…"
+                required></textarea>
+            </div>
+            <button type="submit" class="wiki-submit-btn">Send Revision Email</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fullscreen Image Lightbox -->
+    <div class="wiki-lightbox" id="wiki-lightbox" onclick="closeLightbox()">
+      <img id="lightbox-img" src="" alt="Enlarged view">
+    </div>
+
+  </div>
+
+  <script>
+    // Embedded Complete Knowledge Base Data (Updated with real wiki articles and policies)
+    window.HACKER_DOJO_WIKI = [
+      {
+        id: "main-page",
+        title: "Hacker Dojo Overview & Quick Start",
+        category: "Overview",
+        category_label: "Overview",
+        icon: "⛩️",
+        read_time: "4 min read",
+        words: 780,
+        nexudus: null,
+        toc: [
+          { id: "welcome-to-hacker-dojo", text: "Welcome to Hacker Dojo", level: 2 },
+          { id: "core-rules", text: "Core Rules & Principles", level: 2 },
+          { id: "getting-around", text: "Getting Around the Space", level: 2 },
+          { id: "nexudus-portal", text: "Nexudus Member Portal", level: 2 }
+        ],
+        html: `
+          <p class="text-lg text-slate-200">Hacker Dojo is a 501(c)(3) non-profit community co-working space and makerspace created for hackers, creators, engineers, founders, and artists in Silicon Valley.</p>
+
+          <h2 id="welcome-to-hacker-dojo">Welcome to Hacker Dojo</h2>
+          <p>Founded in 2009, Hacker Dojo is run by its members for its members. Whether you are building an AI startup, soldering microcontrollers, laser-cutting prototype parts, operating HAM radio, or hosting an open-source meetup, the Dojo is designed to foster peer-to-peer collaboration and learning.</p>
+
+          <div class="wiki-info-box">
+            <strong>📍 Location:</strong> 855 Maude Ave, Mountain View, CA 94043.<br>
+            <strong>⏰ Hours:</strong> 24/7 access for active Keycard Members; Guest hours 10 AM – 9 PM daily.
+          </div>
+
+          <h2 id="core-rules">Core Rules & Principles</h2>
+          <ul>
+            <li><strong>Rule #1: Be Excellent to Each Other.</strong> Treat fellow members, guests, and staff with kindness and respect.</li>
+            <li><strong>Clean Up After Yourself:</strong> Leave tables, soldering stations, 3D printers, and the kitchen cleaner than you found them.</li>
+            <li><strong>Do Not Cut Polyvinyl Chloride (PVC) or Vinyl:</strong> Highly hazardous chlorine gas release occurs on laser cutters.</li>
+            <li><strong>Label Projects:</strong> If leaving an ongoing build on a workbench overnight, attach a physical tag with your name, phone number, and expected completion date.</li>
+          </ul>
+
+          <h2 id="getting-around">Getting Around the Space</h2>
+          <p>The Dojo is partitioned into functional zones:</p>
+          <ul>
+            <li><strong>Main Coworking Floor:</strong> Quiet and collaborative desks with high-speed Wi-Fi and power strips.</li>
+            <li><strong>Hardware & Electronics Lab:</strong> Oscilloscopes, soldering stations, multimeters, and HAM Radio station.</li>
+            <li><strong>Heavy Makerspace:</strong> Trotec Speedy 300 Laser Cutter, 3D Printer farm, CNC router, and shop tools.</li>
+            <li><strong>Event Rooms:</strong> Classroom A/B, Auditorium, and Conference rooms bookable via Nexudus.</li>
+            <li><strong>Kitchen & Lounge:</strong> Coffee, tea, refrigerators, microwave, and social dining booths.</li>
+          </ul>
+
+          <h2 id="nexudus-portal">Nexudus Member Portal</h2>
+          <p>All Dojo memberships, keycard access logs, desk bookings, and equipment reservations are managed through the <a href="https://hackerdojo.spaces.nexudus.com" target="_blank" class="text-sky-400 underline">Hacker Dojo Nexudus Portal</a>. Be sure to download the Nexudus Passport app for mobile door access.</p>
+        `
+      },
+      {
+        id: "Visitors_Guide",
+        title: "Visitors & Guest Pass Guide",
+        category: "Overview",
+        category_label: "Overview",
+        icon: "🎟️",
+        read_time: "3 min read",
+        words: 520,
+        nexudus: null,
+        toc: [
+          { id: "visiting-hours", text: "Visiting Hours & Day Passes", level: 2 },
+          { id: "guest-rules", text: "Guest Conduct & Access Limits", level: 2 },
+          { id: "tours", text: "Getting a Space Tour", level: 2 }
+        ],
+        html: `
+          <p class="text-lg text-slate-200">First time visiting Hacker Dojo? We welcome guests, meetup attendees, and prospective members during staff hours.</p>
+
+          <h2 id="visiting-hours">Visiting Hours & Day Passes</h2>
+          <p>Guests may visit Hacker Dojo from <strong>10:00 AM to 9:00 PM daily</strong>. Non-members who wish to work in the space during the day can purchase a Day Pass at the front kiosk or online.</p>
+          
+          <div class="wiki-info-box">
+            <strong>Day Pass Fee:</strong> $20/day for open desk coworking. Includes gigabit Wi-Fi, coffee, and access to common areas.
+          </div>
+
+          <h2 id="guest-rules">Guest Conduct & Access Limits</h2>
+          <ul>
+            <li>Guests must check in at the front desk iPad upon arrival each day.</li>
+            <li>Guests are not permitted to operate heavy makerspace machinery (laser cutters, 3D printer farm, power tools) unless accompanied by a certified member.</li>
+            <li>Keycard members may host up to 2 temporary guests for short meetings without purchasing additional day passes.</li>
+          </ul>
+
+          <h2 id="tours">Getting a Space Tour</h2>
+          <p>Staff and volunteer ambassadors offer free walk-in tours daily between 11:00 AM and 6:00 PM. Ask at the front desk or email <code>support@hackerdojo.com</code> in advance.</p>
+        `
+      },
+      {
+        id: "About_the_Hacker_Dojo",
+        title: "About Hacker Dojo & History",
+        category: "Overview",
+        category_label: "Overview",
+        icon: "📜",
+        read_time: "5 min read",
+        words: 920,
+        nexudus: null,
+        toc: [
+          { id: "founding-story", text: "Founding & History", level: 2 },
+          { id: "mission-values", text: "Mission & 501(c)(3) Status", level: 2 },
+          { id: "notable-alumni", text: "Notable Alumni & Startups", level: 2 }
+        ],
+        html: `
+          <p>Hacker Dojo was founded in 2009 by a group of computer enthusiasts and makers seeking a community space in Silicon Valley where software and hardware hackers could gather outside of traditional corporate settings.</p>
+
+          <h2 id="founding-story">Founding & History</h2>
+          <p>Originally located on California Street in Mountain View, the Dojo expanded rapidly to a larger building on Middlefield Road before moving to its current state-of-the-art facility at 855 Maude Ave. It remains one of the longest-running non-profit hackerspaces in the United States.</p>
+
+          <h2 id="mission-values">Mission & 501(c)(3) Status</h2>
+          <p>Hacker Dojo is a registered 501(c)(3) educational non-profit organization. Our mission is to encourage community learning, open-source technology development, and collaborative creation by maintaining an accessible, member-supported space.</p>
+
+          <h2 id="notable-alumni">Notable Alumni & Startups</h2>
+          <p>Dojo members have founded iconic companies and open-source projects, including Pinterest, Pebble Smartwatch, and numerous Y Combinator alumni startups that got their start at Dojo desks.</p>
+        `
+      },
+      {
+        id: "Founding_Members",
+        title: "Founding Members & Legacy",
+        category: "Overview",
+        category_label: "Overview",
+        icon: "🏆",
+        read_time: "4 min read",
+        words: 550,
+        nexudus: null,
+        toc: [
+          { id: "founding-directors", text: "Founding Directors", level: 2 },
+          { id: "founding-members", text: "Founding Members", level: 2 }
+        ],
+        html: `
+          <p class="text-lg text-slate-200">Founding Directors and Members contributed to the Dojo before the doors ever opened. Without them, Hacker Dojo would still just be an idea in David's head!</p>
+
+          <h2 id="founding-directors">Founding Directors</h2>
+          <ul>
+            <li><strong>Kitt Hodsden</strong></li>
+            <li><strong>Brian Klug</strong></li>
+            <li><strong>David Weekly</strong></li>
+            <li><strong>Jeff Lindsay</strong></li>
+            <li><strong>Melissalynn Perkins</strong></li>
+          </ul>
+
+          <h2 id="founding-members">Founding Members</h2>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-2 my-4 p-4 bg-[#121316] rounded-lg border border-[#2a2d35] text-sm">
+            <div>Adam Glickman</div>
+            <div>Adam Smith</div>
+            <div>Alison Chaiken</div>
+            <div>Andrew Wooster</div>
+            <div>Andy Smith</div>
+            <div>Bill Ward</div>
+            <div>Casey Greene</div>
+            <div>Charles Merriam</div>
+            <div>Chris Countryman</div>
+            <div>Daniel Silveira</div>
+            <div>David Mills</div>
+            <div>Dean Mao</div>
+            <div>Jason Abele</div>
+            <div>Jason May</div>
+            <div>Jesse Andrews</div>
+            <div>Jon Hull</div>
+            <div>Luke Crawford</div>
+            <div>Martin Williams</div>
+            <div>Matt Hancher</div>
+            <div>Matt Stancliff</div>
+            <div>Mike Lundy</div>
+            <div>Nathan Schmidt</div>
+            <div>Richard Kiss</div>
+            <div>Rohit Khare</div>
+            <div>Russ Fan</div>
+            <div>Sam Odio</div>
+            <div>Tim Fitz</div>
+          </div>
+        `
+      },
+      {
+        id: "Hacker_Dojo_Policies",
+        title: "Hacker Dojo Official Policies",
+        category: "Governance",
+        category_label: "Governance",
+        icon: "📜",
+        read_time: "12 min read",
+        words: 2800,
+        nexudus: null,
+        toc: [
+          { id: "policy-goal", text: "Goal & Core Rules", level: 2 },
+          { id: "policy-facilities", text: "Facilities Policies", level: 2 },
+          { id: "policy-membership", text: "Membership & Accounts", level: 2 },
+          { id: "policy-visitors", text: "Visitors & Drop-Ins", level: 2 },
+          { id: "policy-networks", text: "Networks & Access Points", level: 2 },
+          { id: "policy-sponsorships", text: "Sponsorship Rights", level: 2 },
+          { id: "policy-events", text: "Events & Room Usage", level: 2 },
+          { id: "policy-process", text: "Policy Process & Do-ocracy", level: 2 }
+        ],
+        html: `
+          <p class="text-lg text-slate-200">Goal: to fully enumerate all the policies we came up with over the years, and to have them all in one place. We may want to reduce/modify this list through member voting.</p>
+
+          <div class="wiki-info-box font-bold text-center text-lg">
+            "Be excellent to each other."
+          </div>
+
+          <h2 id="policy-facilities">1. Facilities</h2>
+          <ul>
+            <li><strong>Guest/Business hours:</strong> 10 AM - 9 PM 7 days a week.</li>
+            <li><strong>Sign-in:</strong> All guests must sign-in when they arrive at the Dojo each day. Those that do not sign-in or do not accept our policies may not stay.</li>
+            <li><strong>100% Communal:</strong> You may not store personal belongings. All space is communal space: first-come-first-serve. Any equipment left at the Dojo is done at your own risk and may be used by others. Donated or loaned items may be damaged or removed, and the Dojo is not liable.</li>
+            <li><strong>Help secure the Dojo:</strong> Please help keep the Dojo secure outside of business hours by making sure you keep the doors closed. No propping doors open and no tailgating.</li>
+            <li><strong>Sleeping:</strong> No sleeping is allowed at Hacker Dojo unless it is done in conjunction with an approved event.</li>
+            <li><strong>Keep the Place Nice:</strong> Please clean up any mess you make. This includes putting away any monitors, keyboards or laptop stands that you may have borrowed while using the space. We have cleaning supplies in the kitchen.</li>
+            <li><strong>Animals:</strong> Pets are permitted indoors at Hacker Dojo. We ask that the pet is potty trained and friendly. Please be mindful of members and the space when bringing your pet in. If a pet becomes a disturbance, we will ask to leave the pet at home.</li>
+            <li><strong>Clothing:</strong> Clothes and shoes must be worn at all times in the facility.</li>
+            <li><strong>Breaking Things:</strong> If you break parts of the Dojo, you are financially responsible for replacing them.</li>
+            <li><strong>Donations:</strong> Before you bring in a donation, please work with the directors to be sure an item will be useful to the membership. Some things are always welcome such as LCD monitors.</li>
+            <li><strong>Hold Harmless:</strong> Visitors, members, and other participants at Hacker Dojo hereby release, discharge and agree to hold harmless the Hacker Dojo, and its directors, members, and volunteers from and against any liability as a result of any harm, damage, the loss suffered to said visitors, their work, equipment used, personal property or personal injury suffered during the participation or attendance at Hacker Dojo.</li>
+            <li><strong>Dangerous Science:</strong> No science which requires a fume hood and no pathogen-related research. Please always be considerate of the safety of other people at the dojo. No science where food is stored for eating.</li>
+            <li><strong>Refrigerator:</strong> The fridge is for members to use only. Food should not be left inside for more than a day. The fridge is emptied every day by the janitors around 10 PM.</li>
+            <li><strong>Parking:</strong> The Dojo is not a campground nor a car storage facility. No vehicle may remain in the Dojo parking lot for more than 36 hours or it is liable to be towed. No sleeping in vehicles is allowed.</li>
+            <li><strong>Access points / Wifi hotspots:</strong> Operating routers, personal access points, or creating wifi hotspots are not allowed without prior approval from staff.</li>
+          </ul>
+
+          <h2 id="policy-membership">2. Membership</h2>
+          <ul>
+            <li><strong>Keys:</strong> Members get access to the Dojo immediately after becoming a member. The sharing of access is not allowed.</li>
+            <li><strong>Accounts:</strong> Accounts are associated with an individual person. The sharing of login is not allowed.</li>
+            <li><strong>Refunds:</strong> There are no refunds or prorated credit for unused time during a billing cycle. It is the responsibility of the member to pause their membership before their renewal date.</li>
+          </ul>
+
+          <h2 id="policy-visitors">3. Visitors / Drop-Ins</h2>
+          <ul>
+            <li><strong>Guests:</strong> Guests are either non-members or event attendees. Guests are welcome at Hacker Dojo and are encouraged to donate $20/day.</li>
+            <li><strong>Drop in Privileges:</strong> Guests do not get accounts, rights to attend events for free, access to the member's wifi, or voting rights.</li>
+            <li><strong>Children (Under 18):</strong> It is okay to bring children to the Dojo, just as you would any other guest, so long as you assume full responsibility for them and ensure they don't detract from members' experience of the Dojo. It is your duty as a member to keep an eye on them at all times.</li>
+            <li><strong>Not a Public Facility:</strong> Non-members are guests of the Dojo and can be asked to leave at any time without a needed reason. Non-members are only allowed in the Dojo between the hours of 10 AM – 9 PM unless accompanied by a member or are attending an event.</li>
+            <li>If you are working out of the Dojo for more than 2 days, you should become a member.</li>
+          </ul>
+
+          <h2 id="policy-networks">4. Networks</h2>
+          <p>Guests are not allowed to set up an AP. Members can set up an AP for TESTING PURPOSES ONLY because your work involves an access point.</p>
+          <ul>
+            <li>Please use only 20MHz channels. 40 and 80 MHz channels are too broad and will interfere with Hacker Dojo wifi.</li>
+            <li>Do not use more than 3db on your AP to avoid having a stronger signal than our access points.</li>
+            <li>For 2.4GHz: Use only <strong>CHANNEL 11</strong>.</li>
+            <li>For 5GHz: Use only <strong>CHANNELS 52, 54, 60, 64, 100, 104, 108, 112, 136, 140, 144</strong>.</li>
+          </ul>
+
+          <h2 id="policy-sponsorships">5. Sponsorships</h2>
+          <p>Unless given a special exemption by a director, sponsors do not receive special privileges within the Dojo, for example being able to reserve rooms, or being whitelisted for events.</p>
+
+          <h2 id="policy-events">6. Events & Room Usage Policies</h2>
+          <ul>
+            <li><strong>NDA's:</strong> Events may not require an NDA to attend.</li>
+            <li><strong>Submission:</strong> Events cannot be submitted less than 48 hours before the submission date. Member events can only be scheduled after 5:30 PM during the week due to parking issues.</li>
+            <li><strong>Approval:</strong> Events should align with Hacker Dojo mission and vision. Member run events will be approved by the event committee not more than 5 weeks in advance.</li>
+            <li><strong>Cancellation:</strong> If you need to cancel your event, it is your responsibility to do so both in the Hacker Dojo event system, as well as any external event systems.</li>
+            <li><strong>Right to Charge:</strong> Event hosts may charge for events and materials provided, provided they understand that Dojo members may sit in without paying. Members suggested donation is 20% of net revenue from the event.</li>
+            <li><strong>Branding:</strong> Any event with the name "Hacker Dojo" in the title must be approved by the board of directors.</li>
+            <li><strong>Teardown & Cleanup:</strong> You can have 1-hour teardown time at maximum. Rooms must be returned like described on the sign outside each room. You must leave Hacker Dojo in the condition you found it in. This includes hauling away excess garbage that does not fit in the dumpster (CIWA: <code>(408) 261-4110</code>).</li>
+          </ul>
+
+          <h2 id="policy-process">7. Policy Process</h2>
+          <ul>
+            <li><strong>No Reimbursements:</strong> Hacker Dojo does not reimburse members for purchases without prior approval by directors.</li>
+            <li><strong>Do-ocracy:</strong> If you have a change you want to see happen, lead the way. If you want a knitting circle, start one. If you want a book circle, lead one. If you want to build a winning robot, start designing.</li>
+            <li><strong>Board Discretion:</strong> The Board of Directors has a discretionary review for all policies and may change policies at will to reflect lease or legal updates.</li>
+          </ul>
+          <p class="text-xs text-slate-400 mt-4 italic">Policy submitted by Secretary of the Board Tanya Troshyna. Updated by Board Chair Emily Johnson to reflect 855 Maude Ave, Mountain View, CA location details.</p>
+        `
+      },
+      {
+        id: "Harassment_Policy",
+        title: "Harassment Policy & Anti-Retaliation",
+        category: "Governance",
+        category_label: "Governance",
+        icon: "🛡️",
+        read_time: "6 min read",
+        words: 1350,
+        nexudus: null,
+        toc: [
+          { id: "policy-overview", text: "Policy Overview", level: 2 },
+          { id: "what-is-harassment", text: "What is Harassment?", level: 2 },
+          { id: "reporting-steps", text: "What Should I do if I Experience Harassment?", level: 2 },
+          { id: "ombudsperson", text: "Who is an Ombudsperson?", level: 2 },
+          { id: "investigation-process", text: "What Happens Next?", level: 2 },
+          { id: "non-retaliation", text: "Our Non-Retaliation Policy", level: 2 }
+        ],
+        html: `
+          <p class="text-lg text-slate-200">Hacker Dojo is committed to providing a safe and welcoming place for everyone to meet and hack; each one of us, including staff, members, and visitors, are responsible for creating a respectful environment, free of harassment, intimidation, bias, and unlawful discrimination.</p>
+
+          <p>Hacker Dojo does not tolerate any behavior that (i) disrupts or interferes with another person's rightful use of the Dojo or (ii) creates an intimidating, offensive, or hostile environment. To that end, the Board of Directors of Hacker Dojo has created this policy to help us all comply with the law and maintain a safe, positive work environment.</p>
+
+          <h2 id="what-is-harassment">What is Harassment?</h2>
+          <p>Behavior that targets an individual and repeatedly makes them feel unsafe or unwelcome specifically because of their age, gender, sex, orientation, race, nationality, origin, or religion may be a violation of that person's civil rights and it may violate this harassment policy. California law defines harassment to include abuse or threats of abuse, stalking, sexual assault, unwanted sexual solicitation or demands for sexual compliance.</p>
+
+          <h2 id="reporting-steps">What Should I do if I Experience or Witness Harassment?</h2>
+          <p>If you experience or witness behavior that you think is harassing, you should first clearly inform the harasser that his or her conduct is offensive and unwelcome and request that the behavior stop.</p>
+          <div class="wiki-warning-box">
+            If the behavior continues, report it immediately to staff or email the Ombudsperson at <strong><a href="mailto:ombuds@hackerdojo.com" class="underline">ombuds@hackerdojo.com</a></strong>. You may also contact any Board member at <strong><a href="mailto:directors@hackerdojo.com" class="underline">directors@hackerdojo.com</a></strong>.
+          </div>
+
+          <h2 id="ombudsperson">Who is an Ombudsperson?</h2>
+          <p>An ombudsperson is a volunteer, non-staff position selected by the Board of Directors to serve as a trusted first and primary point of contact for staff, members and visitors. The Board has appointed a lawyer as the Ombudsperson (contact: <code>ombuds@hackerdojo.com</code>).</p>
+
+          <h2 id="investigation-process">I've Made a Report; What Happens Next?</h2>
+          <p>Once you have made a report, Hacker Dojo will conduct a confidential investigation. If Hacker Dojo determines that a violation of this policy has occurred, it will take appropriate steps to protect against future violations, which may include termination of membership rights or banning the violator from the premises.</p>
+
+          <h2 id="non-retaliation">Our Non-Retaliation Policy</h2>
+          <p>Hacker Dojo does not retaliate or tolerate retaliation against any person who raises a question or concern; who reports suspected incidents of harassment; or who participates or cooperates in any investigation. Our commitment to non-retaliation is a cornerstone of this policy.</p>
+        `
+      },
+      {
+        id: "Bylaws",
+        title: "Hacker Dojo Corporate Bylaws",
+        category: "Governance",
+        category_label: "Governance",
+        icon: "📜",
+        read_time: "10 min read",
+        words: 2400,
+        nexudus: null,
+        toc: [
+          { id: "organization-structure", text: "Organizational Structure", level: 2 },
+          { id: "board-elections", text: "Board of Directors Elections", level: 2 },
+          { id: "member-meetings", text: "Monthly Member Meetings", level: 2 }
+        ],
+        html: `
+          <p>Hacker Dojo is governed by its Board of Directors elected by voting members in accordance with California 501(c)(3) non-profit corporate laws.</p>
+
+          <h2 id="organization-structure">Organizational Structure</h2>
+          <p>The management of Hacker Dojo consists of:</p>
+          <ul>
+            <li><strong>Board of Directors:</strong> 7 elected members responsible for fiduciary oversight, strategic direction, and legal compliance.</li>
+            <li><strong>Operations Team:</strong> Staff and staff leads overseeing day-to-day facility maintenance, billing, and events.</li>
+            <li><strong>Hard-Members:</strong> Active contributing members who hold voting rights in annual elections.</li>
+          </ul>
+
+          <h2 id="board-elections">Board of Directors Elections</h2>
+          <p>Elections take place annually in November. Candidates must have maintained active membership in good standing for at least 6 consecutive months prior to nomination.</p>
+
+          <h2 id="member-meetings">Monthly Member Meetings</h2>
+          <p>Member Town Hall meetings occur on the 3rd Wednesday of every month at 7:30 PM PST in the Grand Auditorium and virtually over Discord.</p>
+        `
+      },
+      {
+        id: "Laser_Cutter",
+        title: "Trotec Speedy 300 Laser Cutter Guide",
+        category: "Makerspace",
+        category_label: "Makerspace",
+        icon: "⚡",
+        read_time: "7 min read",
+        words: 1450,
+        nexudus: {
+          title: "Trotec Speedy 300 Training & Reservation",
+          badge: "Training Required",
+          desc: "Mandatory safety training required before operating. Ask in Discord to schedule!",
+          url: "https://discord.com/channels/698267668918173827/1405647875471315076",
+          btn_text: "💬 Request Laser Training in Discord"
+        },
+        toc: [
+          { id: "laser-training", text: "Training & Certification Requirement", level: 2 },
+          { id: "laser-overview", text: "Overview & Machine Specs", level: 2 },
+          { id: "approved-materials", text: "Approved vs. Prohibited Materials", level: 2 },
+          { id: "safety-checklist", text: "Pre-Flight Safety Checklist", level: 2 },
+          { id: "jobcontrol-software", text: "Operating JobControl Software", level: 2 }
+        ],
+        html: `
+          <p class="text-lg text-slate-200">The Trotec Speedy 300 CO2 Laser Cutter provides precision cutting and vector engraving for wood, acrylic, paper, leather, and anodized aluminum.</p>
+
+          <h2 id="laser-training">Training & Certification Requirement</h2>
+          <div class="wiki-warning-box">
+            <strong>⚠️ MANDATORY TRAINING REQUIRED:</strong> All members must complete an in-person safety checkout before operating the laser cutter. To request and schedule a training session with a trainer, please post in the <strong><a href="https://discord.com/channels/698267668918173827/1405647875471315076" target="_blank" class="underline font-bold text-amber-300">#laser-cutter Discord Channel →</a></strong>
+          </div>
+          <p>Once you pass your training checkout, your Nexudus member account will be badged for laser cutter access and reservation privileges.</p>
+
+          <h2 id="laser-overview">Overview & Machine Specs</h2>
+          <ul>
+            <li><strong>Laser Power:</strong> 80 Watt CO2 Laser Tube</li>
+            <li><strong>Work Area:</strong> 29" × 17" (726 mm × 432 mm)</li>
+            <li><strong>Software Control:</strong> Trotec JobControl on dedicated workstation PC</li>
+            <li><strong>Exhaust:</strong> Purex Fume Extraction Unit (MUST be powered ON during operation)</li>
+          </ul>
+
+          <h2 id="approved-materials">Approved vs. Prohibited Materials</h2>
+          <div class="wiki-warning-box">
+            <strong>⚠️ CRITICAL FIRE & HEALTH HAZARD:</strong> Never cut materials containing Chlorine, Fluorine, or Bromine (e.g. PVC, Vinyl, Lexan/Polycarbonate). Cutting PVC produces hydrochloric acid gas that burns human lungs and destroys laser optics!
+          </div>
+
+          <h3>Allowed Materials:</h3>
+          <ul>
+            <li>Birch Plywood, MDF, Solid Hardwoods (up to 1/4" thickness)</li>
+            <li>Cast Acrylic (PMMA) - Engraves clean white, cuts smooth edges</li>
+            <li>Cardboard, Chipboard, Matboard</li>
+            <li>Vegetable-tanned Natural Leather</li>
+            <li>Anodized Aluminum (Engrave only)</li>
+          </ul>
+
+          <h2 id="safety-checklist">Pre-Flight Safety Checklist</h2>
+          <ol>
+            <li>Verify your Nexudus account has active <strong>Laser Checkout Certification</strong>.</li>
+            <li>Turn ON the Purex Air Filtration System switch located under the table. Confirm airflow.</li>
+            <li>Inspect lens for dust or residue. Clean gently with lens paper and isopropyl alcohol if necessary.</li>
+            <li>Focus the laser head using the manual gauge tool hanging on the side.</li>
+            <li>NEVER leave the laser cutter unattended while firing. Keep your hand near the Emergency E-Stop button.</li>
+          </ol>
+
+          <h2 id="jobcontrol-software">Operating JobControl Software</h2>
+          <p>Export your vector designs from Inkscape, Illustrator, or LightBurn as vector PDFs or SVGs with red stroke lines <code>RGB: (255, 0, 0)</code> set to <code>0.001 in / hairline</code> for vector cutting.</p>
+        `
+      },
+      {
+        id: "3D_Printers",
+        title: "Prusa & Bambu Lab 3D Printer Farm",
+        category: "Makerspace",
+        category_label: "Makerspace",
+        icon: "🖨️",
+        read_time: "5 min read",
+        words: 980,
+        nexudus: {
+          title: "3D Printer Workshop Class",
+          badge: "Class Required",
+          desc: "Class required prior to using the printer farm. Sign up on Meetup!",
+          url: "https://www.meetup.com/hackerdojo/",
+          btn_text: "📅 View 3D Printer Class on Meetup"
+        },
+        toc: [
+          { id: "printer-class", text: "Mandatory 3D Printing Class Requirement", level: 2 },
+          { id: "prusa-specs", text: "Printer Fleet Specifications", level: 2 },
+          { id: "slicing-guide", text: "Slicing with PrusaSlicer & Bambu Studio", level: 2 },
+          { id: "bed-cleaning", text: "Bed Preparation & First Layer", level: 2 }
+        ],
+        html: `
+          <p>The Dojo maintains a farm of Original Prusa i3 MK3S+ and Bambu Lab X1-Carbon 3D printers configured for PLA, PETG, and TPU printing.</p>
+
+          <h2 id="printer-class">Mandatory 3D Printing Class Requirement</h2>
+          <div class="wiki-info-box">
+            <strong>🎓 CLASS REQUIRED BEFORE USE:</strong> Members and visitors are required to take a 3D Printing Workshop class prior to operating any 3D printers in the space. Find and sign up for upcoming class sessions on the <strong><a href="https://www.meetup.com/hackerdojo/" target="_blank" class="underline font-bold text-sky-300">Hacker Dojo Meetup Page →</a></strong> or check <strong><a href="https://hackerdojo.spaces.nexudus.com/events" target="_blank" class="underline font-bold text-sky-300">Nexudus Events →</a></strong>.
+          </div>
+          <p class="mb-4">The workshop covers basic 3D design principles, slicing software configuration, machine operation, bed levelling, and filament handling so you can successfully print your own models!</p>
+
+          <h2 id="prusa-specs">Printer Fleet Specifications</h2>
+          <ul>
+            <li><strong>Original Prusa i3 MK3S+:</strong> 25 × 21 × 21 cm build volume, 0.4mm brass nozzle.</li>
+            <li><strong>Bambu Lab X1-Carbon:</strong> High-speed CoreXY printing with automatic material system (AMS).</li>
+            <li><strong>Supported Filament:</strong> 1.75 mm PLA (Recommended), PETG, TPU flexible filament.</li>
+          </ul>
+
+          <h2 id="slicing-guide">Slicing with PrusaSlicer & Bambu Studio</h2>
+          <p>Use standard profiles in PrusaSlicer or Bambu Studio. Export your sliced <code>.gcode</code> or <code>.3mf</code> file directly to the printer SD cards or via octoprint local server.</p>
+
+          <h2 id="bed-cleaning">Bed Preparation & First Layer</h2>
+          <div class="wiki-info-box">
+            Always wipe down the PEI spring steel bed with 99% Isopropyl Alcohol (IPA) microfiber cloth before starting a print to remove finger oils.
+          </div>
+          <p>Observe the first layer (Z-height calibration). If filament squishes unevenly or peels up, cancel print immediately and recalibrate Live Z offset.</p>
+        `
+      },
+      {
+        id: "Machine_Tools",
+        title: "Electronics Lab & Machine Tools",
+        category: "Makerspace",
+        category_label: "Makerspace",
+        icon: "🔬",
+        read_time: "6 min read",
+        words: 1100,
+        nexudus: null,
+        toc: [
+          { id: "soldering-bench", text: "Soldering & Desoldering Stations", level: 2 },
+          { id: "test-equipment", text: "Oscilloscopes & Logic Analyzers", level: 2 },
+          { id: "machine-shop", text: "Drill Press & Hand Tools", level: 2 }
+        ],
+        html: `
+          <p>The Electronics Lab is equipped with professional precision tools for surface-mount (SMD) and through-hole prototyping, debugging, and reverse engineering.</p>
+
+          <h2 id="soldering-bench">Soldering & Desoldering Stations</h2>
+          <ul>
+            <li>Weller & Hakko temperature-controlled soldering irons.</li>
+            <li>Hot air rework station for SMD IC chip removal and reflow.</li>
+            <li>Fume extractors — MUST be turned on when soldering leaded or lead-free solder.</li>
+          </ul>
+
+          <h2 id="test-equipment">Oscilloscopes & Logic Analyzers</h2>
+          <p>Rigol 4-channel 100MHz Digital Storage Oscilloscopes, DC power supplies, Saleae logic analyzers, and digital multimeters (DMMs) are available on Workbench 2.</p>
+
+          <h2 id="machine-shop">Drill Press & Hand Tools</h2>
+          <p>Located in the heavy machine workshop: benchtop drill press, rotary Dremel tools, wire strippers, crimpers, tap & die sets, and calipers.</p>
+        `
+      },
+      {
+        id: "HAM_QSV",
+        title: "HAM Radio Station & QSV Electronics Bench",
+        category: "Makerspace",
+        category_label: "Makerspace",
+        icon: "📻",
+        read_time: "4 min read",
+        words: 680,
+        nexudus: null,
+        toc: [
+          { id: "ham-station", text: "K6Dojo Amateur Radio Shack", level: 2 },
+          { id: "qsv-bench", text: "QSV Electronics Bench Setup", level: 2 }
+        ],
+        html: `
+          <p>Hacker Dojo operates an active amateur radio shack (Callsign: <strong>K6Dojo</strong>) and specialized RF testing equipment for licensed radio operators and enthusiasts.</p>
+
+          <h2 id="ham-station">K6Dojo Amateur Radio Shack</h2>
+          <ul>
+            <li><strong>HF/VHF/UHF Transceivers:</strong> Yaesu & Icom HF rigs connected to rooftop dipole antennas.</li>
+            <li><strong>Frequency Operations:</strong> 2m / 70cm local repeaters, Winlink packet radio, and HF digital modes (FT8, JS8Call).</li>
+            <li><strong>Licensing:</strong> FCC Amateur Radio License required to transmit. Non-licensed members may listen with a licensed sponsor.</li>
+          </ul>
+
+          <h2 id="qsv-bench">QSV Electronics Bench Setup</h2>
+          <p>The Quick-Service-Validation (QSV) bench features high-bandwidth spectrum analyzers, RF signal generators, and dark-mode workspace lighting for high-frequency circuit testing.</p>
+        `
+      },
+      {
+        id: "Network_policies",
+        title: "Network Policies & Wi-Fi Troubleshooting",
+        category: "Facilities",
+        category_label: "Facilities",
+        icon: "📶",
+        read_time: "5 min read",
+        words: 890,
+        nexudus: null,
+        toc: [
+          { id: "wifi-ssids", text: "Available Wi-Fi Networks", level: 2 },
+          { id: "troubleshooting", text: "Wi-Fi Troubleshooting Steps", level: 2 },
+          { id: "acceptable-use", text: "Acceptable Network Policy", level: 2 }
+        ],
+        html: `
+          <p>Hacker Dojo provides ultra-fast gigabit symmetric fiber optic internet across the entire facility.</p>
+
+          <h2 id="wifi-ssids">Available Wi-Fi Networks</h2>
+          <ul>
+            <li><strong>HackerDojo-Member:</strong> High-priority 5GHz/6GHz WPA3 network for registered members. Password on Nexudus dashboard.</li>
+            <li><strong>HackerDojo-Guest:</strong> Open portal network for visitors and event attendees.</li>
+            <li><strong>HackerDojo-IoT:</strong> Isolated 2.4GHz network reserved for microcontrollers, ESP32s, and hardware test rigs.</li>
+          </ul>
+
+          <h2 id="troubleshooting">Wi-Fi Troubleshooting Steps</h2>
+          <ol>
+            <li>If experiencing high latency, forget the network and reconnect to <code>HackerDojo-Member</code> on 5GHz band.</li>
+            <li>Ensure your MAC address randomized privacy mode is disabled if accessing local server drops.</li>
+            <li>For wired ethernet desk drops, check that link LEDs flicker green on the RJ45 wall jack.</li>
+          </ol>
+
+          <h2 id="acceptable-use">Acceptable Network Policy</h2>
+          <p>Do not run network sniffers, ARP spoofers, rogue DHCP servers, or unauthorized port scans targeting other members' connected devices.</p>
+        `
+      },
+      {
+        id: "Hacker_Dojo_Membership",
+        title: "Membership Tiers & Keycard Access",
+        category: "Membership",
+        category_label: "Membership",
+        icon: "💳",
+        read_time: "5 min read",
+        words: 780,
+        nexudus: null,
+        toc: [
+          { id: "membership-plans", text: "Membership Tiers & Dues", level: 2 },
+          { id: "keycard-setup", text: "Keycard & Door Access Setup", level: 2 },
+          { id: "cancellations", text: "Account Management & Billing", level: 2 }
+        ],
+        html: `
+          <p>Membership directly funds our building lease, gigabit internet, electricity, equipment maintenance, and community programs.</p>
+
+          <h2 id="membership-plans">Membership Tiers & Dues</h2>
+          <ul>
+            <li><strong>Full Member ($150/mo):</strong> 24/7 keycard door access, full makerspace tool usage, voting rights, free event hosting.</li>
+            <li><strong>Student / Hardship ($75/mo):</strong> Discounted 24/7 rate for verified full-time students.</li>
+            <li><strong>Mail / Business Address Add-on:</strong> Registered business mail receipt service via Nexudus.</li>
+          </ul>
+
+          <h2 id="keycard-setup">Keycard & Door Access Setup</h2>
+          <p>After joining on Nexudus, visit the staff desk during guest hours to pick up your RFID keycard or pair the Nexudus Passport mobile app for Bluetooth door unlocking.</p>
+
+          <h2 id="cancellations">Account Management & Billing</h2>
+          <p>Memberships auto-renew monthly on your sign-up date. You can pause or cancel anytime directly in your Nexudus portal account settings.</p>
+        `
+      },
+      {
+        id: "Events",
+        title: "Event Hosting & Room Reservations",
+        category: "Membership",
+        category_label: "Membership",
+        icon: "🎟️",
+        read_time: "6 min read",
+        words: 1150,
+        nexudus: {
+          title: "Book Event Space / Room",
+          badge: "Nexudus Booking",
+          desc: "Reserve Classrooms, Conference Rooms, or the Auditorium.",
+          url: "https://hackerdojo.spaces.nexudus.com/booking/resources",
+          btn_text: "⚡ Reserve Event Space"
+        },
+        toc: [
+          { id: "hosting-types", text: "Event Types & Pricing", level: 2 },
+          { id: "setup-teardown", text: "Room Setup & Teardown Rules", level: 2 },
+          { id: "av-equipment", text: "Audio/Visual Setup", level: 2 }
+        ],
+        html: `
+          <p>Hacker Dojo hosts tech meetups, hackathons, coding workshops, and founder demos. Community events open to the public are encouraged!</p>
+
+          <h2 id="hosting-types">Event Types & Pricing</h2>
+          <ul>
+            <li><strong>Free Community Meetups:</strong> Free for members to host if open to the general public with no admission charge.</li>
+            <li><strong>Paid Workshops / Commercial Events:</strong> Require hourly room rental fees billed through Nexudus.</li>
+          </ul>
+
+          <h2 id="setup-teardown">Room Setup & Teardown Rules</h2>
+          <div class="wiki-warning-box">
+            Organizer is responsible for returning tables, chairs, whiteboards, and trash cans to default configurations within 30 minutes of event conclusion.
+          </div>
+
+          <h2 id="av-equipment">Audio/Visual Setup</h2>
+          <p>Every event room is equipped with 4K HDMI displays, wireless microphones, and webcams for Zoom hybrid streaming. Connect via the HDMI dongles on podium tables.</p>
+        `
+      },
+      {
+        id: "Community",
+        title: "Community Groups & Friday Night Socials",
+        category: "Community",
+        category_label: "Community",
+        icon: "🤝",
+        read_time: "4 min read",
+        words: 650,
+        nexudus: null,
+        toc: [
+          { id: "friday-socials", text: "Friday Night Socials (FNS)", level: 2 },
+          { id: "music-corner", text: "Music Corner & Jam Sessions", level: 2 },
+          { id: "interest-groups", text: "Member Interest Groups (MIGs)", level: 2 }
+        ],
+        html: `
+          <p>The Dojo is more than a workplace — it is a vibrant social community of creators, dreamers, and hobbyists.</p>
+
+          <h2 id="friday-socials">Friday Night Socials (FNS)</h2>
+          <p>Every Friday starting at 6:30 PM, members gather in the lounge for food, drinks, project show-and-tell, board games, and casual socializing. Guests are welcome!</p>
+
+          <h2 id="music-corner">Music Corner & Jam Sessions</h2>
+          <p>Located in the lounge, the Music Corner features electric guitars, keyboards, amplifiers, and acoustic instruments available for members during non-quiet hours.</p>
+
+          <h2 id="interest-groups">Member Interest Groups (MIGs)</h2>
+          <p>Join active Discord channels for specialized clubs: AI & Machine Learning, Robotics, Game Dev, HAM Radio, Biohacking, and Crypto/Web3.</p>
+        `
+      },
+      {
+        id: "Marketing",
+        title: "Marketing, Branding & Logo Usage",
+        category: "Marketing",
+        category_label: "Marketing",
+        icon: "🎨",
+        read_time: "4 min read",
+        words: 610,
+        nexudus: null,
+        toc: [
+          { id: "logo-specs", text: "Official Logo & Torii Gate Asset", level: 2 },
+          { id: "brand-colors", text: "Official Color Palette", level: 2 },
+          { id: "usage-rules", text: "Branding Guidelines", level: 2 }
+        ],
+        html: `
+          <p>Guidelines for event organizers, press, sponsors, and partners using the official Hacker Dojo brand assets.</p>
+
+          <h2 id="logo-specs">Official Logo & Torii Gate Asset</h2>
+          <p>Our official emblem is the <strong>Tori (Torii Gate)</strong> symbol combined with custom Whitney Medium font typography.</p>
+          
+          <div class="my-4 p-4 bg-[#121316] rounded-lg border border-[#2a2d35] flex items-center gap-4 flex-wrap">
+            <img src="static/images/logo.png" alt="Hacker Dojo Logo" class="h-10 w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/180x38/0f1013/df3f33?text=HackerDojo+Logo';">
+            <span class="text-xs text-slate-400">File path: <code>static/images/logo.png</code></span>
+          </div>
+
+          <ul>
+            <li><strong>Official Name:</strong> "Hacker Dojo" (Two words, capital H and capital D).</li>
+            <li><strong>Short Name:</strong> "the Dojo" (Capital D).</li>
+          </ul>
+
+          <h2 id="brand-colors">Official Color Palette</h2>
+          <ul>
+            <li><strong>Primary Red:</strong> Pantone 1945 C (Hex <code>#df3f33</code> / <code>#c41230</code>)</li>
+            <li><strong>Black:</strong> Hex <code>#0f1013</code></li>
+            <li><strong>White:</strong> Hex <code>#ffffff</code></li>
+          </ul>
+
+          <h2 id="usage-rules">Branding Guidelines</h2>
+          <div class="wiki-info-box">
+            Please leave the logo intact. Do not rotate, alter proportions, stretch, or change colors outside brand standards.
+          </div>
+        `
+      },
+      {
+        id: "Maintenance",
+        title: "Facility Maintenance & Operations",
+        category: "Facilities",
+        category_label: "Facilities",
+        icon: "🔧",
+        read_time: "4 min read",
+        words: 590,
+        nexudus: null,
+        toc: [
+          { id: "cleaning-shifts", text: "Member Cleaning & Chores", level: 2 },
+          { id: "reporting-issues", text: "Reporting Broken Tools & Facilities", level: 2 }
+        ],
+        html: `
+          <p>Because Hacker Dojo is a member-run community, keeping the space functional relies on collective responsibility.</p>
+
+          <h2 id="cleaning-shifts">Member Cleaning & Chores</h2>
+          <ul>
+            <li>Wash your own dishes in the kitchen sink or load them into the dishwasher.</li>
+            <li>Empty dust collectors and clean laser cutter trays after completing shop jobs.</li>
+            <li>Return tools to designated pegboards in the hardware lab.</li>
+          </ul>
+
+          <h2 id="reporting-issues">Reporting Broken Tools & Facilities</h2>
+          <p>Found a clogged 3D printer, broken soldering iron tip, or low bathroom supplies? Post in the <code>#facilities-help</code> Discord channel or email <code>management@hackerdojo.com</code>.</p>
+        `
+      }
+    ];
+  </script>
+
+  <script>
+    (function () {
+      let articles = window.HACKER_DOJO_WIKI || [];
+      let currentArticleId = 'main-page';
+      let activeCategory = 'all';
+      let searchQuery = '';
+      let onlyNexudus = false;
+      let bookmarks = [];
+      let memberSession = null;
+
+      function init() {
+        loadMemberSession();
+        loadBookmarks();
+        updateCategoryCounts();
+        setupKeyboardShortcuts();
+        setupEventListeners();
+
+        // Check URL hash for direct deep linking
+        const hash = window.location.hash.replace('#', '').replace('/', '');
+        if (hash) {
+          const match = articles.find(a => a.id === hash);
+          if (match) {
+            currentArticleId = match.id;
+          }
+        }
+
+        renderSidebar();
+        renderCurrentArticle();
+        renderAuthWidget();
+      }
+
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '=([^;]*)'));
+        return match ? decodeURIComponent(match[1]) : null;
+      }
+
+      function loadMemberSession() {
+        const fullName = getCookie('NexudusFullName') || getCookie('NexudusUserName');
+        const loggedIn = getCookie('NexudusLoggedIn') || getCookie('NexudusToken');
+
+        if (fullName || loggedIn) {
+          memberSession = {
+            loggedIn: true,
+            name: fullName || 'Dojo Member',
+            tier: 'Nexudus Member'
+          };
+        } else {
+          memberSession = null;
+        }
+      }
+
+      function renderAuthWidget() {
+        const banner = document.getElementById('wiki-member-banner');
+        const nameEl = document.getElementById('wiki-member-name');
+        if (!banner) return;
+
+        if (memberSession && memberSession.loggedIn) {
+          nameEl.textContent = memberSession.name;
+          banner.style.display = 'flex';
+        } else {
+          banner.style.display = 'none';
+        }
+      }
+
+      function loadBookmarks() {
+        try {
+          const saved = localStorage.getItem('hd_wiki_bookmarks');
+          if (saved) bookmarks = JSON.parse(saved);
+        } catch (e) { }
+      }
+
+      function saveBookmarks() {
+        try {
+          localStorage.setItem('hd_wiki_bookmarks', JSON.stringify(bookmarks));
+        } catch (e) { }
+      }
+
+      window.toggleBookmarkCurrent = function () {
+        const idx = bookmarks.indexOf(currentArticleId);
+        if (idx > -1) {
+          bookmarks.splice(idx, 1);
+          showToast('Bookmark removed');
+        } else {
+          bookmarks.push(currentArticleId);
+          showToast('Article saved to bookmarks! ⭐');
+        }
+        saveBookmarks();
+        updateBookmarkButton();
+        renderBookmarksSidebar();
+      };
+
+      function updateBookmarkButton() {
+        const btn = document.getElementById('btn-bookmark');
+        const icon = document.getElementById('bookmark-icon');
+        const text = document.getElementById('bookmark-text');
+        if (!btn) return;
+        if (bookmarks.includes(currentArticleId)) {
+          btn.classList.add('bookmarked');
+          icon.textContent = '★';
+          text.textContent = 'Saved';
+        } else {
+          btn.classList.remove('bookmarked');
+          icon.textContent = '🔖';
+          text.textContent = 'Bookmark';
+        }
+      }
+
+      function renderBookmarksSidebar() {
+        const container = document.getElementById('wiki-bookmarks-section');
+        const list = document.getElementById('wiki-bookmarks-list');
+        if (!container || !list) return;
+
+        if (!bookmarks.length) {
+          container.style.display = 'none';
+          return;
+        }
+        container.style.display = 'block';
+        list.innerHTML = '';
+        bookmarks.forEach(id => {
+          const art = articles.find(a => a.id === id);
+          if (art) {
+            const item = document.createElement('a');
+            item.href = `#${art.id}`;
+            item.className = 'wiki-nav-item' + (art.id === currentArticleId ? ' active' : '');
+            item.innerHTML = `
+            <div class="wiki-nav-item-left">
+              <span class="wiki-nav-item-icon">${art.icon}</span>
+              <span class="wiki-nav-item-text">${art.title}</span>
+            </div>
+          `;
+            item.onclick = (e) => { e.preventDefault(); navigateTo(art.id); };
+            list.appendChild(item);
+          }
+        });
+      }
+
+      function updateCategoryCounts() {
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setVal('count-all', articles.length);
+        setVal('count-overview', articles.filter(a => a.category === 'Overview').length);
+        setVal('count-governance', articles.filter(a => a.category === 'Governance').length);
+        setVal('count-makerspace', articles.filter(a => a.category === 'Makerspace').length);
+        setVal('count-facilities', articles.filter(a => a.category === 'Facilities').length);
+        setVal('count-membership', articles.filter(a => a.category === 'Membership').length);
+        setVal('count-community', articles.filter(a => a.category === 'Community').length);
+        setVal('count-marketing', articles.filter(a => a.category === 'Marketing').length);
+        setVal('count-nexudus', articles.filter(a => a.nexudus !== null).length);
+      }
+
+      window.setCategoryFilter = function (cat) {
+        activeCategory = cat;
+        onlyNexudus = false;
+        document.querySelectorAll('.wiki-cat-pill').forEach(btn => btn.classList.remove('active'));
+        if (window.event && window.event.currentTarget) {
+          window.event.currentTarget.classList.add('active');
+        }
+        renderSidebar();
+      };
+
+      window.toggleNexudusFilter = function () {
+        onlyNexudus = !onlyNexudus;
+        activeCategory = 'all';
+        document.querySelectorAll('.wiki-cat-pill').forEach(btn => btn.classList.remove('active'));
+        const btn = document.getElementById('pill-nexudus-btn');
+        if (onlyNexudus) {
+          btn.classList.add('active');
+        } else {
+          document.querySelector('.wiki-cat-pill').classList.add('active');
+        }
+        renderSidebar();
+      };
+
+      const searchInput = document.getElementById('wiki-search-input');
+      const searchClear = document.getElementById('wiki-search-clear');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', function () {
+          searchQuery = this.value.trim().toLowerCase();
+          if (searchClear) searchClear.style.display = searchQuery ? 'block' : 'none';
+          renderSidebar();
+        });
+      }
+
+      window.clearSearch = function () {
+        if (searchInput) {
+          searchInput.value = '';
+          searchQuery = '';
+        }
+        if (searchClear) searchClear.style.display = 'none';
+        renderSidebar();
+        if (searchInput) searchInput.focus();
+      };
+
+      function filterArticles() {
+        return articles.filter(art => {
+          if (activeCategory !== 'all' && art.category !== activeCategory) {
+            return false;
+          }
+          if (onlyNexudus && !art.nexudus) {
+            return false;
+          }
+          if (searchQuery) {
+            const inTitle = art.title.toLowerCase().includes(searchQuery);
+            const inHtml = art.html.toLowerCase().includes(searchQuery);
+            const inCat = art.category_label.toLowerCase().includes(searchQuery);
+            return inTitle || inHtml || inCat;
+          }
+          return true;
+        });
+      }
+
+      function renderSidebar() {
+        const navContainer = document.getElementById('wiki-nav-container');
+        const filteredCount = document.getElementById('wiki-filtered-count');
+        const filtered = filterArticles();
+
+        if (filteredCount) filteredCount.textContent = `${filtered.length} articles`;
+        renderBookmarksSidebar();
+
+        if (!navContainer) return;
+
+        if (filtered.length === 0) {
+          navContainer.innerHTML = `
+          <div style="padding: 24px 12px; text-align: center; color: var(--wiki-text-muted);">
+            <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+            <p style="margin: 0; font-size: 14px;">No articles match "<strong>${escapeHtml(searchQuery)}</strong>"</p>
+            <button type="button" onclick="clearSearch()" style="margin-top: 10px; background: none; border: 1px solid var(--wiki-border); padding: 5px 12px; border-radius: 6px; font-size: 12px; color: #38bdf8; cursor: pointer;">Clear Search</button>
+          </div>
+        `;
+          return;
+        }
+
+        const groups = {};
+        filtered.forEach(art => {
+          if (!groups[art.category_label]) groups[art.category_label] = [];
+          groups[art.category_label].push(art);
+        });
+
+        let html = '';
+        for (const [catLabel, groupArticles] of Object.entries(groups)) {
+          html += `
+          <div class="wiki-nav-group">
+            <div class="wiki-nav-group-title">${catLabel} (${groupArticles.length})</div>
+        `;
+          groupArticles.forEach(art => {
+            const isActive = art.id === currentArticleId;
+            const hasNexudus = art.nexudus ? `<span class="wiki-nav-nexudus-badge">Bookable</span>` : '';
+            html += `
+            <a href="#${art.id}" class="wiki-nav-item ${isActive ? 'active' : ''}" data-id="${art.id}">
+              <div class="wiki-nav-item-left">
+                <span class="wiki-nav-item-icon">${art.icon}</span>
+                <span class="wiki-nav-item-text">${art.title}</span>
+              </div>
+              ${hasNexudus}
+            </a>
+          `;
+          });
+          html += `</div>`;
+        }
+
+        navContainer.innerHTML = html;
+
+        navContainer.querySelectorAll('.wiki-nav-item').forEach(el => {
+          el.addEventListener('click', function (e) {
+            e.preventDefault();
+            navigateTo(this.getAttribute('data-id'));
+          });
+        });
+      }
+
+      function navigateTo(slug) {
+        const art = articles.find(a => a.id === slug);
+        if (!art) return;
+        currentArticleId = art.id;
+        window.location.hash = `#${art.id}`;
+        renderSidebar();
+        renderCurrentArticle();
+
+        const view = document.getElementById('wiki-article-view');
+        if (view && window.innerWidth < 960) {
+          view.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function renderCurrentArticle() {
+        const art = articles.find(a => a.id === currentArticleId) || articles[0];
+        if (!art) return;
+
+        document.getElementById('article-cat-icon').textContent = art.icon;
+        document.getElementById('article-cat-name').textContent = art.category_label;
+        document.getElementById('article-read-time').textContent = `⏱️ ${art.read_time}`;
+        document.getElementById('article-word-count').textContent = `${art.words.toLocaleString()} words`;
+        document.getElementById('article-title').textContent = art.title;
+
+        document.title = `${art.title} — Hacker Dojo Wiki`;
+
+        updateBookmarkButton();
+
+        const banner = document.getElementById('article-nexudus-banner');
+        if (art.nexudus && banner) {
+          banner.style.display = 'flex';
+          document.getElementById('nexudus-banner-title').textContent = art.nexudus.title;
+          document.getElementById('nexudus-banner-badge').textContent = art.nexudus.badge;
+          document.getElementById('nexudus-banner-desc').textContent = art.nexudus.desc;
+          const bannerBtn = document.getElementById('nexudus-banner-btn');
+          if (bannerBtn) {
+            bannerBtn.href = art.nexudus.url;
+            bannerBtn.textContent = `${art.nexudus.btn_text || '⚡ Book on Nexudus'} →`;
+          }
+        } else if (banner) {
+          banner.style.display = 'none';
+        }
+
+        const tocWrapper = document.getElementById('article-toc-wrapper');
+        const tocList = document.getElementById('article-toc-list');
+        if (art.toc && art.toc.length > 0 && tocWrapper && tocList) {
+          tocWrapper.style.display = 'block';
+          tocList.innerHTML = art.toc.map(item => `
+          <li class="wiki-toc-item level-${item.level}">
+            <a href="#${item.id}" onclick="jumpToHeading('${item.id}', event)">
+              ${item.level === 3 ? '↳ ' : '• '}${escapeHtml(item.text)}
+            </a>
+          </li>
+        `).join('');
+        } else if (tocWrapper) {
+          tocWrapper.style.display = 'none';
+        }
+
+        const contentEl = document.getElementById('article-content');
+        if (contentEl) {
+          contentEl.innerHTML = art.html;
+
+          contentEl.querySelectorAll('a').forEach(a => {
+            const href = a.getAttribute('href');
+            if (href && href.startsWith('#') && !href.startsWith('##')) {
+              const targetSlug = href.replace('#', '');
+              const targetArticle = articles.find(artItem => artItem.id === targetSlug);
+              if (targetArticle) {
+                a.onclick = function (e) {
+                  e.preventDefault();
+                  navigateTo(targetArticle.id);
+                };
+              } else {
+                a.onclick = function (e) {
+                  e.preventDefault();
+                  jumpToHeading(targetSlug, e);
+                };
+              }
+            }
+          });
+
+          contentEl.querySelectorAll('img.wiki-img').forEach(img => {
+            img.onclick = function () {
+              openLightbox(this.src);
+            };
+          });
+        }
+      }
+
+      window.jumpToHeading = function (id, e) {
+        if (e) e.preventDefault();
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          el.style.backgroundColor = 'rgba(223, 63, 51, 0.2)';
+          setTimeout(() => { el.style.backgroundColor = ''; }, 1200);
+        }
+      };
+
+      window.copyArticleLink = function () {
+        const url = `${window.location.origin}${window.location.pathname}#${currentArticleId}`;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(() => {
+            showToast('Article link copied to clipboard! 📋');
+          });
+        } else {
+          const input = document.createElement('input');
+          input.value = url;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          document.body.removeChild(input);
+          showToast('Article link copied to clipboard! 📋');
+        }
+      };
+
+      window.openLightbox = function (src) {
+        const lb = document.getElementById('wiki-lightbox');
+        const img = document.getElementById('lightbox-img');
+        if (lb && img) {
+          img.src = src;
+          lb.classList.add('active');
+        }
+      };
+
+      window.closeLightbox = function () {
+        const lb = document.getElementById('wiki-lightbox');
+        if (lb) lb.classList.remove('active');
+      };
+
+      window.openEditModal = function () {
+        const art = articles.find(a => a.id === currentArticleId);
+        const titleEl = document.getElementById('edit-modal-article-title');
+        if (titleEl) titleEl.textContent = art ? art.title : 'this article';
+        const modal = document.getElementById('edit-modal');
+        if (modal) modal.classList.add('active');
+      };
+
+      window.closeEditModal = function () {
+        const modal = document.getElementById('edit-modal');
+        if (modal) modal.classList.remove('active');
+      };
+
+      window.handleEditSubmit = function (e) {
+        e.preventDefault();
+        const art = articles.find(a => a.id === currentArticleId);
+        const name = document.getElementById('edit-name').value.trim();
+        const email = document.getElementById('edit-email').value.trim();
+        const notes = document.getElementById('edit-notes').value.trim();
+        closeEditModal();
+
+        const articleTitle = art ? art.title : currentArticleId;
+        const subject = encodeURIComponent(`[Wiki Suggestion] ${articleTitle}`);
+        const body = encodeURIComponent(
+          `Hello Hacker Dojo Operations Team,\n\n` +
+          `I have a suggestion for the wiki article "${articleTitle}":\n` +
+          `Page: ${window.location.origin}/#${currentArticleId}\n\n` +
+          `Proposed Changes / Notes:\n${notes}\n\n` +
+          `Submitted by: ${name} (${email})\n`
+        );
+        window.location.href = `mailto:management@hackerdojo.com?subject=${subject}&body=${body}`;
+
+        showToast(`Draft opened in email client for management@hackerdojo.com.`);
+      };
+
+      function showToast(msg) {
+        let toast = document.getElementById('wiki-toast');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'wiki-toast';
+          toast.style.cssText = `
+          position: fixed;
+          bottom: 24px;
+          right: 24px;
+          background: #181a1f;
+          color: #ffffff;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+          border: 1px solid var(--wiki-accent);
+          z-index: 10000;
+          transition: all 0.3s ease;
+          opacity: 0;
+          transform: translateY(10px);
+        `;
+          document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+        }, 3000);
+      }
+
+      function setupKeyboardShortcuts() {
+        document.addEventListener('keydown', function (e) {
+          if (e.key === '/' && document.activeElement !== searchInput) {
+            e.preventDefault();
+            if (searchInput) {
+              searchInput.focus();
+              searchInput.select();
+            }
+          } else if (e.key === 'Escape') {
+            closeEditModal();
+            closeLightbox();
+          }
+        });
+      }
+
+      function setupEventListeners() {
+        window.addEventListener('hashchange', function () {
+          const hash = window.location.hash.replace('#', '').replace('/', '');
+          if (hash && hash !== currentArticleId) {
+            const match = articles.find(a => a.id === hash);
+            if (match) {
+              currentArticleId = match.id;
+              renderSidebar();
+              renderCurrentArticle();
+            }
+          }
+        });
+      }
+
+      function escapeHtml(str) {
+        return (str || '').replace(/[&<>"']/g, function (m) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+
+</html>
