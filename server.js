@@ -1,7 +1,12 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import { createRequire } from 'module';
+import { Liquid } from 'liquidjs';
 import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const yaml = require('js-yaml');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,19 +15,96 @@ const app = express();
 const port = 3000;
 const host = '0.0.0.0';
 
-// Configuration
-const volunteerSignupUrl = process.env.VOLUNTEER_SIGNUP_URL || "https://script.google.com/macros/s/AKfycbyWdLS0Irx0dZReGRlIVql82pOY4FLb07oEcZter4EbGFMMNDG_DZUxUQr4x-HbPkM_/exec";
-const moveQuestionUrl = process.env.MOVE_QUESTION_URL || "https://script.google.com/macros/s/AKfycbznG7JfRRelKXFmPapBXwYoEPRInTq-KXDBpaOCvNLdO7VpCDhNUN_mlkD3lztQt1JO/exec";
+// Load Jekyll _config.yml
+let jekyllConfig = {};
+try {
+  const configPath = path.join(__dirname, '_config.yml');
+  if (fs.existsSync(configPath)) {
+    jekyllConfig = yaml.load(fs.readFileSync(configPath, 'utf8')) || {};
+  }
+} catch (e) {
+  console.warn('Failed to load _config.yml:', e.message);
+}
 
-// Load volunteer tasks data
+// Load _data/volunteer_tasks.yml
 let volunteerTasks = [];
 try {
-  const dataPath = path.join(__dirname, 'data', 'volunteer_tasks.json');
-  if (fs.existsSync(dataPath)) {
-    volunteerTasks = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  const vPath = path.join(__dirname, '_data', 'volunteer_tasks.yml');
+  if (fs.existsSync(vPath)) {
+    volunteerTasks = yaml.load(fs.readFileSync(vPath, 'utf8')) || [];
   }
 } catch (err) {
-  console.error('Failed to load volunteer tasks data:', err);
+  console.warn('Failed to load volunteer_tasks.yml:', err.message);
+}
+
+// Initialize LiquidJS engine for native Jekyll template rendering
+const engine = new Liquid({
+  root: [
+    __dirname,
+    path.join(__dirname, '_layouts'),
+    path.join(__dirname, '_includes'),
+    path.join(__dirname, 'pages'),
+    path.join(__dirname, 'pages/home')
+  ],
+  extname: '.html',
+  dynamicPartials: false,
+  jekyllInclude: true
+});
+
+// Register Jekyll include_relative tag
+engine.registerTag('include_relative', {
+  parse: function (tagToken) {
+    this.file = tagToken.args.trim();
+  },
+  render: async function (ctx, emitter) {
+    const filePath = path.join(__dirname, this.file);
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found for include_relative: ${this.file}`);
+    }
+    const content = fs.readFileSync(filePath, 'utf8');
+    const html = await engine.parseAndRender(content, ctx.getAll());
+    emitter.write(html);
+  }
+});
+
+// Helper to render any Jekyll HTML page with YAML front-matter & layout
+async function renderJekyllPage(fileName, customScope = {}) {
+  const fullPath = path.join(__dirname, fileName);
+  if (!fs.existsSync(fullPath)) return null;
+
+  const raw = fs.readFileSync(fullPath, 'utf8');
+  const fmM = raw.match(/^---([\s\S]*?)---\n/);
+  let frontMatter = {};
+  if (fmM) {
+    try {
+      frontMatter = yaml.load(fmM[1]) || {};
+    } catch (e) {}
+  }
+  const body = raw.replace(/^---[\s\S]*?---\n/, '');
+
+  const scope = {
+    site: {
+      ...jekyllConfig,
+      data: {
+        volunteer_tasks: volunteerTasks
+      }
+    },
+    page: {
+      ...frontMatter,
+      ...customScope
+    }
+  };
+
+  const renderedBody = await engine.parseAndRender(body, scope);
+
+  const layoutName = frontMatter.layout || 'default';
+  const layoutPath = path.join(__dirname, '_layouts', `${layoutName}.html`);
+  if (fs.existsSync(layoutPath)) {
+    const layoutRaw = fs.readFileSync(layoutPath, 'utf8');
+    scope.content = renderedBody;
+    return await engine.parseAndRender(layoutRaw, scope);
+  }
+  return renderedBody;
 }
 
 // Live Nexudus plans cache & helper
@@ -66,18 +148,6 @@ async function getNexudusPlans() {
   return cachedNexudusPlans || { Plans: [] };
 }
 
-// Setup EJS template engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-// Pass globals to templates
-app.use((req, res, next) => {
-  res.locals.volunteerSignupUrl = volunteerSignupUrl;
-  res.locals.moveQuestionUrl = moveQuestionUrl;
-  res.locals.volunteerTasks = volunteerTasks;
-  next();
-});
-
 // Serve static assets
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.get('/CNAME', (req, res) => res.sendFile(path.join(__dirname, 'CNAME')));
@@ -89,8 +159,7 @@ app.get('/api/plans', async (req, res) => {
     const data = await getNexudusPlans();
     const plans = data.Plans || [];
     const transitionDate = new Date('2026-11-01T00:00:00-07:00');
-    
-    // Check if user requested a test date e.g. ?date=2026-11-02
+
     let now = new Date();
     if (req.query.date) {
       const testD = new Date(String(req.query.date));
@@ -110,105 +179,60 @@ app.get('/api/plans', async (req, res) => {
   }
 });
 
-// Page routes
-app.get('/', (req, res) => {
-  res.render('pages/index', {
-    title: 'Hacker Dojo - Connect to Silicon Valley'
-  });
-});
+// Page routes (rendering native Jekyll templates)
+const pageRoutes = [
+  { paths: ['/'], file: 'index.html' },
+  { paths: ['/startups', '/startups/', '/startups.html'], file: 'startups.html' },
+  { paths: ['/pricing', '/pricing/', '/pricing.html'], file: 'pricing.html' },
+  { paths: ['/impact-report', '/impact-report/', '/impact-report.html'], file: 'impact-report.html' },
+  { paths: ['/accelerator', '/accelerator/', '/accelerator.html'], file: 'accelerator.html' },
+  { paths: ['/volunteer', '/volunteer/', '/volunteer.html'], file: 'volunteer.html' },
+  { paths: ['/hackerdojo5', '/hackerdojo5/', '/hackerdojo5.html'], file: 'hackerdojo5.html' },
+  { paths: ['/summer-camp', '/summer-camp/', '/summer-camp.html'], file: 'summer-camp.html' }
+];
 
-app.get(['/startups', '/startups/', '/startups.html'], (req, res) => {
-  res.render('pages/startups', {
-    title: 'Startups - Hacker Dojo'
-  });
-});
-
-app.get(['/pricing', '/pricing/', '/pricing.html'], (req, res) => {
-  res.render('pages/pricing', {
-    title: 'Pricing - Hacker Dojo'
-  });
-});
-
-app.get(['/impact-report', '/impact-report/', '/impact-report.html'], (req, res) => {
-  res.render('pages/impact-report', {
-    title: '2025 Impact Report - Hacker Dojo'
-  });
-});
-
-app.get(['/accelerator', '/accelerator/', '/accelerator.html'], (req, res) => {
-  res.render('pages/accelerator', {
-    title: 'Accelerator - Hacker Dojo'
-  });
-});
-
-app.get(['/hackerdojo5', '/hackerdojo5/', '/hackerdojo5.html'], (req, res) => {
-  res.render('pages/hackerdojo5', {
-    title: 'Dojo 5.0 - Hacker Dojo',
-    moveQuestionUrl
-  });
-});
-
-app.get(['/summer-camp', '/summer-camp/', '/summer-camp.html'], (req, res) => {
-  res.render('pages/summer-camp', {
-    title: 'Summer Camp 2026 - Hacker Dojo'
-  });
-});
-
-app.get(['/volunteer', '/volunteer/', '/volunteer.html'], (req, res) => {
-  res.render('pages/volunteer', {
-    title: 'Volunteer for the Move - Hacker Dojo',
-    cats: volunteerTasks,
-    volunteerSignupUrl
+pageRoutes.forEach(({ paths, file }) => {
+  app.get(paths, async (req, res) => {
+    try {
+      const html = await renderJekyllPage(file);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.send(html);
+    } catch (err) {
+      console.error(`Error rendering ${file}:`, err);
+      res.status(500).send(`Server Error rendering ${file}: ${err.message}`);
+    }
   });
 });
 
 // 404 handler
-app.use((req, res) => {
-  res.status(404).render('pages/404', {
-    title: 'Hacker Dojo - Page Not Found'
-  });
+app.use(async (req, res) => {
+  try {
+    const html = await renderJekyllPage('404.html');
+    res.status(404).setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html || '<h1>404 Not Found</h1>');
+  } catch (e) {
+    res.status(404).send('404 Not Found');
+  }
 });
 
-// Verification check mode for build
+// Verification check mode
 if (process.argv.includes('--check')) {
-  console.log('Verifying template compilation...');
-  const routesToTest = [
-    { view: 'pages/index', data: { title: 'Test Index' } },
-    { view: 'pages/startups', data: { title: 'Test Startups' } },
-    { view: 'pages/pricing', data: { title: 'Test Pricing' } },
-    { view: 'pages/impact-report', data: { title: 'Test Impact' } },
-    { view: 'pages/accelerator', data: { title: 'Test Accelerator' } },
-    { view: 'pages/hackerdojo5', data: { title: 'Test HD5', moveQuestionUrl } },
-    { view: 'pages/summer-camp', data: { title: 'Test Camp' } },
-    { view: 'pages/volunteer', data: { title: 'Test Vol', cats: volunteerTasks, volunteerSignupUrl } },
-    { view: 'pages/404', data: { title: 'Test 404' } },
-  ];
-
-  let errors = 0;
-  for (const r of routesToTest) {
-    try {
-      app.render(r.view, r.data, (err, html) => {
-        if (err) {
-          console.error(`Error rendering ${r.view}:`, err);
-          errors++;
-        } else {
-          console.log(`✓ ${r.view} compiled (${html.length} chars)`);
-        }
-      });
-    } catch (err) {
-      console.error(`Exception rendering ${r.view}:`, err);
-      errors++;
+  console.log('Verifying Jekyll template compilation...');
+  try {
+    for (const { file } of pageRoutes) {
+      const html = await renderJekyllPage(file);
+      if (!html || html.length === 0) throw new Error(`Empty render for ${file}`);
     }
-  }
-
-  if (errors > 0) {
-    process.exit(1);
-  } else {
-    console.log('All views compiled successfully!');
+    const notFound = await renderJekyllPage('404.html');
+    if (!notFound) throw new Error('Empty render for 404.html');
+    console.log('All Jekyll templates compiled and rendered successfully with LiquidJS!');
     process.exit(0);
+  } catch (err) {
+    console.error('Template compilation failed:', err);
+    process.exit(1);
   }
 } else {
   app.listen(port, host, () => {
-    console.log(`Hacker Dojo server running at http://${host}:${port}`);
+    console.log(`Hacker Dojo Jekyll/Liquid server running at http://${host}:${port}`);
   });
 }

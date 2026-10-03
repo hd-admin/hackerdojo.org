@@ -1,7 +1,7 @@
 /**
  * Hacker Dojo - Live Nexudus Membership Pricing Sync & Automatic Date Transition
  * Pulls current published tariffs and plans directly from hackerdojo.nexudus.site
- * Automatically transitions to the new rates on the effective date (Nov 1, 2026).
+ * Smooth, static DOM updates with zero cumulative layout shift (no jerkiness).
  */
 (function () {
   'use strict';
@@ -14,7 +14,6 @@
   var DEFAULT_TRANSITION_DATE = new Date('2026-11-01T00:00:00-07:00');
 
   function getCurrentTime() {
-    // Allows testing future dates via URL query param: ?date=2026-11-05
     try {
       var params = new URLSearchParams(window.location.search);
       if (params.get('date')) {
@@ -74,7 +73,6 @@
       }
     });
 
-    // Pick active plan based on transition or toggle state
     var std = (showUpcoming && upcomingMap['standard']) ? upcomingMap['standard'] : (currentMap['standard'] || upcomingMap['standard']);
     var stu = (showUpcoming && upcomingMap['student']) ? upcomingMap['student'] : (currentMap['student'] || upcomingMap['student']);
     var ann = (showUpcoming && upcomingMap['annual']) ? upcomingMap['annual'] : (currentMap['annual'] || upcomingMap['annual']);
@@ -154,72 +152,44 @@
         var transitionDate = extractTransitionDate(plans);
         var isAutoPast = now >= transitionDate;
 
-        // Render initially with correct date mode
+        // Render values smoothly into existing static DOM
         renderPlans(plans, isAutoPast);
 
-        // Add rate status banner & preview controls above plan-grid
-        var planGrid = document.querySelector('.plan-grid');
-        if (planGrid && !document.getElementById('rate-transition-banner')) {
-          var banner = document.createElement('div');
-          banner.id = 'rate-transition-banner';
-          banner.style.cssText = 'grid-column: 1 / -1; margin-bottom: 24px; padding: 14px 20px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 14px;';
+        // Update static banner without shifting layout
+        var banner = document.getElementById('rate-transition-banner');
+        var bannerText = document.getElementById('rate-transition-text');
+        var toggleGroup = document.getElementById('rate-toggle-group');
 
+        if (banner) {
           if (isAutoPast) {
             banner.style.background = '#f3f4f6';
             banner.style.border = '1px solid #e5e7eb';
             banner.style.color = '#374151';
-            banner.innerHTML = '<div style="display:flex;align-items:center;gap:8px;">' +
-              '<svg style="width:18px;height:18px;color:#0e9f6e;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' +
-              '<strong>Current Rates Active:</strong> Showing active rates effective ' + transitionDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '.</div>';
-          } else {
-            banner.style.background = '#fffbeb';
-            banner.style.border = '1px solid #fde68a';
-            banner.style.color = '#92400e';
-
-            var daysLeft = Math.max(1, Math.ceil((transitionDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
-
-            banner.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">' +
-              '<span style="font-size:20px;">⚡</span>' +
-              '<div><strong>Grandfathered Rates Available:</strong> Lock in current prices before ' + transitionDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + ' (' + daysLeft + ' days left). Cancel anytime.</div>' +
-              '</div>' +
-              '<div style="display:flex;gap:6px;" id="rate-toggle-group">' +
-                '<button type="button" id="btn-show-current" style="border:none;background:#f59e0b;color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Current Rates (Lock In)</button>' +
-                '<button type="button" id="btn-show-future" style="border:1px solid #d97706;background:#fff;color:#92400e;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Nov 1st Rates</button>' +
-              '</div>';
-          }
-
-          planGrid.parentNode.insertBefore(banner, planGrid);
-
-          // Wire up preview buttons if present
-          var btnCurrent = document.getElementById('btn-show-current');
-          var btnFuture = document.getElementById('btn-show-future');
-          if (btnCurrent && btnFuture) {
-            btnCurrent.addEventListener('click', function () {
-              renderPlans(plans, false);
-              btnCurrent.style.background = '#f59e0b';
-              btnCurrent.style.color = '#fff';
-              btnFuture.style.background = '#fff';
-              btnFuture.style.color = '#92400e';
-            });
-            btnFuture.addEventListener('click', function () {
-              renderPlans(plans, true);
-              btnFuture.style.background = '#f59e0b';
-              btnFuture.style.color = '#fff';
-              btnCurrent.style.background = '#fff';
-              btnCurrent.style.color = '#92400e';
-            });
+            if (bannerText) {
+              bannerText.innerHTML = '<strong>Current Rates Active:</strong> Showing active rates effective ' + transitionDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '.';
+            }
+            if (toggleGroup) toggleGroup.style.display = 'none';
           }
         }
 
-        // Live badge
-        var liveBadge = document.getElementById('nexudus-live-sync-badge');
-        if (!liveBadge) {
-          liveBadge = document.createElement('div');
-          liveBadge.id = 'nexudus-live-sync-badge';
-          liveBadge.style.cssText = 'text-align:center;font-size:13px;color:#777;margin:18px auto 0;display:flex;align-items:center;justify-content:center;gap:6px;';
-          liveBadge.innerHTML = '<svg style="width:14px;height:14px;color:#0e9f6e;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Real-time membership data synced with <a href="' + CHECKOUT_BASE + '" target="_blank" style="color:#6d3bdb;text-decoration:underline;">hackerdojo.nexudus.site</a>';
-          var parentSection = document.querySelector('.pricing-section .section-content') || document.querySelector('.section-pricing');
-          if (parentSection) parentSection.appendChild(liveBadge);
+        // Wire up preview buttons if present
+        var btnCurrent = document.getElementById('btn-show-current');
+        var btnFuture = document.getElementById('btn-show-future');
+        if (btnCurrent && btnFuture) {
+          btnCurrent.onclick = function () {
+            renderPlans(plans, false);
+            btnCurrent.style.background = '#f59e0b';
+            btnCurrent.style.color = '#fff';
+            btnFuture.style.background = '#fff';
+            btnFuture.style.color = '#92400e';
+          };
+          btnFuture.onclick = function () {
+            renderPlans(plans, true);
+            btnFuture.style.background = '#f59e0b';
+            btnFuture.style.color = '#fff';
+            btnCurrent.style.background = '#fff';
+            btnCurrent.style.color = '#92400e';
+          };
         }
       })
       .catch(function (err) {

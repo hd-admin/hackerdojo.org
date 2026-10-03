@@ -221,6 +221,19 @@
 <!-- Plans -->
 <div class="section" style="padding-top: 50px; padding-bottom: 20px;">
   <div class="section-content">
+
+    <!-- Rate status & transition banner (static layout, zero CLS/jerk) -->
+    <div id="rate-transition-banner" style="background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:12px; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:14px; margin-bottom:24px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:20px;">⚡</span>
+        <div id="rate-transition-text"><strong>Grandfathered Rates Available:</strong> Lock in current prices before November 1, 2026. Membership prices increase Nov 1st. Cancel anytime.</div>
+      </div>
+      <div style="display:flex; gap:6px;" id="rate-toggle-group">
+        <button type="button" id="btn-show-current" style="border:none; background:#f59e0b; color:#fff; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Current Rates (Lock In)</button>
+        <button type="button" id="btn-show-future" style="border:1px solid #d97706; background:#fff; color:#92400e; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Nov 1st Rates</button>
+      </div>
+    </div>
+
     <div class="plan-grid">
 
       <!-- Standard -->
@@ -323,6 +336,11 @@
           <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs?plan_id=1415083739" id="hive-addon-btn" class="button" style="background:#111;color:#fff;border-radius:8px;padding:8px 14px;font-size:13px;text-decoration:none;display:inline-block;margin-top:8px;">Reserve Hive Desk</a>
         </div>
       </div>
+    </div>
+
+    <!-- Live Sync Verified Footnote -->
+    <div id="nexudus-live-sync-badge" style="text-align:center; font-size:13px; color:#777; margin:22px auto 0; display:flex; align-items:center; justify-content:center; gap:6px;">
+      <svg style="width:14px; height:14px; color:#0e9f6e;" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Real-time membership data synced with <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" target="_blank" rel="noopener noreferrer" style="color:#6d3bdb; text-decoration:underline;">hackerdojo.nexudus.site</a>
     </div>
 
   </div><!-- .section-content -->
