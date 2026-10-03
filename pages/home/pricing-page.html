@@ -1,41 +1,5 @@
 <style>
   /* ── Pricing page overrides ── */
-  .pricing-hero {
-    background-image: linear-gradient(0deg, #6d3bdb2e 10%, #f5f5f5 45%, #f5f5f5 100%);
-    padding: 60px 40px 50px;
-    text-align: center;
-  }
-
-  .pricing-hero-tagline {
-    font-family: "Rajdhani";
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    background: #fff;
-    color: #516368;
-    display: inline-block;
-    padding: 3px 10px 2px;
-    border-radius: 6px;
-    margin-bottom: 16px;
-  }
-
-  .pricing-hero-title {
-    font-family: "Rajdhani";
-    font-size: 54px;
-    font-weight: 600;
-    color: #111;
-    line-height: 1.15;
-    margin-bottom: 14px;
-  }
-
-  .pricing-hero-desc {
-    font-size: 18px;
-    color: #444;
-    max-width: 560px;
-    margin: auto;
-  }
-
   /* Plan cards grid */
   .plan-grid {
     display: grid;
@@ -52,7 +16,7 @@
     border: 3px solid #fff;
     transition: 0.2s;
     display: grid;
-    grid-template-rows: auto auto 1fr auto;
+    grid-template-rows: auto 1fr auto;
     position: relative;
     overflow: hidden;
   }
@@ -137,33 +101,6 @@
     margin-bottom: 24px;
   }
 
-  .plan-features {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 28px;
-  }
-
-  .plan-features li {
-    font-size: 14px;
-    color: #333;
-    padding: 5px 0;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-  }
-
-  .plan-features li::before {
-    content: "";
-    display: block;
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
-    margin-top: 1px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.5' stroke='%23018669'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M4.5 12.75l6 6 9-13.5'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
   .plan-note {
     font-family: "Rajdhani";
     font-size: 12px;
@@ -242,96 +179,7 @@
     gap: 10px;
   }
 
-  /* FAQ */
-  .faq-list {
-    max-width: 700px;
-    margin: auto;
-  }
-
-  .faq-item {
-    background: #fff;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    box-shadow: 0px 0px 1px rgba(0,0,0,0.04), 0px 0px 2px rgba(0,0,0,0.04), 0px 0px 3px rgba(0,0,0,0.02), 0px 0px 5px rgba(0,0,0,0.03);
-    overflow: hidden;
-  }
-
-  .faq-question {
-    font-family: "Rajdhani";
-    font-size: 18px;
-    font-weight: 600;
-    color: #111;
-    padding: 18px 22px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-  }
-
-  .faq-question::after {
-    content: "+";
-    font-size: 22px;
-    font-weight: 400;
-    color: #df3f33;
-    flex-shrink: 0;
-    margin-left: 12px;
-    transition: 0.2s;
-  }
-
-  .faq-item.open .faq-question::after {
-    transform: rotate(45deg);
-  }
-
-  .faq-answer {
-    font-size: 15px;
-    color: #444;
-    line-height: 1.7;
-    padding: 0 22px 20px;
-    display: none;
-  }
-
-  .faq-item.open .faq-answer {
-    display: block;
-  }
-
-  /* Final CTA */
-  .pricing-cta-section {
-    background-image: linear-gradient(135deg, #6d3bdb18 0%, #fff0df 100%);
-    border-radius: 20px;
-    padding: 60px 40px;
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .pricing-cta-title {
-    font-family: "Rajdhani";
-    font-size: 40px;
-    font-weight: 600;
-    color: #111;
-    margin-bottom: 12px;
-  }
-
-  .pricing-cta-desc {
-    font-size: 18px;
-    color: #444;
-    margin-bottom: 30px;
-    max-width: 480px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .pricing-cta-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
   @media only screen and (max-width: 960px) {
-    .pricing-hero-title { font-size: 36px; }
-    .pricing-hero { padding: 40px 20px 40px; }
-
     .plan-grid {
       grid-template-columns: 1fr;
     }
@@ -358,21 +206,15 @@
     .pricing-benefits-grid {
       grid-template-columns: 1fr 1fr;
     }
-
-    .pricing-cta-section {
-      padding: 40px 20px;
-    }
-
-    .pricing-cta-title { font-size: 30px; }
   }
 </style>
 
 <!-- Hero -->
-<div class="section pricing-hero">
+<div class="section page-hero">
   <div id="hero-content" style="max-width: 700px; margin: auto;">
-    <div class="pricing-hero-tagline">Simple, Transparent Pricing</div>
-    <div class="pricing-hero-title">Membership that pays for itself.</div>
-    <div class="pricing-hero-desc">Join the Silicon Valley community that has launched hundreds of startups and thousands of careers. No hidden fees. Cancel anytime.</div>
+    <div class="page-hero-tagline">Simple, Transparent Pricing</div>
+    <div class="page-hero-title">Membership that pays for itself.</div>
+    <div class="page-hero-desc">Join the Silicon Valley community that has launched hundreds of startups and thousands of careers. No hidden fees. Cancel anytime.</div>
   </div>
 </div>
 
@@ -393,17 +235,7 @@
           <div class="plan-annual">or $1,350 / year &mdash; save $450</div>
         </div>
         <div class="plan-desc">Full membership with 24/7 access to everything Hacker Dojo has to offer. Ideal for founders, engineers, and makers who want a serious creative home base.</div>
-        <ul class="plan-features">
-          <li>24/7 keycard building access</li>
-          <li>Fiber internet</li>
-          <li>Shared desk space</li>
-          <li>Hardware & maker labs</li>
-          <li>Meeting room bookings</li>
-          <li>Monitors & keyboards</li>
-          <li>Free community events</li>
-          <li>Unlimited coffee &amp; tea</li>
-        </ul>
-        <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red" style="display: block; text-align: center;">Start Membership</a>
+        <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red" style="display: block; text-align: center;">Start Membership</a>
       </div>
 
       <!-- Student -->
@@ -417,21 +249,11 @@
           <div class="plan-annual">&nbsp;</div>
         </div>
         <div class="plan-desc">Half-price membership for currently enrolled students. Bring your projects and ambitions &mdash; we'll provide the space and community.</div>
-        <ul class="plan-features">
-          <li>24/7 keycard building access</li>
-          <li>Fiber internet</li>
-          <li>Shared desk space</li>
-          <li>Hardware & maker labs</li>
-          <li>Meeting room bookings</li>
-          <li>Monitors & keyboards</li>
-          <li>Free community events</li>
-          <li>Unlimited coffee &amp; tea</li>
-        </ul>
         <div class="plan-note">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>
           Student ID verification required
         </div>
-        <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red" style="display: block; text-align: center;">Start Membership</a>
+        <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red" style="display: block; text-align: center;">Start Membership</a>
       </div>
 
       <!-- Veteran -->
@@ -445,21 +267,11 @@
           <div class="plan-annual">&nbsp;</div>
         </div>
         <div class="plan-desc">Discounted membership honoring those who have served. Same full access as a Standard membership &mdash; our way of saying thank you.</div>
-        <ul class="plan-features">
-          <li>24/7 keycard building access</li>
-          <li>Fiber internet</li>
-          <li>Shared desk space</li>
-          <li>Hardware & maker labs</li>
-          <li>Meeting room bookings</li>
-          <li>Monitors & keyboards</li>
-          <li>Free community events</li>
-          <li>Unlimited coffee &amp; tea</li>
-        </ul>
         <div class="plan-note">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" /></svg>
           Military service verification required
         </div>
-        <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red" style="display: block; text-align: center;">Start Membership</a>
+        <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red" style="display: block; text-align: center;">Start Membership</a>
       </div>
 
     </div><!-- .plan-grid -->
@@ -478,7 +290,7 @@
         <div class="desk-addon-period">/ year</div>
       </div>
       <div style="width:100%; justify-content:center;">
-        <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button" style="width:100%;white-space:nowrap;background:#6d3bdb;color:#fff;">Start Membership</a>
+        <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button" style="width:100%;white-space:nowrap;background:#6d3bdb;color:#fff;">Start Membership</a>
       </div>
     </div>
 
@@ -502,7 +314,7 @@
 <div class="section benefits-section" style="padding-top: 10px;">
   <div class="section-header">
     <div class="section-title">Everything Included</div>
-    <div class="section-description" style="max-width: 620px; margin: auto;">Every membership plan includes full access to all of these. No add-ons, no surprise charges.</div>
+    <div class="section-description" style="max-width: 620px; margin: auto;">Every membership plan includes full access to all of these and a collaborative environment that fosters experimentation and growth.</div>
   </div>
   <div class="section-content">
     <div class="pricing-benefits-grid">
@@ -582,45 +394,45 @@
   </div>
   <div class="faq-list">
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How quickly can I get started?</div>
+    <details class="faq-item">
+      <summary class="faq-question">How quickly can I get started?</summary>
       <div class="faq-answer">You can sign up online and get access within minutes. Once you complete the membership form and payment, you'll receive your digital key to the building. No waiting period, no approval process for standard memberships.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Is there a long-term commitment?</div>
+    <details class="faq-item">
+      <summary class="faq-question">Is there a long-term commitment?</summary>
       <div class="faq-answer">No. All monthly plans can be cancelled at any time. The annual plan locks in a lower effective rate (saving you $450) but is paid upfront. We don't do contracts or lock-in periods on monthly billing.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How does the annual billing work?</div>
+    <details class="faq-item">
+      <summary class="faq-question">How does the annual billing work?</summary>
       <div class="faq-answer">The annual Standard plan is $1,350 paid once per year, equivalent to $112.50/month — a savings of $450 compared to monthly billing. Student and Veteran annual plans may also be available; contact us for details.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">How do I verify student or veteran status?</div>
+    <details class="faq-item">
+      <summary class="faq-question">How do I verify student or veteran status?</summary>
       <div class="faq-answer">After signing up, you'll be asked to provide a valid student ID or military service documentation. Our team will review and activate the discounted rate within one business day.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">What is a Dedicated Desk?</div>
+    <details class="faq-item">
+      <summary class="faq-question">What is a Dedicated Desk?</summary>
       <div class="faq-answer">A dedicated desk is a permanent, reserved workspace that is yours every day. You can leave your monitor, equipment, and personal items set up without packing away each visit. It's an add-on to any membership plan for +$225/month.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Can I host events or workshops at Hacker Dojo?</div>
+    <details class="faq-item">
+      <summary class="faq-question">Can I host events or workshops at Hacker Dojo?</summary>
       <div class="faq-answer">Yes. Members can request event space for talks, hackathons, and workshops. Use the "Request An Event" link on our homepage or contact the front desk to check availability and book a space.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Where is Hacker Dojo located?</div>
+    <details class="faq-item">
+      <summary class="faq-question">Where is Hacker Dojo located?</summary>
       <div class="faq-answer">Hacker Dojo is located in the heart of Silicon Valley. Visit our homepage for the exact address and a map. We're accessible by public transit and have parking nearby.</div>
-    </div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-question" onclick="toggleFaq(this)">Can I take a tour before joining?</div>
+    <details class="faq-item">
+      <summary class="faq-question">Can I take a tour before joining?</summary>
       <div class="faq-answer">Absolutely. We encourage it. <a href="https://calendly.com/hdfrontdesk/30min" style="color:#df3f33;">Book a 30-minute tour</a> with our front desk team and we'll show you around the space, answer your questions, and help you figure out which plan is right for you.</div>
-    </div>
+    </details>
 
   </div>
 </div>
@@ -628,21 +440,14 @@
 <!-- Final CTA -->
 <div class="section" style="padding-top: 0; padding-bottom: 80px;">
   <div class="section-content">
-    <div class="pricing-cta-section">
-      <div class="pricing-hero-tagline">Ready to join?</div>
-      <div class="pricing-cta-title">Start your membership today.</div>
-      <div class="pricing-cta-desc">Join the builders, hackers, and visionaries who call Hacker Dojo home. Not sure yet? Take a tour first.</div>
-      <div class="pricing-cta-buttons">
+    <div class="cta-box">
+      <div class="page-hero-tagline">Ready to join?</div>
+      <div class="cta-title">Start your membership today.</div>
+      <div class="cta-desc">Join the builders, hackers, and visionaries who call Hacker Dojo home. Not sure yet? Take a tour first.</div>
+      <div class="cta-buttons">
         <a href="https://calendly.com/hdfrontdesk/30min" class="button">Take a Tour</a>
-        <a href="https://hackerdojo.spaces.nexudus.com/?public&" class="button button-red">Start Your Membership</a>
+        <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red">Start Your Membership</a>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-  function toggleFaq(el) {
-    var item = el.parentElement;
-    item.classList.toggle('open');
-  }
-</script>

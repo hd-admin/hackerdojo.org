@@ -1,0 +1,44 @@
+name: Site checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Build, links and sideways scroll
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # The same builder GitHub Pages uses for this site: the github-pages gem, not the repo's Gemfile.
+      - name: Build the site like GitHub Pages
+        id: build
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Check internal links and assets
+        run: node .github/scripts/check-links.js _site --skip pages
+
+      # Runs even if the link check failed, so one run reports both.
+      - name: Install Playwright
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          npm install --no-save --no-package-lock playwright@1.63.0
+          npx playwright install --with-deps chromium
+
+      - name: Check for sideways scroll
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: node .github/scripts/check-overflow.js _site
