@@ -21,3 +21,8 @@ volunteer_signup_url: https://script.google.com/macros/s/AKfycbyWdLS0Irx0dZReGRl
 # Move questions (the "Ask a question" pop-up on /hackerdojo5/) are sent to this Google Apps Script web app,
 # which adds them to the move questions sheet. Leave it empty to fall back to email.
 move_question_url: "https://script.google.com/macros/s/AKfycbznG7JfRRelKXFmPapBXwYoEPRInTq-KXDBpaOCvNLdO7VpCDhNUN_mlkD3lztQt1JO/exec"
+
+# Dojo 5.0 fundraising messages (the "Contact us" and "Notify us that you purchased this item" forms on /fundraising/)
+# are sent to this Google Apps Script web app, which adds them to the fundraising messages sheet, saves photos to Drive
+# and emails the move team. Leave it empty to fall back to email.
+fundraising_message_url: "https://script.google.com/macros/s/AKfycbwUvSN2ON93oSp5WK6cq7jaTc6aSB1H2jNXd9ZQxrg8KJk2JH6rRiUHbMM8xdzXu3pDsQ/exec"

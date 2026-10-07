@@ -1,0 +1,507 @@
+<!-- Dojo 5.0 fundraising page (hackerdojo.org/fundraising). Areas, items and prices come from _data/fundraising.yml.
+     Every money button links to the Dojo 5.0 Every.org fundraiser with a "designation" ("<Area> - <item>" or
+     "<Area> - general") so donations can be sorted. "Gift this item" opens a pop-up with the mailing address and the
+     store link. The "Contact us" and "Notify us that you purchased this item" forms go to the Apps Script web app set as
+     fundraising_message_url in _config.yml; without it, or if sending fails, they fall back to email.
+     Built on style.css: .page-hero*, .section*, .pricebox, .button*, .modal*, .form-*. Page-only styles are scoped to #fund.
+     Content history: v4, October 6, 2026: Internet coverage list revised to the approved Patrick Henry network plan; requirement and
+     licensing notes added to kitchen, security and lab items; dead filament ASIN replaced with an ELEGOO direct link; phone booths
+     changed to a fund (all listings sold out). v4.2, October 7, 2026: Internet coverage switch changed to Switch Pro 24 PoE Gen2;
+     second-switch stretch goal removed; priority amount updated to $3,785. -->
+<style>
+#fund{--fund-red:#e13838;--fund-green:#018669;--fund-slate:#444c5a;--fund-ink:#111;--fund-text:#222;--fund-muted:#444;--fund-soft:#505050;--fund-line:#e6e4e8;--fund-pink:#fdeceb;--fund-pink-line:#f4c9c6;color:var(--fund-text);line-height:1.5}
+#fund *{box-sizing:border-box}
+#fund h2,#fund h3,#fund h4{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;color:var(--fund-ink);line-height:1.25}
+#fund button{font-family:inherit}
+#fund button:focus-visible,#fund input:focus-visible,#fund textarea:focus-visible,#fund a:focus-visible{outline:2px solid var(--fund-slate);outline-offset:2px}
+
+/* Buttons: additions to the site's .button */
+#fund .button{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer;line-height:1.2;text-decoration:none}
+#fund .button:hover{filter:brightness(.94)}
+#fund .fund-sm{font-size:14px;padding:6px 12px;white-space:nowrap}
+#fund .fund-outline-red{box-shadow:inset 0 0 0 2px var(--fund-red)}
+#fund .fund-outline-green{box-shadow:inset 0 0 0 2px var(--fund-green)}
+#fund .fund-white{box-shadow:inset 0 0 0 1px var(--fund-line)}
+#fund .fund-full{width:100%;margin-top:6px;white-space:normal;text-align:center}
+#fund .fund-linkbtn{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--fund-ink);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+#fund .fund-linkbtn:hover{color:var(--fund-red)}
+#fund .button[data-tip]{position:relative}
+#fund .button[data-tip]::after{content:attr(data-tip);position:absolute;right:0;bottom:calc(100% + 6px);z-index:5;background:var(--fund-ink);color:#fff;font:500 12px/1.2 'Saira',Arial,sans-serif;letter-spacing:0;text-transform:none;white-space:nowrap;padding:6px 9px;border-radius:6px;opacity:0;pointer-events:none;transition:opacity .12s}
+#fund .button[data-tip]:hover::after,#fund .button[data-tip]:focus-visible::after{opacity:1}
+
+/* Hero */
+#fund .page-hero-desc{max-width:600px}
+#fund .fund-note{max-width:600px;margin:8px auto 0;font-size:14px;color:var(--fund-muted)}
+
+/* Main column */
+#fund .fund-main{max-width:1040px;margin:0 auto;padding:28px 40px 60px;text-align:left}
+#fund .fund-main .section-title{margin:24px 0 8px}
+#fund .fund-noscript{text-align:center;color:var(--fund-muted);margin-bottom:16px}
+#fund .fund-noscript a{color:var(--fund-red);text-decoration:underline}
+
+/* High priority box */
+#fund .fund-priority{background:var(--fund-pink);padding:14px 20px 8px;overflow:visible}
+#fund .fund-priority-head{padding-bottom:8px;border-bottom:1px solid var(--fund-pink-line)}
+#fund .fund-priority-head h2{font-size:20px;display:flex;align-items:center;gap:10px}
+#fund .fund-priority-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));column-gap:32px}
+#fund .fund-priority .fund-item{border-bottom-color:var(--fund-pink-line)}
+#fund .fund-priority .fund-thumb{box-shadow:inset 0 0 0 1px var(--fund-pink-line)}
+#fund .fund-priority .fund-thumb.icon{background:#f8d9d7;color:#8a3b36;box-shadow:none}
+
+/* Area explorer: tab column + panel */
+#fund .fund-explorer{display:grid;grid-template-columns:250px minmax(0,1fr);gap:0;align-items:stretch}
+#fund .fund-area-nav{display:flex;flex-direction:column;gap:4px}
+#fund .fund-area-tab{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:baseline;width:100%;text-align:left;border:0;background:#e2e1e7;padding:11px 14px;border-radius:12px 0 0 12px;color:var(--fund-text);position:relative;cursor:pointer}
+#fund .fund-area-tab .n{font-family:'Rajdhani',Arial,sans-serif;font-weight:700;font-size:14px;color:var(--fund-soft)}
+#fund .fund-area-tab .t{font-weight:500;font-size:14px;line-height:1.35}
+#fund .fund-area-tab .c{font-size:12px;color:var(--fund-soft);font-variant-numeric:tabular-nums}
+#fund .fund-area-tab:hover{background:#d6d4dd}
+#fund .fund-area-tab[aria-selected="true"]{background:#fff;color:var(--fund-ink);box-shadow:-1px 0 2px rgba(0,0,0,.05),0 -1px 2px rgba(0,0,0,.03),0 1px 2px rgba(0,0,0,.03);z-index:1;margin-right:-1px;padding-right:15px}
+#fund .fund-area-tab[aria-selected="true"] .t{font-weight:600}
+#fund .fund-area-tab[aria-selected="true"] .n{color:var(--fund-red)}
+#fund .fund-area-panel{border-radius:0 15px 15px 15px;padding:18px 22px 8px;min-width:0;overflow:visible}
+#fund .fund-panel-head{margin-bottom:12px}
+#fund .fund-panel-head h3{font-size:24px}
+#fund .fund-panel-head p{color:var(--fund-muted)}
+#fund .fund-empty{color:var(--fund-muted);font-size:13px;padding:10px 0 12px}
+#fund .fund-bucket{display:flex;justify-content:space-between;align-items:center;gap:20px;background:#ece6fb;border-radius:12px;padding:10px 14px;margin-bottom:4px}
+#fund .fund-bucket p{color:var(--fund-muted);font-size:17px;line-height:1.45}
+#fund .fund-bucket strong{display:block;color:var(--fund-ink);font-weight:500;font-size:18px}
+#fund .fund-area-foot{display:none;grid-template-columns:1fr 1fr;gap:8px;padding:12px 0 8px}
+#fund .fund-area-foot button{border:0;border-radius:12px;background:#e2e1e7;color:var(--fund-ink);padding:9px 12px;min-height:44px;text-align:left;font-size:14px;font-weight:500;line-height:1.3;cursor:pointer}
+#fund .fund-area-foot button:last-child{text-align:right}
+#fund .fund-area-foot small{display:block;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--fund-muted)}
+
+/* Item rows */
+#fund .fund-item{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--fund-line)}
+#fund .fund-item:last-child{border-bottom:0}
+#fund .fund-item strong{display:block;font-weight:500;font-size:15px;color:var(--fund-ink)}
+#fund .fund-item small{font-size:12px;color:var(--fund-muted)}
+#fund .fund-thumb{width:52px;height:52px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--fund-line);display:grid;place-items:center;overflow:hidden;color:var(--fund-slate)}
+#fund .fund-thumb img{width:100%;height:100%;object-fit:contain;display:block;padding:3px}
+#fund .fund-thumb.icon{background:#f5f5f5;box-shadow:none}
+#fund .fund-thumb svg{width:28px;height:28px}
+#fund .fund-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px}
+#fund .fund-chip{font-size:12px;line-height:1;padding:5px 8px;border-radius:6px;background:#f5f5f5;color:var(--fund-muted);font-variant-numeric:tabular-nums}
+#fund .fund-chip.coord{background:#fff3d6;color:#7a5200;font-weight:500}
+#fund .fund-chip.stretch{background:#ece6fb;color:#4b2bb0;font-weight:500}
+#fund .fund-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+#fund .fund-price{font-weight:600;font-size:15px;color:var(--fund-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+#fund .fund-price .taxinc{display:block;font-size:11px;font-weight:400;line-height:1.2;color:var(--fund-muted);text-align:right}
+#fund .fund-soon{display:inline-block;font-size:12px;font-weight:500;line-height:1;padding:7px 10px;border-radius:6px;background:#f5f5f5;color:var(--fund-soft);white-space:nowrap}
+#fund .fund-priority .fund-soon{background:#f8d9d7;color:#8a3b36}
+#fund .fund-hp{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#fde8e7;color:#a8231d;font-weight:700;font-size:12px;line-height:1;margin-left:7px;vertical-align:1px}
+
+/* Pop-ups: additions to the site's .modal */
+#fund .fund-modal-body{padding:14px 25px 0}
+#fund .fund-modal-body p,#fund .modal-form p{font-size:13px;color:var(--fund-muted)}
+#fund .fund-shipto{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#f5f5f5;border-radius:12px;padding:12px 14px;margin:10px 0 12px}
+#fund .fund-shipto-label{display:block;font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--fund-muted);margin-bottom:2px}
+#fund .fund-shipto address{font-style:normal;font-size:15px;line-height:1.45;color:var(--fund-ink);user-select:all}
+#fund .fund-coord{margin-top:12px}
+#fund .fund-coord a{color:var(--fund-red);text-decoration:underline}
+#fund #fund-ship-form{border-top:1px solid var(--fund-line);margin-top:18px}
+#fund #fund-ship-form h4{font-size:17px}
+#fund .modal-form input[type=file]{font-size:14px}
+#fund .fund-hint{font-size:12px;color:var(--fund-muted)}
+#fund .fund-thumbs{display:flex;flex-wrap:wrap;gap:8px}
+#fund .fund-thumbs:empty{display:none}
+#fund .fund-thumbs img{width:64px;height:64px;object-fit:cover;border-radius:8px;box-shadow:inset 0 0 0 1px var(--fund-line);background:#f5f5f5}
+
+@media only screen and (max-width:960px){
+	#fund .fund-main{padding:20px 16px 48px}
+	#fund .fund-explorer{grid-template-columns:minmax(0,1fr);gap:10px}
+	#fund .fund-area-nav{flex-direction:row;flex-wrap:wrap;gap:6px}
+	#fund .fund-area-foot{display:grid}
+	#fund .fund-area-tab{display:flex;width:auto;white-space:normal;gap:6px;padding:7px 10px;font-size:13px;background:#e2e1e7;border-radius:12px}
+	#fund .fund-area-tab .c{display:none}
+	#fund .fund-area-tab[aria-selected="true"]{background:#fff;box-shadow:inset 0 0 0 2px var(--fund-red);margin-right:0;padding-right:10px}
+	#fund .fund-area-panel{padding:14px 16px 6px;border-radius:15px}
+}
+@media only screen and (max-width:650px){
+	#fund .fund-bucket{flex-direction:column;align-items:stretch}
+	#fund .fund-item{grid-template-columns:44px minmax(0,1fr);gap:6px 10px}
+	#fund .fund-item .fund-actions{grid-column:2}
+	#fund .fund-thumb{width:44px;height:44px}
+	#fund .fund-priority{padding:12px 16px 6px}
+	#fund .fund-priority-list{grid-template-columns:1fr}
+	#fund .fund-sm{min-height:44px}
+}
+@media (prefers-reduced-motion:reduce){#fund *{transition:none!important}}
+</style>
+
+<div id="fund" data-endpoint="{{ site.fundraising_message_url }}">
+	<div class="section page-hero">
+		<div class="page-hero-tagline">Dojo 5.0 &middot; Built by our community</div>
+		<div class="page-hero-title">Help make the new Dojo <span>feel like home.</span></div>
+		<div class="page-hero-desc"><strong>Give money</strong> to an area or a specific project, or <strong>gift an item</strong> straight from our wishlist.</div>
+		<p class="fund-note">If you already own any of these items, please <button type="button" class="fund-linkbtn" id="fund-own-contact" aria-haspopup="dialog">contact us</button> first. We&rsquo;ll determine whether the item will work with the space.</p>
+		<p class="fund-note">Item prices include estimated sales tax (9.75%). Shipping is extra.</p>
+	</div>
+
+	<div class="fund-main">
+		<noscript><p class="fund-noscript">This page needs JavaScript to show the items. You can still <a href="https://www.every.org/hacker-dojo/f/hackerdojo5" target="_blank" rel="noopener">donate on Every.org</a> or email <a href="mailto:donations@hackerdojo.com">donations@hackerdojo.com</a>.</p></noscript>
+
+		<section class="pricebox fund-priority" aria-labelledby="fund-priority-title">
+			<div class="fund-priority-head"><h2 id="fund-priority-title">High priority</h2></div>
+			<div class="fund-priority-list" id="fund-priority-list"></div>
+		</section>
+
+		<h2 class="section-title">Browse by area</h2>
+		<div class="fund-explorer">
+			<div class="fund-area-nav" id="fund-area-nav" role="tablist" aria-label="Funding areas"></div>
+			<div class="pricebox fund-area-panel" id="fund-area-panel" role="tabpanel" tabindex="0"></div>
+		</div>
+	</div>
+
+	<!-- Shipping pop-up: mailing address, store link and, outside Amazon, a "notify us" form -->
+	<div class="modal" id="fund-ship-modal" role="dialog" aria-modal="true" aria-labelledby="fund-ship-title" hidden>
+		<div class="modal-dialog">
+			<div class="modal-head">
+				<h3 id="fund-ship-title">Gift this item</h3>
+				<button type="button" class="modal-close fund-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+			</div>
+			<div class="fund-modal-body">
+				<p id="fund-ship-item"></p>
+				<div class="fund-shipto">
+					<div><span class="fund-shipto-label">Ship it to</span><address id="fund-ship-address">Hacker Dojo<br>3200 Patrick Henry Drive, Suite 250<br>Santa Clara, CA 95054</address></div>
+					<button type="button" class="button fund-sm fund-white" id="fund-ship-copy">Copy</button>
+				</div>
+				<a class="button button-green fund-full" id="fund-ship-link" target="_blank" rel="noopener"></a>
+				<p class="fund-coord" id="fund-ship-wishlist" hidden>Or see our <a href="https://www.amazon.com/hz/wishlist/ls/N0V7TCNP0OPE" target="_blank" rel="noopener">Amazon wishlist</a>.</p>
+				<p class="fund-coord" id="fund-ship-coord" hidden>Questions first? <button type="button" class="fund-linkbtn" id="fund-ship-contact">Contact us</button> or email <a href="mailto:donations@hackerdojo.com">donations@hackerdojo.com</a>.</p>
+			</div>
+			<form class="modal-form" id="fund-ship-form" novalidate>
+				<h4>Already bought it?</h4>
+				<p>Tell us so we can watch for the delivery and thank you.</p>
+				<label><span>Your email</span>
+					<input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+				<label><span>Note</span>
+					<textarea name="note" maxlength="2000" placeholder="Anything we should know, for example when it will arrive"></textarea></label>
+				<div class="form-hp" aria-hidden="true"><label>Leave this empty <input name="hp_check" type="text" tabindex="-1" autocomplete="off"></label></div>
+				<button type="submit" class="button fund-white fund-full" id="fund-ship-submit">Notify us that you purchased this item</button>
+				<p class="form-fine" id="fund-ship-fine"></p>
+				<p class="form-status" id="fund-ship-status" role="status" hidden></p>
+			</form>
+		</div>
+	</div>
+
+	<!-- Contact pop-up: offer an item you already own -->
+	<div class="modal" id="fund-contact-modal" role="dialog" aria-modal="true" aria-labelledby="fund-contact-title" hidden>
+		<div class="modal-dialog">
+			<div class="modal-head">
+				<h3 id="fund-contact-title">Contact us</h3>
+				<button type="button" class="modal-close fund-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg></button>
+			</div>
+			<form class="modal-form" id="fund-contact-form" novalidate>
+				<p id="fund-contact-intro"></p>
+				<label><span>Your email <small>(required)</small></span>
+					<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+				<label><span>What do you have? <small>(required)</small></span>
+					<textarea name="what" required placeholder="For example: a three-seat couch, grey fabric, about 5 years old, good condition"></textarea></label>
+				<label><span>Photos</span>
+					<input name="photos" type="file" accept="image/*" multiple id="fund-contact-photos">
+					<span class="fund-hint">Add up to 6 photos so we can see the item.</span></label>
+				<div class="fund-thumbs" id="fund-contact-thumbs" aria-live="polite"></div>
+				<div class="form-hp" aria-hidden="true"><label>Leave this empty <input name="hp_check" type="text" tabindex="-1" autocomplete="off"></label></div>
+				<button type="submit" class="button button-red" id="fund-contact-submit">Send to Hacker Dojo</button>
+				<p class="form-fine" id="fund-contact-fine"></p>
+				<p class="form-status" id="fund-contact-status" role="status" hidden></p>
+			</form>
+		</div>
+	</div>
+
+	<script type="application/json" id="fund-data">{{ site.data.fundraising | jsonify | replace: "</", "<\/" }}</script>
+</div>
+
+<script>
+(function () {
+	var TO = 'donations@hackerdojo.com';
+	// Every.org fundraiser; each button adds a designation so donations can be sorted.
+	var EVERY = 'https://www.every.org/hacker-dojo?donateTo=hacker-dojo&fundraiser_id=0cf7a67a-7760-4d91-9ed1-07ad1d4704a5';
+	var IMAGES = '/static/images/fundraising/';
+	var root = document.getElementById('fund');
+	var ENDPOINT = (root.getAttribute('data-endpoint') || '').trim();
+	var $ = function (id) { return document.getElementById(id); };
+	var areas = JSON.parse($('fund-data').textContent).areas;
+
+	// Drawn graphics for items with no product photo (24x24, stroked)
+	var ICONS = {
+		router: '<rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 16.5h.01M11 16.5h.01"/><path d="M16 13V7"/><path d="M13 6.5a4 4 0 0 1 6 0"/>',
+		netswitch: '<rect x="2.5" y="8" width="19" height="8" rx="2"/><path d="M6 11v2M9 11v2M12 11v2M15 11v2M18 11v2"/>',
+		cable: '<path d="M4 4v5a3 3 0 0 0 3 3h10a3 3 0 0 1 3 3v5"/><rect x="2.5" y="2" width="3" height="3" rx=".5"/><rect x="18.5" y="19" width="3" height="3" rx=".5"/>',
+		battery: '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21.5 10.5v3"/><path d="M11.5 9.5l-2 3h3l-2 3"/>',
+		wifi: '<path d="M2.5 9.5a13.5 13.5 0 0 1 19 0"/><path d="M5.5 12.5a9.2 9.2 0 0 1 13 0"/><path d="M8.5 15.5a5 5 0 0 1 7 0"/><circle cx="12" cy="18.5" r="1"/>',
+		badge: '<rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="9" cy="11.5" r="2"/><path d="M6 16.5c.5-1.3 1.6-2 3-2s2.5.7 3 2M14.5 11h4M14.5 14h3"/><path d="M10 6V4h4v2"/>',
+		camera: '<rect x="3" y="8" width="12" height="8" rx="1.5"/><path d="M15 10.5l5-2.5v8l-5-2.5"/><path d="M9 16v3M6.5 19h5"/>',
+		intercom: '<rect x="7" y="3" width="10" height="18" rx="2"/><circle cx="12" cy="9" r="2"/><path d="M10 15h4M10 17.5h4"/>',
+		couch: '<path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3"/><path d="M3 12a2 2 0 0 1 4 0v3h10v-3a2 2 0 0 1 4 0v5H3z"/><path d="M6 17v2M18 17v2"/>',
+		bolt: '<path d="M13 3L5 13.5h6l-1 7.5 8-10.5h-6z"/>',
+		fridge: '<rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M6 6.5h12M11 10.5h4.5M11 14h4.5M11 17.5h4.5M8.5 10v4.5"/>',
+		lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1"/>',
+		wall: '<rect x="4" y="4" width="16" height="13" rx="1"/><path d="M12 4v13"/><circle cx="7" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/>',
+		conftable: '<ellipse cx="12" cy="12" rx="7" ry="3.5"/><path d="M7 5.5h2M15 5.5h2M7 18.5h2M15 18.5h2M2.5 12h.01M21.5 12h.01"/>',
+		tv: '<rect x="3" y="5" width="18" height="11" rx="1.5"/><path d="M8 20h8M12 16v4"/>',
+		cabinet: '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M12 4v16M9.5 11v2M14.5 11v2"/>',
+		sink: '<path d="M4 13h16v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M12 13V7a3 3 0 0 1 6 0v1"/><path d="M9 10h3"/>',
+		tables: '<path d="M3 8h18M5 8v9M19 8v9M8 12h8"/><circle cx="5" cy="19" r="1.4"/><circle cx="19" cy="19" r="1.4"/>',
+		desk: '<path d="M3 8h18M5 8v11M19 8v11"/><rect x="9" y="11.5" width="6" height="5" rx="1"/><path d="M11 13.5v1M13 13.5v1"/>',
+		cubby: '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 12h16M12 4v16"/><circle cx="8" cy="8" r="1.3"/><rect x="14.5" y="14.5" width="3" height="3" rx=".5"/>',
+		plant: '<path d="M8 15h8l-1 5H9z"/><path d="M12 15V9"/><path d="M12 11c0-3-2-5-5-5 0 3 2 5 5 5z"/><path d="M12 9c0-2.5 1.8-4.5 4.5-4.5C16.5 7 14.7 9 12 9z"/>',
+		paint: '<rect x="4" y="4" width="13" height="5" rx="1.5"/><path d="M17 6.5h2.5v5H12v3"/><rect x="10.5" y="14.5" width="3" height="5.5" rx="1"/>',
+		stage: '<path d="M3 5h18M5 5v6M19 5v6"/><path d="M3 14h18v4H3z"/><path d="M7 18v2M17 18v2"/>',
+		led: '<path d="M9.5 17.5h5M10.5 20.5h3"/><path d="M8.5 14a5 5 0 1 1 7 0c-.6.6-1 1.3-1 2h-5c0-.7-.4-1.4-1-2z"/><path d="M12 2.5v1.5M4.5 6l1 1M19.5 6l-1 1"/>',
+		speaker: '<rect x="6" y="3" width="12" height="18" rx="2"/><circle cx="12" cy="14" r="3"/><circle cx="12" cy="7.5" r="1.2"/>',
+		office: '<path d="M4 20V5h16v15M2.5 20h19"/><rect x="9" y="10" width="6" height="10"/><path d="M13.2 15h.01"/>',
+		confroom: '<rect x="3" y="4" width="18" height="16" rx="1"/><rect x="8" y="10" width="8" height="4" rx="1"/><path d="M10 7.5h.01M14 7.5h.01M10 16.5h.01M14 16.5h.01"/>',
+		booth: '<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M6 8h12"/><path d="M9.5 11.5v1c0 2.2 1.8 4 4 4h1"/>'
+	};
+
+	var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+	var el = function (tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+	var HP = '<span class="fund-hp" title="High priority" role="img" aria-label="High priority">!</span>';
+
+	function fundLink(text, designation, cls, name) {
+		var a = el('a', 'button fund-sm ' + cls);
+		a.href = EVERY + '&designation=' + encodeURIComponent(designation) + '&frequency=ONCE#/donate/card';
+		a.target = '_blank'; a.rel = 'noopener'; a.textContent = text; a.setAttribute('data-tip', 'Opens Every.org');
+		a.setAttribute('aria-label', text + ' — ' + name + ' on Every.org (opens in a new tab)');
+		return a;
+	}
+	function popupButton(text, name, cls, onclick) {
+		var b = el('button', 'button fund-sm ' + cls); b.type = 'button'; b.textContent = text;
+		b.setAttribute('aria-label', text + ' — ' + name); b.setAttribute('aria-haspopup', 'dialog'); b.onclick = onclick;
+		return b;
+	}
+	function thumb(image) {
+		var icon = /^icon:/.test(image || '');
+		if (image && !icon) return '<span class="fund-thumb"><img src="' + esc(IMAGES + image) + '" alt="" width="52" height="52" loading="lazy"></span>';
+		return '<span class="fund-thumb icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[(image || '').slice(5)] || '') + '</svg></span>';
+	}
+	// One row. `it` is an item from the data file (or an area listed in the High priority box); `designation` is its Every.org label.
+	function itemRow(it, designation, hp) {
+		var chips = [];
+		if (it.needs) chips.push('<span class="fund-chip">' + esc(typeof it.needs === 'number' ? 'Needs ' + it.needs : it.needs) + '</span>');
+		if (it.coordinate) chips.push('<span class="fund-chip coord">Coordinate with us first</span>');
+		if (it.stretch) chips.push('<span class="fund-chip stretch">Stretch goal</span>');
+		var row = el('div', 'fund-item', thumb(it.image) + '<div><strong>' + esc(it.name) + (hp ? HP : '') + '</strong>' +
+			(it.note ? '<small>' + esc(it.note) + '</small>' : '') + (chips.length ? '<div class="fund-meta">' + chips.join('') + '</div>' : '') + '</div>');
+		var a = el('div', 'fund-actions');
+		var shopButton = function () {
+			var where = it.store || 'Amazon';
+			var b = popupButton(it.coordinate ? 'View item' : 'Gift this item', it.name, it.coordinate ? 'fund-white' : 'fund-outline-green', function () { openShip(it); });
+			b.setAttribute('aria-label', (it.coordinate ? 'View item at ' : 'Gift this item from ') + where + ' — ' + it.name);
+			b.setAttribute('data-tip', 'Shipping address and link to ' + where);
+			return b;
+		};
+		if (it.kind === 'fund') {
+			a.appendChild(el('span', 'fund-price', esc(it.amount || 'TBD')));
+			a.appendChild(fundLink('Chip in', designation, 'fund-outline-red', it.name));
+			if (it.url) a.appendChild(shopButton());
+		} else if (it.kind === 'contact') {
+			a.appendChild(popupButton('Contact us', it.name, 'fund-white', function () { openContact(it.name); }));
+		} else if (it.url) {
+			if (it.price) a.appendChild(el('span', 'fund-price', esc(it.price) + '<small class="taxinc">tax included</small>'));
+			a.appendChild(shopButton());
+		} else {
+			a.appendChild(el('span', 'fund-soon', 'Link coming soon'));
+		}
+		row.appendChild(a);
+		return row;
+	}
+
+	// High priority box: areas and items with a `priority` number, in that order
+	var priority = [];
+	areas.forEach(function (area) {
+		if (area.priority) priority.push({ order: area.priority, it: { name: area.name, note: area.note, kind: 'fund', amount: area.amount, image: area.image }, designation: area.name + ' - general' });
+		(area.items || []).forEach(function (it) { if (it.priority) priority.push({ order: it.priority, it: it, designation: area.name + ' - ' + it.name }); });
+	});
+	priority.sort(function (x, y) { return x.order - y.order; });
+	var plist = $('fund-priority-list');
+	priority.forEach(function (p) { plist.appendChild(itemRow(p.it, p.designation, false)); });
+
+	// Area tabs and panel
+	var nav = $('fund-area-nav'), panel = $('fund-area-panel');
+	function showArea(i) {
+		var area = areas[i];
+		Array.prototype.forEach.call(nav.children, function (t, k) { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+		panel.setAttribute('aria-labelledby', 'fund-area-tab-' + i);
+		panel.innerHTML = '';
+		panel.appendChild(el('div', 'fund-panel-head', '<h3>' + esc(area.name) + (area.priority ? HP : '') + '</h3>' + (area.description ? '<p>' + esc(area.description) + '</p>' : '')));
+		var bucket = el('div', 'fund-bucket', '<p><strong>Support this whole area</strong></p>');
+		bucket.appendChild(fundLink('Donate', area.name + ' - general', 'fund-white', area.name));
+		panel.appendChild(bucket);
+		var items = (area.items || []).slice().sort(function (x, y) { return (y.priority ? 1 : 0) - (x.priority ? 1 : 0); });
+		if (items.length) items.forEach(function (it) { panel.appendChild(itemRow(it, area.name + ' - ' + it.name, !!it.priority)); });
+		else panel.appendChild(el('p', 'fund-empty', 'No individual items yet. Donations go toward the whole area.'));
+		// Small screens: move to the neighbouring area from the bottom of the list, without scrolling back up to the tabs
+		var foot = el('div', 'fund-area-foot');
+		[[-1, '‹ Previous area'], [1, 'Next area ›']].forEach(function (d) {
+			var n = (i + d[0] + areas.length) % areas.length, b = el('button', '', '<small>' + d[1] + '</small>' + esc(areas[n].name));
+			b.type = 'button'; b.onclick = function () { showArea(n); nav.parentElement.scrollIntoView({ block: 'start' }); };
+			foot.appendChild(b);
+		});
+		panel.appendChild(foot);
+	}
+	areas.forEach(function (area, i) {
+		var count = (area.items || []).length;
+		var t = el('button', 'fund-area-tab', '<span class="n">' + String(i + 1).padStart(2, '0') + '</span><span class="t">' + esc(area.name) + (area.priority ? HP : '') + '</span><span class="c">' + (count ? count + (count === 1 ? ' item' : ' items') : 'Fund') + '</span>');
+		t.type = 'button'; t.id = 'fund-area-tab-' + i; t.setAttribute('role', 'tab'); t.setAttribute('aria-controls', 'fund-area-panel');
+		t.onclick = function () { showArea(i); };
+		t.onkeydown = function (e) {
+			var k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+			if (!k) return;
+			e.preventDefault();
+			var n = (i + k + areas.length) % areas.length;
+			showArea(n); nav.children[n].focus();
+		};
+		nav.appendChild(t);
+	});
+	// The tabs are a column on wide screens and a row under 960px (see the stylesheet)
+	var narrow = window.matchMedia('(max-width: 960px)');
+	var orient = function () { nav.setAttribute('aria-orientation', narrow.matches ? 'horizontal' : 'vertical'); };
+	orient();
+	if (narrow.addEventListener) narrow.addEventListener('change', orient); else narrow.addListener(orient);
+	showArea(0);
+
+	// Pop-ups (the site's .modal pattern)
+	var lastFocus = null;
+	function openModal(m, focusEl) {
+		lastFocus = document.activeElement;
+		m.hidden = false;
+		document.body.style.overflow = 'hidden';
+		(focusEl || m.querySelector('.modal-close')).focus();
+	}
+	function closeModal(m) {
+		m.hidden = true;
+		document.body.style.overflow = '';
+		if (lastFocus && lastFocus.focus) lastFocus.focus();
+	}
+	// Keeps Tab inside the open pop-up
+	function trapTab(e, box) {
+		var f = Array.prototype.slice.call(box.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])')).filter(function (el) { return el.offsetParent !== null && el.tabIndex !== -1; });
+		if (!f.length) return;
+		var first = f[0], last = f[f.length - 1];
+		if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+		else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+	}
+	Array.prototype.forEach.call(root.querySelectorAll('.modal'), function (m) {
+		m.querySelector('.fund-close').addEventListener('click', function () { closeModal(m); });
+		m.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(m); else if (e.key === 'Tab') trapTab(e, m); });
+		m.addEventListener('click', function (e) { if (e.target === m) closeModal(m); });
+	});
+
+	// Sending: JSON to the Apps Script web app, or an email draft when there is no endpoint or sending fails
+	var newId = function () {
+		if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); });
+	};
+	var mailtoFor = function (subject, lines) { return 'mailto:' + TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n')); };
+	function showStatus(node, msg, isError, link) {
+		node.textContent = msg;
+		node.classList.toggle('is-error', !!isError);
+		if (link) { var a = document.createElement('a'); a.href = link.href; a.textContent = link.text; node.appendChild(document.createTextNode(' ')); node.appendChild(a); }
+		node.hidden = false;
+	}
+	// Photos are shrunk in the browser before sending so the message stays small (this also drops camera metadata)
+	function shrink(file) {
+		return new Promise(function (res) {
+			var img = new Image();
+			img.onload = function () {
+				var k = Math.min(1, 1280 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+				c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+				c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+				URL.revokeObjectURL(img.src);
+				res({ name: file.name, data: c.toDataURL('image/jpeg', .82) });
+			};
+			img.onerror = function () { res(null); };
+			img.src = URL.createObjectURL(file);
+		});
+	}
+	function sendMessage(v, o) {
+		if (!ENDPOINT) { window.location.href = o.mailto; showStatus(o.status, o.emailMsg + ' If nothing opened, email ' + TO + '.'); return; }
+		o.button.disabled = true;
+		var label = o.button.textContent;
+		o.button.textContent = 'Sending…';
+		o.status.hidden = true;
+		var dropped = 0;
+		Promise.all((o.files || []).map(shrink))
+			.then(function (shrunk) {
+				if (shrunk.length) { v.photos = shrunk.filter(Boolean); dropped = shrunk.length - v.photos.length; }
+				// text/plain keeps this a "simple" request, so the browser skips the CORS preflight Apps Script can't answer
+				return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(v), redirect: 'follow' });
+			})
+			.then(function (r) { if (!r.ok) throw new Error('network'); return r.json(); })
+			.then(function (res) {
+				if (res && res.ok === true) {
+					o.form.reset(); o.done();
+					showStatus(o.status, o.sentMsg + (dropped ? ' ' + dropped + (dropped === 1 ? ' photo couldn’t be read and wasn’t sent.' : ' photos couldn’t be read and weren’t sent.') : ''));
+				} else {
+					showStatus(o.status, (res && res.error) || 'Something went wrong. Please try again.', true);
+				}
+			})
+			.catch(function () { showStatus(o.status, 'Couldn’t send, please try again.', true, { text: 'Or send it by email', href: o.mailto }); })
+			.then(function () { o.button.disabled = false; o.button.textContent = label; });
+	}
+
+	// Shipping pop-up
+	var smodal = $('fund-ship-modal'), sform = $('fund-ship-form'), sstatus = $('fund-ship-status'), slink = $('fund-ship-link'), scopy = $('fund-ship-copy');
+	var sname = '', swhere = '', submissionId = null;
+	function openShip(it) {
+		var where = it.store || 'Amazon';
+		sname = it.name; swhere = where; submissionId = newId();
+		$('fund-ship-title').textContent = it.coordinate ? 'View item' : 'Gift this item';
+		$('fund-ship-item').textContent = it.name + (it.coordinate ? '. Please coordinate with us before buying.' : '. Please have it shipped to the Dojo.');
+		slink.href = it.url;
+		slink.textContent = it.store ? (it.coordinate ? 'View at ' : 'Buy at ') + where : 'Buy on Amazon';
+		slink.setAttribute('aria-label', slink.textContent + ' (opens in a new tab)');
+		$('fund-ship-coord').hidden = !it.coordinate;
+		$('fund-ship-wishlist').hidden = !!it.store;
+		sform.hidden = !it.store;
+		sform.reset(); sstatus.hidden = true; scopy.textContent = 'Copy';
+		openModal(smodal);
+	}
+	$('fund-ship-fine').innerHTML = ENDPOINT ? 'Your note goes to <a href="mailto:' + TO + '">' + TO + '</a>.' :'This opens your email app with a note addressed to <a href="mailto:' + TO + '">' + TO + '</a>. Just press send.';
+	$('fund-ship-contact').onclick = function () { closeModal(smodal); openContact(sname); };
+	scopy.onclick = function () {
+		var node = $('fund-ship-address'), text = node.innerText;
+		var select = function () { var r = document.createRange(); r.selectNodeContents(node); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); scopy.textContent = 'Selected'; };
+		if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { scopy.textContent = 'Copied'; }, select); else select();
+	};
+	sform.addEventListener('submit', function (e) {
+		e.preventDefault();
+		if (!sform.reportValidity()) return;
+		var v = { type: 'purchase', item: sname, store: swhere, email: sform.elements.email.value.trim(), what: sform.elements.note.value.trim(), website: sform.elements.hp_check.value.trim(), submissionId: submissionId || (submissionId = newId()), source: window.location.href };
+		sendMessage(v, { form: sform, status: sstatus, button: $('fund-ship-submit'), done: function () { submissionId = null; },
+			mailto: mailtoFor('Purchased for Dojo 5.0: ' + v.item, ['Item: ' + v.item, 'Store: ' + v.store, 'Email: ' + (v.email || 'not given'), '', v.what]),
+			emailMsg: 'Your email app should now be open with your note. Press send to finish.',
+			sentMsg: 'Thanks! We’ll watch for it.' });
+	});
+
+	// Contact pop-up
+	var cmodal = $('fund-contact-modal'), cform = $('fund-contact-form'), cstatus = $('fund-contact-status'), cthumbs = $('fund-contact-thumbs'), cphotos = $('fund-contact-photos');
+	var cname = '', cfiles = [];
+	function showThumbs() {
+		Array.prototype.forEach.call(cthumbs.querySelectorAll('img'), function (i) { URL.revokeObjectURL(i.src); });
+		cthumbs.innerHTML = '';
+		cfiles.forEach(function (f) { var i = document.createElement('img'); i.src = URL.createObjectURL(f); i.alt = f.name; cthumbs.appendChild(i); });
+	}
+	function openContact(name, intro) {
+		cform.reset(); cfiles = []; showThumbs(); cstatus.hidden = true; cname = name; submissionId = newId();
+		$('fund-contact-intro').textContent = (intro || 'About: ' + name + '.') + ' Tell us what you have and add photos. We approve every item before it comes to the Dojo.';
+		openModal(cmodal, cform.elements.email);
+	}
+	$('fund-contact-fine').innerHTML = ENDPOINT ? 'Your message and photos go to <a href="mailto:' + TO + '">' + TO + '</a>.' :'This opens your email app with your message addressed to <a href="mailto:' + TO + '">' + TO + '</a>. Attach your photos there and press send.';
+	cphotos.onchange = function () { cfiles = Array.prototype.filter.call(cphotos.files, function (f) { return f.type.indexOf('image/') === 0; }).slice(0, 6); showThumbs(); };
+	$('fund-own-contact').onclick = function () { openContact('Item you already own', 'Already own something on our list?'); };
+	cform.addEventListener('submit', function (e) {
+		e.preventDefault();
+		if (!cform.reportValidity()) return;
+		var v = { type: 'offer', item: cname, email: cform.elements.email.value.trim(), what: cform.elements.what.value.trim(), website: cform.elements.hp_check.value.trim(), submissionId: submissionId || (submissionId = newId()), source: window.location.href };
+		sendMessage(v, { form: cform, status: cstatus, button: $('fund-contact-submit'), files: cfiles, done: function () { submissionId = null; cfiles = []; showThumbs(); },
+			mailto: mailtoFor('Item offered for Dojo 5.0: ' + v.item, ['About: ' + v.item, 'Email: ' + v.email, '', v.what, '', '(Please attach photos of the item.)']),
+			emailMsg: 'Your email app should now be open with your message. Attach your photos and press send.',
+			sentMsg: 'Thanks! Your message is on its way.' });
+	});
+})();
+</script>

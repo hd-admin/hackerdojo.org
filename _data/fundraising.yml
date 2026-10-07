@@ -1,0 +1,306 @@
+# Items and areas on the Dojo 5.0 fundraising page (/fundraising/, pages/home/fundraising.html).
+#
+# Prices include 9.75% sales tax (confirmed with CDTFA for 3200 Patrick Henry Drive). Shipping is extra.
+# Area and item names become the Every.org "designation" on every money button ("<Area> - <item>", or
+# "<Area> - general" for a whole area), which the totals sheet keys on. Don't rename them once donations
+# have started; edit prices, notes and links freely.
+#
+# Each area: name, description, items. Optional: priority (a number: the area as a whole is listed in the
+# High priority box in that position), amount and note (shown there), image.
+# Each item:
+#   name, note (optional, shown under the name)
+#   kind: fund     - "Chip in" button; shows `amount` (or TBD). With a `url` it also gets a "View item" button.
+#         buy      - "Gift this item" button with `url`, `store` and `price`; without a url it shows "Link coming soon"
+#         contact  - "Contact us" button (used items we need to approve first)
+#   store: the shop's name. Leave it out for Amazon wishlist links (the button then says "Buy on Amazon").
+#   needs: how many (a number, or text such as "3 of 12 needed")
+#   coordinate: true  - "Coordinate with us first" chip; the button says "View item" instead of "Gift this item"
+#   stretch: true     - "Stretch goal" chip
+#   priority: a number - also listed in the High priority box, in that position
+#   image: a file in static/images/fundraising/ (for example water.jpg), or icon:<name> for a drawn icon.
+#          Icons: router, netswitch, cable, battery, wifi, badge, camera, intercom, couch, bolt, fridge, lock,
+#          wall, conftable, tv, cabinet, sink, tables, desk, cubby, plant, paint, stage, led, speaker, office,
+#          confroom, booth.
+
+areas:
+  - name: Security
+    description: Cameras, intercom, and member badging for the new space.
+    items:
+      - name: Rhombus camera
+        note: R120 camera plus one year of Professional licensing. Licenses renew at $149 to $199 per camera per year.
+        kind: fund
+        amount: "$600 each"
+        needs: 3 of 12 needed
+        image: icon:camera
+      - name: Intercom and member badging for 24/7 access
+        kind: fund
+        amount: TBD
+        image: icon:intercom
+      - name: Door locks and installation
+        note: "Kisi member access: controller, three door readers, electrified locks, installation and fire-code release hardware. Kisi software subscription is separate."
+        kind: fund
+        amount: "$8,676"
+        priority: 2
+        image: icon:lock
+
+  - name: Internet coverage
+    description: Wi-Fi 7 across the whole space, plus a new gateway, PoE switch and battery backup.
+    priority: 1
+    amount: "$3,785"
+    note: Wi-Fi 7 across the whole space, plus a new gateway, PoE switch and battery backup. Sized for 200-person events.
+    image: icon:wifi
+    items:
+      - name: UniFi U7 Pro Max access point
+        note: Wi-Fi 7 for the main hall (U7-Pro-Max). Not the U7 Pro XG or XGS.
+        kind: buy
+        url: "https://store.ui.com/us/en/products/u7-pro-max"
+        store: Ubiquiti
+        price: "$337 each"
+        needs: 3
+        coordinate: true
+        image: icon:wifi
+      - name: UniFi U7 Pro access point
+        note: Wi-Fi 7 (U7-Pro) for the classroom, coworking area, kitchen, lab and offices. Chipping in lets us buy a 5-pack locally for about $75 less.
+        kind: buy
+        url: "https://store.ui.com/us/en/products/u7-pro"
+        store: Ubiquiti
+        price: "$228 each"
+        needs: 5
+        coordinate: true
+        image: icon:wifi
+      - name: UniFi Cloud Gateway Fiber
+        note: Router, firewall and controller in one. No-SSD version (UCG-Fiber)
+        kind: buy
+        url: "https://store.ui.com/us/en/products/ucg-fiber"
+        store: Ubiquiti
+        price: "$337"
+        coordinate: true
+        image: icon:router
+      - name: UniFi Switch Pro 24 PoE Gen2
+        note: Powers every access point, camera and door reader from one switch (USW-Pro-24-PoE)
+        kind: buy
+        url: "https://store.ui.com/us/en/products/usw-pro-24-poe"
+        store: Ubiquiti
+        price: "$845.08"
+        coordinate: true
+        image: icon:netswitch
+      - name: UniFi 10G direct attach cable, 0.5 m
+        note: Connects the gateway to the switch (UACC-DAC-SFP10-0.5M)
+        kind: buy
+        url: "https://store.ui.com/us/en/products/10gbps-direct-attach-cable"
+        store: Ubiquiti
+        price: "$14.27"
+        coordinate: true
+        image: icon:cable
+      - name: Battery backup
+        note: CyberPower CP1500PFCLCD, 1500 VA pure sine wave. Keeps the gateway, switch and door controller up through short outages.
+        kind: buy
+        url: "https://www.bhphotovideo.com/c/product/1513053-REG/cyberpower_cp1500pfclcd_pfc_sinewave_ups.html"
+        store: B&H
+        price: "$263"
+        image: icon:battery
+      - name: 24-port patch panel, 1U
+        note: TRENDnet TC-KP24S shielded keystone panel for the Cat6A runs to access points and desks
+        kind: buy
+        url: "https://www.connection.com/product/trendnet-1u-19-rackmount-ready/tc-kp24s/36427698"
+        store: Connection
+        price: "$37.40 each"
+        needs: 2
+        image: icon:netswitch
+      - name: Cat6A shielded keystone jacks, 25-pack
+        note: Terminates the cable runs at the patch panels
+        kind: buy
+        url: "https://www.newegg.com/p/0J2-079K-006D9"
+        store: Newegg
+        price: "$99.86"
+        image: icon:cable
+
+  - name: Kitchen & breakroom
+    description: Cabinets, a fridge, appliances, and everyday essentials. Plumbing & electrical support needed.
+    items:
+      - name: Kitchen buildout
+        note: Pays for the electrician, plumber and paint to get the kitchen running. Plumbing & electrical help welcome.
+        kind: fund
+        amount: "$1,500"
+        image: icon:bolt
+      - name: Refrigerator
+        note: Empura 28-inch glass-door refrigerator, 21 cu ft
+        kind: buy
+        url: "https://www.restaurantsupply.com/products/empura-28-black-swing-glass-door-merchandiser-refrigerator-with-clearkeeper-glass-21-cu-ft-led-lighting-5-adjustable-shelves"
+        store: RestaurantSupply
+        price: "$1,645"
+        coordinate: true
+        image: fridge.jpg
+      - name: Water machine
+        note: "Global Water G3F hot and cold water cooler, 3-stage filtration. Bottleless: needs a cold-water line and a 115 V outlet; filters are a recurring cost."
+        kind: buy
+        url: "https://www.prodrinkingfountains.com/global-water-g3f-hot-cold-water-cooler/"
+        store: ProDrinkingFountains.com
+        price: "$582"
+        priority: 4
+        image: water.jpg
+      - name: Coffee machine
+        note: Curtis G4 Gemini satellite coffee brewer. Needs a dedicated 20 A circuit (or 220 V) and a plumbed water line; one serving server included.
+        kind: buy
+        url: "https://www.webstaurantstore.com/curtis-g4gems63a1000-gemini-stainless-steel-satellite-coffee-brewer-120-220v/945G4GEMS.html"
+        store: WebstaurantStore
+        price: "$1,777"
+        priority: 6
+        image: coffee.jpg
+      - name: Zep citrus degreaser, 1 gallon (case of 4)
+        note: Restaurant-grade cleaner for stovetops and appliances
+        kind: buy
+        url: "https://www.amazon.com/dp/B079ZJQ7ZK/?coliid=I3RG2XC18XB31U&colid=N0V7TCNP0OPE&psc=1"
+        price: "$47.49"
+        image: zepgal.jpg
+      - name: Zep citrus degreaser, 32 oz
+        note: Spray-size degreaser for everyday cleanup
+        kind: buy
+        url: "https://www.amazon.com/dp/B001PNEVK6/?coliid=IEXA02NA0BKMS&colid=N0V7TCNP0OPE&psc=1"
+        price: "$9.05 each"
+        needs: 5
+        image: zep32.jpg
+
+  - name: Classroom
+    description: Tables, presentation tools, and classroom supplies.
+    items:
+      - name: Projector
+        note: ViewSonic PA503HD
+        kind: buy
+        url: "https://www.bhphotovideo.com/c/product/1824452-REG/viewsonic_pa503hd_4_000_lumen_full_hd.html"
+        store: B&H
+        price: "$702"
+        coordinate: true
+        image: projector.webp
+      - name: Classroom tables
+        note: Latitude Run flip-top mobile training tables (set of 4)
+        kind: buy
+        url: "https://www.wayfair.com/shop-office-spaces/pdp/latitude-run-4-pcs-flip-top-mobile-training-table-for-office-w117497571.html"
+        store: Wayfair
+        price: "$1,207 per set"
+        needs: 3
+        priority: 5
+        image: tables.jpg
+
+  - name: Main space
+    description: Shared furniture, flexible spaces, and finishing touches.
+    items:
+      - name: Main space desks with outlets
+        kind: fund
+        image: icon:desk
+      - name: Power drops
+        note: Wired by an electrician
+        kind: fund
+        image: icon:bolt
+      - name: Movable walls
+        kind: fund
+        image: icon:wall
+      - name: Plush couches and chairs
+        note: All items must be approved
+        kind: contact
+        image: icon:couch
+      - name: Plants & pots
+        note: ZZ plants, pothos, and other suitable plants
+        kind: fund
+        amount: "$900"
+        image: icon:plant
+      - name: Murals & painting
+        kind: fund
+        amount: "$5,000"
+        priority: 3
+        image: icon:paint
+      - name: Brother MFC-L3780CDW color printer
+        note: Color all-in-one with duplex print and scan
+        kind: buy
+        url: "https://www.brother-usa.com/p/laser-printers/MFCL3780CDW"
+        store: Brother
+        price: "$626"
+        image: printer.jpg
+
+  - name: Stage, sound & lighting
+    description: A new stage, sound equipment, and lighting.
+    items:
+      - name: New stage
+        note: Materials to build the stage
+        kind: fund
+        amount: "$1,000"
+        image: icon:stage
+      - name: Stage lighting
+        note: Chauvet DJ SlimPAR 56 ILS
+        kind: buy
+        url: "https://www.sweetwater.com/store/detail/SlimPAR56ILS--chauvet-dj-slimpar-56-ils-rgb-par-fixture"
+        store: Sweetwater
+        price: "$110 each"
+        needs: 2
+        image: stagelight.jpg
+      - name: Sound equipment
+        kind: fund
+        amount: TBD
+        image: icon:speaker
+
+  - name: Offices, conference rooms & phone booths
+    description: Room buildouts and places for private calls.
+    items:
+      - name: Office buildouts
+        kind: fund
+        image: icon:office
+      - name: Conference room buildouts
+        kind: fund
+        image: icon:confroom
+      - name: Phone booths
+        note: Used acoustic booths from A Better Source. Every listing was sold out on October 6 and stock changes weekly, so chip in and we will buy when one appears, or coordinate with us if you spot one.
+        kind: fund
+        amount: About $3,300 each
+        url: "https://www.abettersource.com/furniture/privacy-booths-used-furniture/"
+        store: Better Source
+        coordinate: true
+        image: icon:booth
+      - name: Logitech C920s webcam
+        note: HD webcam for conference rooms
+        kind: buy
+        url: "https://www.bhphotovideo.com/c/product/1461727-REG/logitech_960_001257_c920s_hd_pro_webcam.html"
+        store: B&H
+        price: "$76.81"
+        needs: 2
+        image: webcam.jpg
+
+  - name: Prototype lab
+    description: Full buildout of the maker space. We will need to do room construction.
+    items:
+      - name: ELEGOO Centauri Carbon 2 Combo 3D printer
+        note: Multicolor CoreXY printer, 256 mm build volume
+        kind: buy
+        url: "https://us.elegoo.com/products/centauri-carbon-2-combo"
+        store: Elegoo
+        price: "$438 (sale)"
+        coordinate: true
+        image: printer3d.jpg
+      - name: "ELEGOO PLA+ filament 4 kg: pink, purple, sky blue, neon green"
+        note: Four 1 kg spools, 1.75 mm
+        kind: buy
+        url: "https://www.amazon.com/dp/B0F62G6L9G/?coliid=I3GQ9JLVG06L7G&colid=N0V7TCNP0OPE&psc=1"
+        price: "$42.87 each"
+        needs: 2
+        image: fil1.jpg
+      - name: "ELEGOO PLA+ filament, 1 kg spools: red, yellow, orange, neon green"
+        note: 1.75 mm, bought direct from ELEGOO; pick the colour at checkout (two of each colour)
+        kind: buy
+        url: "https://us.elegoo.com/collections/filaments/products/elegoo-pla-plus-3d-printer-filament-1-75mm-colored-1kg"
+        store: ELEGOO
+        price: "$16.45 each"
+        needs: 8
+        image: fil2.jpg
+      - name: "ELEGOO PLA+ filament 4 kg: black, white, red, dark blue"
+        note: Four 1 kg spools, 1.75 mm
+        kind: buy
+        url: "https://www.amazon.com/dp/B0C7GD4STF/?coliid=I10K0YOZUKSG9R&colid=N0V7TCNP0OPE&psc=1"
+        price: "$42.87 each"
+        needs: 2
+        image: fil3.jpg
+      - name: "ELEGOO PLA+ filament 4 kg: black & white"
+        note: Four 1 kg spools, 1.75 mm
+        kind: buy
+        url: "https://www.amazon.com/dp/B0CHS79BGL/?coliid=I2RDQXRXMC12L0&colid=N0V7TCNP0OPE&psc=1"
+        price: "$41.94 each"
+        needs: 2
+        image: fil4.jpg
