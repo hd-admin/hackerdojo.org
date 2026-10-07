@@ -1,4 +1,4 @@
-# Items and areas on the Dojo 5.0 fundraising page (/donations/, pages/home/fundraising.html).
+# Items and areas on the Dojo 5.0 fundraising page (/donations/ and /donations/<area>/, _includes/fundraising-page.html).
 #
 # Prices include 9.75% sales tax (confirmed with CDTFA for 3200 Patrick Henry Drive). Shipping is extra.
 # Area and item names become the Every.org "designation" on every money button ("<Area> - <item>", or
