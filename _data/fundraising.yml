@@ -1,4 +1,4 @@
-# Items and areas on the Dojo 5.0 fundraising page (/fundraising/, pages/home/fundraising.html).
+# Items and areas on the Dojo 5.0 fundraising page (/donations/, pages/home/fundraising.html).
 #
 # Prices include 9.75% sales tax (confirmed with CDTFA for 3200 Patrick Henry Drive). Shipping is extra.
 # Area and item names become the Every.org "designation" on every money button ("<Area> - <item>", or
@@ -37,7 +37,7 @@ areas:
         amount: TBD
         image: icon:intercom
       - name: Door locks and installation
-        note: "Kisi member access: controller, three door readers, electrified locks, installation and fire-code release hardware. Kisi software subscription is separate."
+        note: Kisi controller, three door readers, electrified locks and installation. Software subscription is separate.
         kind: fund
         amount: "$8,676"
         priority: 2
@@ -132,7 +132,7 @@ areas:
         coordinate: true
         image: fridge.jpg
       - name: Water machine
-        note: "Global Water G3F hot and cold water cooler, 3-stage filtration. Bottleless: needs a cold-water line and a 115 V outlet; filters are a recurring cost."
+        note: Global Water G3F hot and cold cooler with 3-stage filtration. Needs a cold-water line and an outlet.
         kind: buy
         url: "https://www.prodrinkingfountains.com/global-water-g3f-hot-cold-water-cooler/"
         store: ProDrinkingFountains.com
@@ -140,7 +140,7 @@ areas:
         priority: 4
         image: water.jpg
       - name: Coffee machine
-        note: Curtis G4 Gemini satellite coffee brewer. Needs a dedicated 20 A circuit (or 220 V) and a plumbed water line; one serving server included.
+        note: Curtis G4 Gemini satellite brewer. Needs a dedicated 20 A circuit and a plumbed water line.
         kind: buy
         url: "https://www.webstaurantstore.com/curtis-g4gems63a1000-gemini-stainless-steel-satellite-coffee-brewer-120-220v/945G4GEMS.html"
         store: WebstaurantStore
@@ -205,6 +205,7 @@ areas:
         amount: "$900"
         image: icon:plant
       - name: Murals & painting
+        note: Paint and supplies for the walls, plus murals by local artists to make the space ours.
         kind: fund
         amount: "$5,000"
         priority: 3
