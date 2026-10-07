@@ -1,9 +1,12 @@
-<!-- Dojo 5.0 fundraising page (hackerdojo.org/fundraising). Areas, items and prices come from _data/fundraising.yml.
+<!-- Dojo 5.0 fundraising page (hackerdojo.org/donations; /fundraising/ redirects here). Areas, items and prices come from _data/fundraising.yml.
      Every money button links to the Dojo 5.0 Every.org fundraiser with a "designation" ("<Area> - <item>" or
      "<Area> - general") so donations can be sorted. "Gift this item" opens a pop-up with the mailing address and the
      store link. The "Contact us" and "Notify us that you purchased this item" forms go to the Apps Script web app set as
      fundraising_message_url in _config.yml; without it, or if sending fails, they fall back to email.
      Built on style.css: .page-hero*, .section*, .pricebox, .button*, .modal*, .form-*. Page-only styles are scoped to #fund.
+     This partial lives in _includes (not pages/home) so the area sub-pages in donations/ can include it too.
+     Each area also has its own address, /donations/<area>/ (the files in donations/), which opens the page on that tab;
+     clicking a tab updates the address bar to match, so the current URL can always be shared.
      Content history: v4, October 6, 2026: Internet coverage list revised to the approved Patrick Henry network plan; requirement and
      licensing notes added to kitchen, security and lab items; dead filament ASIN replaced with an ELEGOO direct link; phone booths
      changed to a fund (all listings sold out). v4.2, October 7, 2026: Internet coverage switch changed to Switch Pro 24 PoE Gen2;
@@ -130,7 +133,7 @@
 @media (prefers-reduced-motion:reduce){#fund *{transition:none!important}}
 </style>
 
-<div id="fund" data-endpoint="{{ site.fundraising_message_url }}">
+<div id="fund" data-endpoint="{{ site.fundraising_message_url }}" data-area="{{ page.area }}">
 	<div class="section page-hero">
 		<div class="page-hero-tagline">Dojo 5.0 &middot; Built by our community</div>
 		<div class="page-hero-title">Help make the new Dojo <span>feel like home.</span></div>
@@ -224,6 +227,9 @@
 	var ENDPOINT = (root.getAttribute('data-endpoint') || '').trim();
 	var $ = function (id) { return document.getElementById(id); };
 	var areas = JSON.parse($('fund-data').textContent).areas;
+	// Area addresses: /donations/<slug>/ (see the files in donations/). Must match how those permalinks are built.
+	var BASE = '/donations/';
+	var slug = function (s) { return String(s).toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
 
 	// Drawn graphics for items with no product photo (24x24, stroked)
 	var ICONS = {
@@ -322,8 +328,9 @@
 
 	// Area tabs and panel
 	var nav = $('fund-area-nav'), panel = $('fund-area-panel');
-	function showArea(i) {
+	function showArea(i, updateUrl) {
 		var area = areas[i];
+		if (updateUrl && window.history && history.replaceState) history.replaceState(null, '', BASE + slug(area.name) + '/' + window.location.search);
 		Array.prototype.forEach.call(nav.children, function (t, k) { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
 		panel.setAttribute('aria-labelledby', 'fund-area-tab-' + i);
 		panel.innerHTML = '';
@@ -338,7 +345,7 @@
 		var foot = el('div', 'fund-area-foot');
 		[[-1, '‹ Previous area'], [1, 'Next area ›']].forEach(function (d) {
 			var n = (i + d[0] + areas.length) % areas.length, b = el('button', '', '<small>' + d[1] + '</small>' + esc(areas[n].name));
-			b.type = 'button'; b.onclick = function () { showArea(n); nav.parentElement.scrollIntoView({ block: 'start' }); };
+			b.type = 'button'; b.onclick = function () { showArea(n, true); nav.parentElement.scrollIntoView({ block: 'start' }); };
 			foot.appendChild(b);
 		});
 		panel.appendChild(foot);
@@ -347,13 +354,13 @@
 		var count = (area.items || []).length;
 		var t = el('button', 'fund-area-tab', '<span class="n">' + String(i + 1).padStart(2, '0') + '</span><span class="t">' + esc(area.name) + (area.priority ? HP : '') + '</span><span class="c">' + (count ? count + (count === 1 ? ' item' : ' items') : 'Fund') + '</span>');
 		t.type = 'button'; t.id = 'fund-area-tab-' + i; t.setAttribute('role', 'tab'); t.setAttribute('aria-controls', 'fund-area-panel');
-		t.onclick = function () { showArea(i); };
+		t.onclick = function () { showArea(i, true); };
 		t.onkeydown = function (e) {
 			var k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
 			if (!k) return;
 			e.preventDefault();
 			var n = (i + k + areas.length) % areas.length;
-			showArea(n); nav.children[n].focus();
+			showArea(n, true); nav.children[n].focus();
 		};
 		nav.appendChild(t);
 	});
@@ -362,7 +369,12 @@
 	var orient = function () { nav.setAttribute('aria-orientation', narrow.matches ? 'horizontal' : 'vertical'); };
 	orient();
 	if (narrow.addEventListener) narrow.addEventListener('change', orient); else narrow.addListener(orient);
-	showArea(0);
+	// Open on the area named by the sub-page (data-area) or by a #hash, and scroll to it
+	var wanted = (root.getAttribute('data-area') || '').trim() || (window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : '');
+	var start = -1;
+	if (wanted) areas.forEach(function (a, i) { if (slug(a.name) === slug(wanted)) start = i; });
+	showArea(start < 0 ? 0 : start);
+	if (start >= 0) nav.parentElement.scrollIntoView({ block: 'start' });
 
 	// Pop-ups (the site's .modal pattern)
 	var lastFocus = null;
