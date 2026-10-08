@@ -14,7 +14,8 @@
 #dojo-move p{font-size:14px;line-height:1.55;margin:0 0 12px}
 #dojo-move .dm-intro p:not(.dm-eyebrow){max-width:520px;margin:0 auto;font-size:15px}
 #dojo-move .dm-intro p.dm-more{margin-top:10px;font-size:13px;color:#5b4a78}
-#dojo-move .dm-details{display:inline-block;margin-top:14px;font-family:'Rajdhani',Arial,sans-serif;font-size:16px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#fff;background:var(--dojo-red);border-radius:12px;padding:10px 20px;text-decoration:none}
+#dojo-move .dm-top-actions{display:flex;align-items:center;gap:10px}
+#dojo-move .dm-details{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#fff;background:var(--dojo-red);border-radius:10px;padding:8px 14px;text-decoration:none;white-space:nowrap}
 #dojo-move .dm-details:focus-visible{outline:2px solid #6d3bdb;outline-offset:3px}
 #dojo-move figure{margin:0}
 #dojo-move .dm-photos{background:#141418;padding:0 0 4px}
@@ -39,18 +40,17 @@
 #dojo-move .dm-primary{font-family:'Rajdhani',Arial,sans-serif;text-transform:uppercase;letter-spacing:.6px;background:var(--dojo-red);color:#fff;border:0;border-radius:12px;padding:13px 20px;font-size:14px}
 #dojo-move .dm-primary:hover{background:#c72f2f}
 #dojo-move .dm-signoff{font-size:12px;line-height:1.5;max-width:270px;margin:0}
-@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:36px}#dojo-move .dm-top{padding:12px 22px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
+@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:36px}#dojo-move .dm-top{padding:12px 16px}#dojo-move .dm-brand{font-size:18px}#dojo-move .dm-top-actions{gap:6px}#dojo-move .dm-details{font-size:13px;letter-spacing:.5px;padding:7px 10px}#dojo-move .dm-details span{display:none}#dojo-move .dm-close{width:30px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
 </style>
 
 <div id="dojo-move" hidden>
 <section class="dm-popup" role="dialog" aria-modal="true" aria-labelledby="dojo-move-title">
-	<div class="dm-top"><div class="dm-brand">Hacker Dojo</div><button class="dm-close" aria-label="Close announcement">&times;</button></div>
+	<div class="dm-top"><div class="dm-brand">Hacker Dojo</div><div class="dm-top-actions"><a class="dm-details" href="/hackerdojo5/"><span>See more </span>details &rarr;</a><button class="dm-close" aria-label="Close announcement">&times;</button></div></div>
 	<div class="dm-intro">
 		<p class="dm-eyebrow">OUR NEXT CHAPTER &middot; DOJO 5.0</p>
 		<h1 id="dojo-move-title">Big news. We&rsquo;re moving.</h1>
 		<p>A new home for the community you love. Join us in Santa Clara beginning <strong>October 12, 2026.</strong></p>
 		<p class="dm-more">The move runs September 24 &ndash; October 15, 2026.</p>
-		<a class="dm-details" href="/hackerdojo5/">See more details &rarr;</a>
 	</div>
 	<figure class="dm-photos">
 		<figcaption>What do you want to see here?</figcaption>
@@ -72,6 +72,7 @@
 			<summary>Memberships, pricing &amp; tours</summary>
 			<p>All memberships transfer to the new location at your current rate. New access instructions and prep steps will follow.</p>
 			<p>New prices apply only to <strong>new members who join after November 1, 2026</strong>: Standard $180, Student $90 and Annual $1,620 a year (current members keep $150, $75 and $1,350).</p>
+			<p>Offices are $1,100 base plus $180 membership per person ($150 for existing members). <a href="/hackerdojo5/#hd5-membership">See the full rate table &rarr;</a></p>
 			<p>Preview tours of the new space are on September 25, September 29 and October 2. <a href="https://calendly.com/hdfrontdesk/hacker-dojo-5-0-preview" target="_blank" rel="noopener noreferrer">Sign up for a tour &nearr;</a></p>
 		</details>
 		<details class="dm-help">
