@@ -10,7 +10,10 @@
      Content history: v4, October 6, 2026: Internet coverage list revised to the approved Patrick Henry network plan; requirement and
      licensing notes added to kitchen, security and lab items; dead filament ASIN replaced with an ELEGOO direct link; phone booths
      changed to a fund (all listings sold out). v4.2, October 7, 2026: Internet coverage switch changed to Switch Pro 24 PoE Gen2;
-     second-switch stretch goal removed; priority amount updated to $3,785. -->
+     second-switch stretch goal removed; priority amount updated to $3,785.
+     Progress: the page fetches totals by designation and purchase counts from the web app set as fundraising_progress_url
+     in _config.yml (the Dojo 5.0 Donations sheet's script) and fills each button in proportion to its target; a met target
+     shows as Funded or Purchased. Without the feed the page simply shows no progress. -->
 <style>
 #fund{--fund-red:#e13838;--fund-green:#018669;--fund-slate:#444c5a;--fund-ink:#111;--fund-text:#222;--fund-muted:#444;--fund-soft:#505050;--fund-line:#e6e4e8;--fund-pink:#fdeceb;--fund-pink-line:#f4c9c6;color:var(--fund-text);line-height:1.5}
 #fund *{box-sizing:border-box}
@@ -92,6 +95,17 @@
 #fund .fund-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 #fund .fund-price{font-weight:600;font-size:15px;color:var(--fund-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 #fund .fund-price .taxinc{display:block;font-size:11px;font-weight:400;line-height:1.2;color:var(--fund-muted);text-align:right}
+#fund .fund-raised{display:block;font-size:11px;font-weight:500;line-height:1.2;color:var(--fund-green);text-align:right;white-space:nowrap}
+/* Progress: the button fills from the left in proportion to what has come in; a met target turns it solid */
+#fund .button.fund-fill{background:linear-gradient(90deg,var(--fill) var(--pct),#fff var(--pct))}
+#fund .fund-outline-red{--fill:#f8d0d0}
+#fund .fund-outline-green{--fill:#cfe8e1}
+#fund .fund-white{--fill:#dcd9e4}
+#fund .button.fund-done{color:#fff;box-shadow:none}
+#fund .fund-outline-red.fund-done{background:var(--fund-red)}
+#fund .fund-outline-green.fund-done{background:var(--fund-green)}
+#fund .fund-white.fund-done{background:var(--fund-slate)}
+#fund .fund-bucket .fund-raised{text-align:left;font-size:13px;margin-top:2px}
 #fund .fund-soon{display:inline-block;font-size:12px;font-weight:500;line-height:1;padding:7px 10px;border-radius:6px;background:#f5f5f5;color:var(--fund-soft);white-space:nowrap}
 #fund .fund-priority .fund-soon{background:#f8d9d7;color:#8a3b36}
 #fund .fund-hp{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#fde8e7;color:#a8231d;font-weight:700;font-size:12px;line-height:1;margin-left:7px;vertical-align:1px}
@@ -134,7 +148,7 @@
 @media (prefers-reduced-motion:reduce){#fund *{transition:none!important}}
 </style>
 
-<div id="fund" data-endpoint="{{ site.fundraising_message_url }}" data-area="{{ page.area }}">
+<div id="fund" data-endpoint="{{ site.fundraising_message_url }}" data-progress="{{ site.fundraising_progress_url }}" data-area="{{ page.area }}">
 	<div class="section page-hero">
 		<div class="page-hero-tagline">Dojo 5.0 &middot; Built by our community</div>
 		<div class="page-hero-title">Help make the new Dojo <span>feel like home.</span></div>
@@ -226,6 +240,31 @@
 	var IMAGES = '/static/images/fundraising/';
 	var root = document.getElementById('fund');
 	var ENDPOINT = (root.getAttribute('data-endpoint') || '').trim();
+	var PROGRESS_URL = (root.getAttribute('data-progress') || '').trim();
+	// Live progress: { raised: { "<designation>": net dollars }, purchased: { "<item name>": count } }, filled in once the feed answers
+	var progress = { raised: {}, purchased: {} };
+	var money = function (s) { var m = String(s || '').replace(/,/g, '').match(/\$\s*(\d+(?:\.\d+)?)/); return m ? Number(m[1]) : 0; };
+	var fmt = function (v) { return '$' + Math.round(v).toLocaleString('en-US'); };
+	var countNeeded = function (it) { return typeof it.needs === 'number' && it.needs > 0 ? it.needs : 1; };
+	// Target and amount so far for one item (or the High priority row of an area)
+	function itemProgress(it, designation) {
+		var unit = money(it.kind === 'fund' ? it.amount : it.price);
+		var target = unit * (/each|per set/i.test(it.kind === 'fund' ? it.amount : it.price) ? countNeeded(it) : 1);
+		var bought = (progress.purchased[it.name] || 0);
+		var raised = (progress.raised[designation] || 0) + (it.kind === 'fund' && !it.url ? 0 : bought * unit);
+		var done = (target > 0 && raised >= target - 0.5) || (it.kind !== 'fund' && bought >= countNeeded(it));
+		return { target: target, raised: raised, bought: bought, done: done, pct: target > 0 ? Math.min(100, Math.round(raised / target * 100)) : (done ? 100 : 0) };
+	}
+	function areaProgress(area) {
+		var raised = progress.raised[area.name + ' - general'] || 0, target = money(area.amount);
+		(area.items || []).forEach(function (it) { var pr = itemProgress(it, area.name + ' - ' + it.name); raised += pr.raised; if (!area.amount) target += pr.target; });
+		return { target: target, raised: raised, done: target > 0 && raised >= target - 0.5, pct: target > 0 ? Math.min(100, Math.round(raised / target * 100)) : 0 };
+	}
+	// Fills a button in proportion to pr.pct; a met target turns it solid with doneText
+	function applyFill(btn, pr, doneText) {
+		if (pr.done) { btn.classList.add('fund-done'); btn.textContent = doneText; btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (' + doneText.toLowerCase() + ')'); }
+		else if (pr.pct > 0) { btn.classList.add('fund-fill'); btn.style.setProperty('--pct', pr.pct + '%'); btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (' + pr.pct + '% funded)'); }
+	}
 	var $ = function (id) { return document.getElementById(id); };
 	var areas = JSON.parse($('fund-data').textContent).areas;
 	// Area addresses: /donations/<slug>/ (see the files in donations/). Must match how those permalinks are built.
@@ -301,15 +340,21 @@
 			b.setAttribute('data-tip', 'Shipping address and link to ' + where);
 			return b;
 		};
+		var pr = it.kind === 'contact' ? null : itemProgress(it, designation);
+		var raisedNote = pr && pr.raised > 0 && !pr.done ? '<small class="fund-raised">' + fmt(pr.raised) + ' so far</small>' : '';
 		if (it.kind === 'fund') {
-			a.appendChild(el('span', 'fund-price', esc(it.amount || 'TBD')));
-			a.appendChild(fundLink('Chip in', designation, 'fund-outline-red', it.name));
+			a.appendChild(el('span', 'fund-price', esc(it.amount || 'TBD') + raisedNote));
+			var chip = fundLink('Chip in', designation, 'fund-outline-red', it.name);
+			applyFill(chip, pr, 'Funded');
+			a.appendChild(chip);
 			if (it.url) a.appendChild(shopButton());
 		} else if (it.kind === 'contact') {
 			a.appendChild(popupButton('Contact us', it.name, 'fund-white', function () { openContact(it.name); }));
 		} else if (it.url) {
-			if (it.price) a.appendChild(el('span', 'fund-price', esc(it.price) + '<small class="taxinc">tax included</small>'));
-			a.appendChild(shopButton());
+			if (it.price) a.appendChild(el('span', 'fund-price', esc(it.price) + '<small class="taxinc">tax included</small>' + raisedNote));
+			var shop = shopButton();
+			applyFill(shop, pr, 'Purchased');
+			a.appendChild(shop);
 		} else {
 			a.appendChild(el('span', 'fund-soon', 'Link coming soon'));
 		}
@@ -325,19 +370,27 @@
 	});
 	priority.sort(function (x, y) { return x.order - y.order; });
 	var plist = $('fund-priority-list');
-	priority.forEach(function (p) { plist.appendChild(itemRow(p.it, p.designation, false)); });
+	function renderPriority() {
+		plist.innerHTML = '';
+		priority.forEach(function (p) { plist.appendChild(itemRow(p.it, p.designation, false)); });
+	}
+	renderPriority();
 
 	// Area tabs and panel
-	var nav = $('fund-area-nav'), panel = $('fund-area-panel');
+	var nav = $('fund-area-nav'), panel = $('fund-area-panel'), openArea = 0;
 	function showArea(i, updateUrl) {
 		var area = areas[i];
+		openArea = i;
 		if (updateUrl && window.history && history.replaceState) history.replaceState(null, '', BASE + slug(area.name) + '/' + window.location.search);
 		Array.prototype.forEach.call(nav.children, function (t, k) { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
 		panel.setAttribute('aria-labelledby', 'fund-area-tab-' + i);
 		panel.innerHTML = '';
 		panel.appendChild(el('div', 'fund-panel-head', '<h3>' + esc(area.name) + (area.priority ? HP : '') + '</h3>' + (area.description ? '<p>' + esc(area.description) + '</p>' : '')));
-		var bucket = el('div', 'fund-bucket', '<p><strong>Support this whole area</strong></p>');
-		bucket.appendChild(fundLink('Donate', area.name + ' - general', 'fund-white', area.name));
+		var ap = areaProgress(area);
+		var bucket = el('div', 'fund-bucket', '<p><strong>Support this whole area</strong>' + (ap.raised > 0 ? '<small class="fund-raised">' + fmt(ap.raised) + ' so far' + (ap.target > 0 ? ' of ' + fmt(ap.target) : '') + '</small>' : '') + '</p>');
+		var give = fundLink('Donate', area.name + ' - general', 'fund-white', area.name);
+		applyFill(give, ap, 'Funded');
+		bucket.appendChild(give);
 		panel.appendChild(bucket);
 		var items = (area.items || []).slice().sort(function (x, y) { return (y.priority ? 1 : 0) - (x.priority ? 1 : 0); });
 		if (items.length) items.forEach(function (it) { panel.appendChild(itemRow(it, area.name + ' - ' + it.name, !!it.priority)); });
@@ -376,6 +429,18 @@
 	if (wanted) areas.forEach(function (a, i) { if (slug(a.name) === slug(wanted)) start = i; });
 	showArea(start < 0 ? 0 : start);
 	if (start >= 0) nav.parentElement.scrollIntoView({ block: 'start' });
+	// Live progress from the Donations sheet; the page works without it
+	if (PROGRESS_URL && window.fetch) {
+		fetch(PROGRESS_URL, { cache: 'no-store', redirect: 'follow' })
+			.then(function (r) { return r.ok ? r.json() : null; })
+			.then(function (data) {
+				if (!data || typeof data !== 'object') return;
+				progress = { raised: data.raised || {}, purchased: data.purchased || {} };
+				renderPriority();
+				showArea(openArea);
+			})
+			.catch(function () {});
+	}
 
 	// Pop-ups (the site's .modal pattern)
 	var lastFocus = null;

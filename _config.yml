@@ -30,3 +30,7 @@ move_question_url: "https://script.google.com/macros/s/AKfycbznG7JfRRelKXFmPapBX
 # are sent to this Google Apps Script web app, which adds them to the fundraising messages sheet, saves photos to Drive
 # and emails the move team. Leave it empty to fall back to email.
 fundraising_message_url: "https://script.google.com/macros/s/AKfycbwUvSN2ON93oSp5WK6cq7jaTc6aSB1H2jNXd9ZQxrg8KJk2JH6rRiUHbMM8xdzXu3pDsQ/exec"
+
+# Live progress for /donations/: totals by designation and purchase counts, served as JSON by the "Dojo 5.0 Donations"
+# sheet's script (its web app deployment). Leave it empty and the page shows no progress.
+fundraising_progress_url: "https://script.google.com/macros/s/AKfycbw92YK0B8xPbFkh6PH0tIxNq-j1kAzflx2RJaFP9LuvOKk1cV_vtQGETqxuf_kiqnmB/exec"
