@@ -1,12 +1,13 @@
 # Task categories and tasks on /volunteer (pages/home/volunteer.html).
 # Each task `id` must match a row on the "Task list" tab of the Move Volunteer Signups sheet;
 # the sign-ups web app only accepts IDs listed there. Add a task in both places.
+# The task count shown before each category's `sub` line is computed from its tasks.
 # Optional per category: `intro` + `intro_bold` (above the tasks), `callout_title` + `callout` (boxed note below them), `note`.
 # Optional per task: `skills` and `desc`.
 
 - num: "01"
   title: Infrastructure & tech setup
-  sub: 11 volunteer areas · Technical volunteers and hands-on helpers
+  sub: Technical volunteers and hands-on helpers
   intro: Help set up infrastructure at our new location.
   intro_bold: No technical experience is needed for labeling, inventory, testing, documentation, or coordination.
   callout_title: Professional installation boundaries
