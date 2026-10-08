@@ -82,6 +82,8 @@
   #hd5 thead .yours { background: #f0f8f5; }
   #hd5 td small { font-family: "Saira"; font-size: 13px; font-weight: 400; color: #444; margin-left: 4px; }
   #hd5 td.none { font-family: "Saira"; font-size: 14px; font-weight: 400; }
+  #hd5 td sup { font-size: 60%; line-height: 0; }
+  #hd5 tfoot td.note { font-family: "Saira"; font-size: 13px; font-weight: 400; color: #505050; padding: 10px 20px 16px; border-bottom: 0; }
 
   /* Volunteer task list */
   #hd5 .hd5-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 14px 0; padding: 0; list-style: none; }
@@ -224,8 +226,11 @@
           <tr><th scope="row">Annual</th><td class="yours">$1,350<small>/yr</small></td><td>$1,620<small>/yr</small></td></tr>
           <tr><th scope="row">Hive</th><td class="yours">$375</td><td>TBD</td></tr>
           <tr><th scope="row">Dedicated</th><td class="yours">$325</td><td>TBD</td></tr>
-          <tr><th scope="row">Office</th><td class="none">New at Dojo 5.0</td><td>TBD</td></tr>
+          <tr><th scope="row">Office</th><td colspan="2">$1,100 base plus $180<sup>*</sup> membership per person</td></tr>
         </tbody>
+        <tfoot>
+          <tr><td colspan="3" class="note"><sup>*</sup>$150 for existing members</td></tr>
+        </tfoot>
       </table>
     </div>
 
