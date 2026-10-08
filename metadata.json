@@ -1,0 +1,6 @@
+{
+  "name": "Hacker Dojo",
+  "description": "Hacker Dojo - Connect to Silicon Valley. Coworking and community space for hackers and creators.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

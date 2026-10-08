@@ -13,6 +13,12 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - CNAME
+  - package.json
+  - package-lock.json
+  - server.js
+  - metadata.json
+  - views
+  - data
 
 # /fundraising/ redirects to /donations/ (redirect_from in donations.html); GitHub Pages ships this plugin.
 plugins:
