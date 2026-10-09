@@ -6,7 +6,8 @@
 #dojo-move *{box-sizing:border-box}
 #dojo-move .dm-popup{background:var(--dojo-paper);width:100%;max-width:690px;margin:auto;border-radius:14px;overflow:hidden;box-shadow:0 18px 55px rgba(0,0,0,.3)}
 #dojo-move .dm-top{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--dojo-line)}
-#dojo-move .dm-brand{font-family:'Rajdhani',Arial,sans-serif;font-size:21px;font-weight:500;letter-spacing:1px;text-transform:uppercase}
+#dojo-move .dm-brand{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:#000}
+#dojo-move .dm-brand img{width:40px;height:40px;display:block}
 #dojo-move button{font:inherit;cursor:pointer}
 #dojo-move .dm-close{border:0;background:transparent;color:inherit;width:36px;height:36px;font-size:26px;line-height:1}
 #dojo-move .dm-intro{background:linear-gradient(180deg,var(--dojo-paper) 10%,#e2daef 100%);text-align:center;padding:30px 28px 26px}
@@ -26,15 +27,15 @@
 #dojo-move .dm-footer{margin-top:22px;display:flex;gap:14px;align-items:center;justify-content:space-between}
 #dojo-move .dm-primary{font-family:'Rajdhani',Arial,sans-serif;text-transform:uppercase;letter-spacing:.6px;background:var(--dojo-red);color:#fff;border:0;border-radius:12px;padding:13px 20px;font-size:14px;text-decoration:none;white-space:nowrap}
 #dojo-move .dm-primary:hover{background:#c72f2f}
-#dojo-move .dm-signoff{font-size:12px;line-height:1.5;max-width:270px;margin:0}
+#dojo-move .dm-signoff{font-size:12px;line-height:1.5;margin:0}
 /* Timed copy: .dm-before shows until the move date, .dm-after from then on (the script adds is-moved) */
 #dojo-move:not(.is-moved) .dm-after,#dojo-move.is-moved .dm-before{display:none}
-@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:36px}#dojo-move .dm-top{padding:12px 16px}#dojo-move .dm-brand{font-size:18px}#dojo-move .dm-top-actions{gap:6px}#dojo-move .dm-details{font-size:13px;letter-spacing:.5px;padding:7px 10px}#dojo-move .dm-details span{display:none}#dojo-move .dm-close{width:30px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-primary{text-align:center}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
+@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:36px}#dojo-move .dm-top{padding:12px 16px}#dojo-move .dm-brand{font-size:16px;gap:8px}#dojo-move .dm-brand img{width:32px;height:32px}#dojo-move .dm-top-actions{gap:6px}#dojo-move .dm-details{font-size:13px;letter-spacing:.5px;padding:7px 10px}#dojo-move .dm-details span{display:none}#dojo-move .dm-close{width:30px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-primary{text-align:center}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
 </style>
 
 <div id="dojo-move" hidden data-move-date="2026-10-12">
 <section class="dm-popup" role="dialog" aria-modal="true" aria-labelledby="dojo-move-title">
-	<div class="dm-top"><div class="dm-brand">Hacker Dojo</div><div class="dm-top-actions"><a class="dm-details" href="/hackerdojo5/"><span>See more </span>details &rarr;</a><button class="dm-close" aria-label="Close announcement">&times;</button></div></div>
+	<div class="dm-top"><div class="dm-brand"><img src="/static/images/logo.png" alt="" width="84" height="84">Hacker&nbsp;Dojo</div><div class="dm-top-actions"><a class="dm-details" href="/hackerdojo5/"><span>See more </span>details &rarr;</a><button class="dm-close" aria-label="Close announcement">&times;</button></div></div>
 	<div class="dm-intro">
 		<p class="dm-eyebrow dm-before">OUR NEXT CHAPTER &middot; DOJO 5.0</p>
 		<p class="dm-eyebrow dm-after">OUR NEW HOME &middot; DOJO 5.0</p>
@@ -48,8 +49,8 @@
 			<div class="dm-address">3200 Patrick Henry Drive, Ste 250<br><span>Santa Clara, CA 95054</span><br><span>11,000+ sq ft &middot; Double the space!</span></div>
 		</div>
 		<div class="dm-footer">
-			<p class="dm-signoff"><span class="dm-before">This is your community. Make it your own.<br>Thank you for bearing with us as we upgrade.</span><span class="dm-after">Come take a look around the new Dojo. Book a tour.</span></p>
-			<a class="dm-primary dm-after" href="https://calendly.com/hdfrontdesk/hacker-dojo-5-0-preview" target="_blank" rel="noopener noreferrer">Book a tour &nearr;</a>
+			<p class="dm-signoff"><span class="dm-before">This is your community. Make it your own.<br>Thank you for bearing with us as we upgrade.</span><span class="dm-after">Come take a look around the new Dojo.</span></p>
+			<a class="dm-primary dm-after" href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" target="_blank" rel="noopener noreferrer">Book a tour &nearr;</a>
 		</div>
 	</div>
 </section>
