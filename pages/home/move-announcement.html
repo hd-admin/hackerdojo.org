@@ -7,6 +7,10 @@
 #dojo-move .dm-popup{background:var(--dojo-paper);width:100%;max-width:690px;margin:auto;border-radius:14px;overflow:hidden;box-shadow:0 18px 55px rgba(0,0,0,.3)}
 #dojo-move .dm-top{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--dojo-line)}
 #dojo-move .dm-tag{font-family:'Rajdhani',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#fff;background:var(--dojo-red);padding:4px 12px 3px;border-radius:999px}
+#dojo-move .dm-top-actions{display:flex;align-items:center;gap:10px}
+#dojo-move .dm-details{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#fff;background:var(--dojo-red);border-radius:10px;padding:8px 14px;text-decoration:none;white-space:nowrap}
+#dojo-move .dm-details:hover{background:#c72f2f}
+#dojo-move .dm-details:focus-visible{outline:2px solid #6d3bdb;outline-offset:3px}
 #dojo-move button{font:inherit;cursor:pointer}
 #dojo-move .dm-close{border:0;background:transparent;color:inherit;width:36px;height:36px;font-size:26px;line-height:1}
 #dojo-move .dm-intro{background:linear-gradient(180deg,var(--dojo-paper) 10%,#e2daef 100%);text-align:center;padding:30px 28px 26px}
@@ -40,26 +44,26 @@
 #dojo-move .dm-signoff a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 /* Timed copy: .dm-before shows until the move date, .dm-after from then on (the script adds is-moved) */
 #dojo-move:not(.is-moved) .dm-after,#dojo-move.is-moved .dm-before{display:none}
-@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:38px}#dojo-move .dm-top{padding:12px 16px}#dojo-move .dm-photos figcaption{font-size:20px}#dojo-move .dm-close{width:30px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-actions{flex-direction:column}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
+@media(max-width:520px){#dojo-move{padding:10px}#dojo-move .dm-intro{padding:24px 20px}#dojo-move .dm-content{padding:22px}#dojo-move h1{font-size:38px}#dojo-move .dm-top{padding:12px 16px}#dojo-move .dm-top-actions{gap:6px}#dojo-move .dm-details{font-size:13px;letter-spacing:.5px;padding:7px 10px}#dojo-move .dm-details span{display:none}#dojo-move .dm-photos figcaption{font-size:20px}#dojo-move .dm-close{width:30px}#dojo-move .dm-footer{align-items:stretch;flex-direction:column}#dojo-move .dm-actions{flex-direction:column}#dojo-move .dm-destination{gap:14px}#dojo-move .dm-address{font-size:17px}}
 </style>
 
 <div id="dojo-move" hidden data-move-date="2026-10-12">
 <section class="dm-popup" role="dialog" aria-modal="true" aria-labelledby="dojo-move-title">
-	<div class="dm-top"><span class="dm-tag">Dojo 5.0</span><button class="dm-close" aria-label="Close announcement">&times;</button></div>
+	<div class="dm-top"><span class="dm-tag">Dojo 5.0</span><div class="dm-top-actions"><a class="dm-details" href="/hackerdojo5/"><span>See more </span>details &rarr;</a><button class="dm-close" aria-label="Close announcement">&times;</button></div></div>
 	<div class="dm-intro">
 		<p class="dm-eyebrow dm-before">OUR NEXT CHAPTER</p>
 		<p class="dm-eyebrow dm-after">OUR NEW HOME</p>
 		<h1 id="dojo-move-title"><span class="dm-before">Big news. We&rsquo;re moving.</span><span class="dm-after">We&rsquo;ve moved!</span></h1>
-		<p class="dm-before">Hacker Dojo leaves 855 Maude Avenue, Mountain View, and reopens <strong>Monday, October 12</strong> at the address below.</p>
+		<p class="dm-before">Goodbye Maude Avenue, hello Patrick Henry Drive. We reopen <strong>Monday, October 12.</strong></p>
 		<p class="dm-after">Now at <strong>3200 Patrick Henry Dr, Suite 250, Santa Clara.</strong></p>
-		<p class="dm-more dm-before">Desks move Sat&ndash;Sun, October 10&ndash;11. The move runs September 24 &ndash; October 15.</p>
+		<p class="dm-more dm-before">Desks move the weekend of October 10&ndash;11.</p>
 		<p class="dm-more dm-after">Now open &middot; 11,000 sq ft &middot; Setup continues through October 15.</p>
 	</div>
 	<figure class="dm-photos">
 		<figcaption><span class="dm-before">What do you want to see here?</span><span class="dm-after">Come see it for yourself</span></figcaption>
 		<div class="dm-photo-pair">
-			<img src="/static/images/move/before.webp" alt="The new Santa Clara space today: an empty open floor" width="1086" height="1448" loading="lazy">
-			<img src="/static/images/move/after.webp" alt="The same space imagined as Hacker Dojo, with desks, a stage, phone booths, lounge seating and members working" width="1086" height="1448" loading="lazy">
+			<img src="/static/images/newsletter/2026-10-move-before.jpg" alt="3200 Patrick Henry Drive today: an empty open floor" width="1086" height="941" loading="lazy">
+			<img src="/static/images/newsletter/2026-10-move-after.jpg" alt="The same space imagined as Hacker Dojo, with desks, a stage, phone booths, lounge seating and members working" width="1086" height="941" loading="lazy">
 		</div>
 	</figure>
 	<div class="dm-content">
@@ -68,10 +72,9 @@
 			<div class="dm-address">3200 Patrick Henry Drive, Ste 250<br><span>Santa Clara, CA 95054</span><br><span>11,000 sq ft &middot; Twice our current space</span></div>
 		</div>
 		<div class="dm-footer">
-			<p class="dm-signoff"><span class="dm-before">Memberships move at your current rate.<br>Questions? <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a></span><span class="dm-after"><a href="/hackerdojo5/">Everything about the new space &rarr;</a></span></p>
+			<p class="dm-signoff">Memberships <span class="dm-before">move</span><span class="dm-after">continue</span> at your current rate.<br>Questions? <a href="mailto:moving@hackerdojo.com">moving@hackerdojo.com</a></p>
 			<div class="dm-actions">
-				<a class="dm-btn dm-before" href="/hackerdojo5/">Full move schedule</a>
-				<a class="dm-btn dm-after" href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" target="_blank" rel="noopener noreferrer">Book a tour</a>
+				<a class="dm-btn" href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" target="_blank" rel="noopener noreferrer">Book a tour</a>
 				<a class="dm-btn dm-btn-green" href="/volunteer/">Help us move</a>
 			</div>
 		</div>
