@@ -53,7 +53,7 @@
 #fund .fund-priority-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));column-gap:32px}
 #fund .fund-priority .fund-item{border-bottom-color:var(--fund-pink-line)}
 #fund .fund-priority .fund-thumb{box-shadow:inset 0 0 0 1px var(--fund-pink-line)}
-#fund .fund-priority .fund-thumb.icon{background:#f8d9d7;color:#8a3b36;box-shadow:none}
+#fund .fund-priority .fund-thumb.icon{background:#f8d9d7}
 
 /* Area explorer: tab column + panel */
 #fund .fund-explorer{display:grid;grid-template-columns:250px minmax(0,1fr);gap:0;align-items:stretch}
@@ -87,12 +87,12 @@
 #fund .fund-item small{font-size:12px;color:var(--fund-muted)}
 #fund .fund-thumb{width:52px;height:52px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--fund-line);display:grid;place-items:center;overflow:hidden;color:var(--fund-slate)}
 #fund .fund-thumb img{width:100%;height:100%;object-fit:contain;display:block;padding:3px}
-#fund .fund-thumb.icon{background:#f5f5f5;box-shadow:none}
+#fund .fund-thumb.icon{background:var(--fund-pink);color:#a8231d;box-shadow:none}
 #fund .fund-thumb svg{width:28px;height:28px}
 #fund .fund-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:3px}
-#fund .fund-chip{font-size:12px;line-height:1;padding:5px 8px;border-radius:6px;background:#f5f5f5;color:var(--fund-muted);font-variant-numeric:tabular-nums}
-#fund .fund-chip.coord{background:#fff3d6;color:#7a5200;font-weight:500}
-#fund .fund-chip.stretch{background:#ece6fb;color:#4b2bb0;font-weight:500}
+#fund .fund-chip{font-family:'Rajdhani',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;line-height:1;padding:5px 9px 4px;border-radius:8px;background:#fff0df;color:var(--fund-ink);font-variant-numeric:tabular-nums}
+#fund .fund-chip.coord{background:#ffe6c1;color:#7a4a00}
+#fund .fund-chip.stretch{background:#ece6fb;color:#4b2bb0}
 #fund .fund-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 #fund .fund-price{font-weight:600;font-size:15px;color:var(--fund-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 #fund .fund-price .taxinc{display:block;font-size:11px;font-weight:400;line-height:1.2;color:var(--fund-muted);text-align:right}
@@ -107,14 +107,14 @@
 #fund .fund-outline-green.fund-done{background:var(--fund-green)}
 #fund .fund-white.fund-done{background:var(--fund-red)}
 #fund .fund-bucket .fund-raised{text-align:left;font-size:13px;margin-top:2px}
-#fund .fund-soon{display:inline-block;font-size:12px;font-weight:500;line-height:1;padding:7px 10px;border-radius:6px;background:#f5f5f5;color:var(--fund-soft);white-space:nowrap}
-#fund .fund-priority .fund-soon{background:#f8d9d7;color:#8a3b36}
+#fund .fund-soon{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;line-height:1;padding:7px 10px 6px;border-radius:8px;background:#fff0df;color:var(--fund-ink);white-space:nowrap}
+#fund .fund-priority .fund-soon{background:#ffe6c1}
 #fund .fund-hp{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#fde8e7;color:#a8231d;font-weight:700;font-size:12px;line-height:1;margin-left:7px;vertical-align:1px}
 
 /* Pop-ups: additions to the site's .modal */
 #fund .fund-modal-body{padding:14px 25px 0}
 #fund .fund-modal-body p,#fund .modal-form p{font-size:13px;color:var(--fund-muted)}
-#fund .fund-shipto{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#f5f5f5;border-radius:12px;padding:12px 14px;margin:10px 0 12px}
+#fund .fund-shipto{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#fff0df;border-radius:12px;padding:12px 14px;margin:10px 0 12px}
 #fund .fund-shipto-label{display:block;font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--fund-muted);margin-bottom:2px}
 #fund .fund-shipto address{font-style:normal;font-size:15px;line-height:1.45;color:var(--fund-ink);user-select:all}
 #fund .fund-coord{margin-top:12px}
