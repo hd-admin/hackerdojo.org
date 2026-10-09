@@ -59,6 +59,10 @@
   #hd5 .hd5-list .n { font-family: "Rajdhani"; font-size: 14px; font-weight: 600; color: #df3f33; width: 24px; flex: none; }
   #hd5 .hd5-list a { color: #111; font-size: 16px; }
   #hd5 .hd5-list a:hover { color: #df3f33; }
+  /* Both cards are the same height; their buttons sit on the same line at the bottom */
+  #hd5-help .simplecard { display: flex; flex-direction: column; }
+  #hd5-help .simplecard .button { align-self: center; margin-top: auto; }
+  #hd5-help .hd5-list { margin-bottom: 16px; }
 
   /* Member / non-member choice in the question pop-up */
   #hd5 .modal-form fieldset { display: flex; flex-direction: column; gap: 6px; font-size: 14px; border: 0; margin: 0; padding: 0; }
@@ -128,7 +132,7 @@
 </div>
 
 <!-- Membership -->
-<div class="section" id="hd5-membership" style="padding-top: 20px;">
+<div class="section" id="hd5-membership" style="padding-top: 20px; padding-bottom: 40px;">
   <div class="section-header">
     <div class="section-title">Current members keep their rates</div>
   </div>
@@ -172,7 +176,7 @@
 </div>
 
 <!-- Get involved -->
-<div class="section" id="hd5-help" style="padding-top: 20px;">
+<div class="section" id="hd5-help" style="padding-top: 20px; padding-bottom: 40px;">
   <div class="section-header">
     <div class="section-title">Help get the new Dojo ready</div>
   </div>
@@ -205,7 +209,7 @@
 </div>
 
 <!-- Team updates -->
-<div class="section" id="hd5-team" style="padding-top: 20px;">
+<div class="section" id="hd5-team" style="padding-top: 20px; padding-bottom: 40px;">
   <div class="section-header">
     <div class="section-title">Team updates</div>
   </div>
