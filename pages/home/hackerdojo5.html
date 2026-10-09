@@ -87,6 +87,9 @@
 
   /* Volunteer task list */
   #hd5 .hd5-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 14px 0; padding: 0; list-style: none; }
+  /* Button on its own line under a card's text, with the same gap the chip list gives the volunteer card */
+  #hd5 .hd5-card-cta { margin: 14px 0 6px; }
+  #hd5 .hd5-card-cta .button { display: inline-block; }
   #hd5 .hd5-chips li { font-family: "Rajdhani"; font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; background: #fff0df; padding: 5px 10px 4px; border-radius: 8px; }
 
   /* Member / non-member choice in the question pop-up */
@@ -226,7 +229,7 @@
           <tr><th scope="row">Annual</th><td class="yours">$1,350<small>/yr</small></td><td>$1,620<small>/yr</small></td></tr>
           <tr><th scope="row">Hive</th><td class="yours">$375</td><td>TBD</td></tr>
           <tr><th scope="row">Dedicated</th><td class="yours">$325</td><td>TBD</td></tr>
-          <tr><th scope="row">Office</th><td colspan="2">$1,100 base plus $180<sup>*</sup> membership per person</td></tr>
+          <tr><th scope="row">Office</th><td colspan="2">$1,095 base plus $180<sup>*</sup> membership per person</td></tr>
         </tbody>
         <tfoot>
           <tr><td colspan="3" class="note"><sup>*</sup>$150 for existing members</td></tr>
@@ -236,7 +239,6 @@
 
     <div class="cta-buttons">
       <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red">Start your membership</a>
-      <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button">See all plans</a>
     </div>
   </div>
 </div>
@@ -259,7 +261,7 @@
       <div class="simplecard">
         <div class="simplecard-title">Fund an item or project</div>
         <div class="simplecard-desc">Pay for a specific part of Dojo 5.0, or gift an item from the list.</div>
-        <a href="/donations/" class="button button-red">See what we need</a>
+        <p class="hd5-card-cta"><a href="/donations/" class="button button-red">See what we need</a></p>
       </div>
     </div>
   </div>
