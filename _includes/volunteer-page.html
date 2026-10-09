@@ -1,6 +1,9 @@
 <!-- Dojo 5.0 move volunteer sign-up (hackerdojo.org/volunteer). Tasks come from _data/volunteer_tasks.yml.
      Sign-ups go to the "Move Volunteer Signups" Google Sheet through the Apps Script web app set as volunteer_signup_url
-     in _config.yml. Without it, or if sending fails, the form falls back to email. -->
+     in _config.yml. Without it, or if sending fails, the form falls back to email.
+     This partial lives in _includes (not pages/home) so the category sub-pages in volunteer/ can include it too.
+     Each task category also has its own address, /volunteer/<category>/ (the files in volunteer/), which opens the page on
+     that category; opening a category updates the address bar to match, so the current URL can always be shared. -->
 <style>
 #vol{--vol-red:#e13838;--vol-red-dark:#c62828;--vol-ink:#111;--vol-text:#222;--vol-muted:#444;--vol-soft:#505050;--vol-line:#ececec;--vol-shadow:0 0 1px rgba(0,0,0,.04),0 0 2px rgba(0,0,0,.04),0 0 3px rgba(0,0,0,.02),0 0 5px rgba(0,0,0,.03);color:var(--vol-text)}
 #vol *{box-sizing:border-box}
@@ -104,7 +107,7 @@
 </style>
 
 {%- assign cats = site.data.volunteer_tasks -%}
-<div id="vol" data-endpoint="{{ site.volunteer_signup_url }}">
+<div id="vol" data-endpoint="{{ site.volunteer_signup_url }}" data-category="{{ page.category }}">
 	<section class="section vol-hero">
 		<div class="section-title">Our next chapter &middot; Built by our community</div>
 		<h1>Help move the Dojo.<br><span>Make our new space home.</span></h1>
@@ -234,6 +237,9 @@
 	var continueBtn = $('vol-continue'), submitBtn = $('vol-submit');
 	var narrow = window.matchMedia('(max-width: 900px)');
 	var active = null;
+	var BASE = '/volunteer/';
+	var slug = function (s) { return String(s).toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
+	var catSlug = function (i) { return slug(cats[i].querySelector('.vol-cat-title').textContent); };
 
 	function taskBoxes(el) { return all('input[name=task]', el); }
 	function checkedBoxes(el) { return taskBoxes(el).filter(function (b) { return b.checked; }); }
@@ -255,8 +261,10 @@
 		});
 	}
 
-	function openCat(i) {
+	function openCat(i, updateUrl) {
 		active = i;
+		// Each category has its own address, /volunteer/<category>/; keep the address bar in step so the current URL can be shared
+		if (updateUrl && window.history && history.replaceState) history.replaceState(null, '', BASE + (i === null ? '' : catSlug(i) + '/') + window.location.search);
 		panels.forEach(function (p, j) { p.classList.toggle('is-active', j === i); });
 		drawer.classList.toggle('is-open', i !== null);
 		drawer.setAttribute('aria-label', i === null ? 'Task drawer' : cats[i].querySelector('.vol-cat-title').textContent + ' tasks');
@@ -269,21 +277,29 @@
 	}
 	function closeCat() {
 		var b = active === null ? null : cats[active];
-		openCat(null);
+		openCat(null, true);
 		if (b) b.focus();
 	}
 
-	cats.forEach(function (b, i) { b.addEventListener('click', function () { openCat(active === i ? null : i); }); });
+	cats.forEach(function (b, i) { b.addEventListener('click', function () { openCat(active === i ? null : i, true); }); });
 	all('.vol-x', drawer).forEach(function (x) { x.addEventListener('click', closeCat); });
 	drawer.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCat(); });
 	// Tapping the dimmed backdrop around the phone sheet closes it
-	drawer.addEventListener('click', function (e) { if (e.target === drawer) openCat(null); });
+	drawer.addEventListener('click', function (e) { if (e.target === drawer) openCat(null, true); });
 	drawer.addEventListener('change', function (e) {
 		if (e.target.classList.contains('vol-all-cb')) {
 			var p = e.target.closest('.vol-panel'), on = checkedBoxes(p).length !== taskBoxes(p).length;
 			taskBoxes(p).forEach(function (b) { b.checked = on; });
 		}
 		refresh();
+	});
+
+	// Open on the category named by the sub-page (data-category) or by a #hash, and scroll to it
+	var wanted = (root.getAttribute('data-category') || '').trim() || (window.location.hash ? decodeURIComponent(window.location.hash.slice(1)) : '');
+	if (wanted) cats.forEach(function (b, i) {
+		if (catSlug(i) !== slug(wanted)) return;
+		openCat(i);
+		b.scrollIntoView({ block: 'start' });
 	});
 
 	function openModal() {
