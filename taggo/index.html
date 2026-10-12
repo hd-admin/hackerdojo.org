@@ -27,11 +27,11 @@ title: Hacker Dojo
 	.taggo-badge {
 		display: inline-block;
 		font-family: "Rajdhani", sans-serif;
-		font-size: 12px;
+		font-size: 24px;
 		font-weight: 700;
 		letter-spacing: 1.2px;
 		text-transform: uppercase;
-		padding: 4px 12px;
+		padding: 4px 0px;
 		border-radius: 999px;
 		background: #f0f0f0;
 		color: #444C5A;
@@ -52,9 +52,9 @@ title: Hacker Dojo
 		letter-spacing: 0.8px;
 		margin: 24px 0 8px;
 	}
-	.taggo p { font-size: 16px; line-height: 1.55; margin: 8px 0; background-color: white; border-radius:12px;padding:10px; font-family: Arial,sans-serif;}
+	.taggo p { font-size: 16px; line-height: 1.55; margin: 8px 0; background-color: white; border-radius:12px;padding:10px; }
 	.taggo-subtitle { color: #666; font-size: 15px; margin: 0 0 12px; }
-	.taggo ul, .taggo ol { font-size: 16px; line-height: 1.55; padding-left: 22px; margin: 8px 0; }
+	.taggo ul, .taggo ol { font-size: 16px; line-height: 1.55; padding-left: 22px; margin: 8px 0; background-color:white;padding:10px 10px 10px 30px; border-radius:12px;}
 	.taggo li { margin: 6px 0; }
 	.taggo-stats {
 		display: grid;
@@ -64,7 +64,7 @@ title: Hacker Dojo
 	}
 	.taggo-stat { background: white; border-radius: 12px; padding: 12px 14px; }
 	.taggo-stat-label {
-		font-size: 12px;
+		font-size: 18px;
 		text-transform: uppercase;
 		letter-spacing: 0.8px;
 		color: #666;
@@ -81,6 +81,7 @@ title: Hacker Dojo
 	}
 	.taggo-amount-label { text-align: center; color: #666; margin-bottom: 8px; }
 	.taggo-safety { background: #fff4ec; border-left: 4px solid #C84A0E; border-radius: 8px; padding: 4px 16px; }
+  .taggo-safety ul { background: transparent; }
 	.taggo-actions { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
 	.taggo-actions .button { display: block; text-align: center; text-decoration: none; padding: 14px 20px; }
 	.taggo-actions .button-outline { background: #fff; color: #141414; border: 1px solid #ddd; }
@@ -262,7 +263,10 @@ title: Hacker Dojo
 		return c;
 	}
 
-	var id = new URLSearchParams(window.location.search).get("id");
+//	var id = new URLSearchParams(window.location.search).get("id");
+  var hash = window.location.hash;
+  id = hash.replace("#","");
+  id = id.replaceAll("_"," ");
 	var tag = id && Object.prototype.hasOwnProperty.call(tags, id) ? tags[id] : null;
 	var view;
 
