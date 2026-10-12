@@ -1,0 +1,285 @@
+---
+layout: default
+title: Hacker Dojo
+---
+<style>
+	.taggo {
+		padding: 24px 16px 48px;
+		text-align: left;
+		color: #141414;
+	}
+	.taggo-card {
+		max-width: 640px;
+		margin: 0 auto;
+		background: #fff;
+		border: 1px solid #e5e5e5;
+		border-radius: 20px;
+		overflow: hidden;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+	}
+	.taggo-bar { height: 6px; background: #444C5A; }
+	.taggo-room .taggo-bar { background: #2563EB; }
+	.taggo-tool .taggo-bar { background: #C84A0E; }
+	.taggo-donate .taggo-bar { background: #018669; }
+	.taggo-info .taggo-bar { background: #7C3AED; }
+	.taggo-image { display: block; width: 100%; max-height: 280px; object-fit: cover; }
+	.taggo-body { padding: 24px 20px 28px; background-color:#eeeeee;}
+	.taggo-badge {
+		display: inline-block;
+		font-family: "Rajdhani", sans-serif;
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: 1.2px;
+		text-transform: uppercase;
+		padding: 4px 0px;
+		border-radius: 999px;
+		background: #f0f0f0;
+		color: #444C5A;
+		margin-bottom: 12px;
+	}
+	.taggo h1 {
+		font-family: "Rajdhani", sans-serif;
+		font-size: 32px;
+		line-height: 1.1;
+		font-weight: 700;
+		margin: 0 0 4px;
+	}
+	.taggo h2 {
+		font-family: "Rajdhani", sans-serif;
+		font-size: 18px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.8px;
+		margin: 24px 0 8px;
+	}
+	.taggo p { font-size: 16px; line-height: 1.55; margin: 8px 0; background-color: white; border-radius:12px;padding:10px; }
+	.taggo-subtitle { color: #666; font-size: 15px; margin: 0 0 12px; }
+	.taggo ul, .taggo ol { font-size: 16px; line-height: 1.55; padding-left: 22px; margin: 8px 0; background-color:white;padding:10px 10px 10px 30px; border-radius:12px;}
+	.taggo li { margin: 6px 0; }
+	.taggo-stats {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+		margin: 20px 0 0;
+	}
+	.taggo-stat { background: white; border-radius: 12px; padding: 12px 14px; }
+	.taggo-stat-label {
+		font-size: 18px;
+		text-transform: uppercase;
+		letter-spacing: 0.8px;
+		color: #666;
+	}
+	.taggo-stat-value { font-family: "Rajdhani", sans-serif; font-size: 22px; font-weight: 700; }
+	.taggo-amount {
+		font-family: "Rajdhani", sans-serif;
+		font-size: 64px;
+		font-weight: 700;
+		color: #018669;
+		text-align: center;
+		margin: 16px 0 0;
+		line-height: 1;
+	}
+	.taggo-amount-label { text-align: center; color: #666; margin-bottom: 8px; }
+	.taggo-safety { background: #fff4ec; border-left: 4px solid #C84A0E; border-radius: 8px; padding: 4px 16px; }
+  .taggo-safety ul { background: transparent; }
+	.taggo-actions { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+	.taggo-actions .button { display: block; text-align: center; text-decoration: none; padding: 14px 20px; }
+	.taggo-actions .button-outline { background: #fff; color: #141414; border: 1px solid #ddd; }
+	.taggo-empty { text-align: center; }
+	/* Site footer is width:100% + padding, which overflows on phones. */
+	#footer-holder, .copyright { box-sizing: border-box; }
+	@media (min-width: 600px) {
+		.taggo { padding: 48px 24px 80px; }
+		.taggo-body { padding: 32px 36px 36px; }
+		.taggo h1 { font-size: 40px; }
+		.taggo-stats { grid-template-columns: repeat(3, 1fr); }
+	}
+</style>
+
+<div class="taggo" id="taggo">
+	<div class="taggo-card"><div class="taggo-body"><p>Loading&hellip;</p></div></div>
+</div>
+
+<script src="/taggo/tags.js"></script>
+<script>
+(function () {
+	var root = document.getElementById("taggo");
+	var tags = window.TAGGO_TAGS || {};
+
+	// Build a DOM element. Text is always set via textContent so tag data
+	// can never inject markup.
+	function el(tag, attrs, children) {
+		var node = document.createElement(tag);
+		Object.keys(attrs || {}).forEach(function (key) {
+			if (key === "text") node.textContent = attrs[key];
+			else node.setAttribute(key, attrs[key]);
+		});
+		(children || []).forEach(function (child) {
+			if (child) node.appendChild(child);
+		});
+		return node;
+	}
+
+	function safeUrl(url) {
+		return /^(https?:|mailto:|tel:|\/)/i.test(url || "") ? url : null;
+	}
+
+	function money(value) {
+		return "$" + Number(value).toLocaleString("en-US", { maximumFractionDigits: 2 });
+	}
+
+	function hasValue(value) {
+		return value !== undefined && value !== null && value !== "";
+	}
+
+	function button(label, url, extraClass) {
+		var href = safeUrl(url);
+		if (!href) return null;
+		var attrs = { class: "button " + (extraClass || "button-darkblue"), href: href, text: label || "Learn more" };
+		if (/^https?:/i.test(href)) {
+			attrs.target = "_blank";
+			attrs.rel = "noopener";
+		}
+		return el("a", attrs);
+	}
+
+	function list(ordered, items) {
+		if (!items || !items.length) return null;
+		return el(ordered ? "ol" : "ul", {}, items.map(function (item) {
+			return el("li", { text: item });
+		}));
+	}
+
+	function section(heading, content) {
+		if (!content) return null;
+		var wrap = document.createDocumentFragment();
+		wrap.appendChild(el("h2", { text: heading }));
+		wrap.appendChild(content);
+		return wrap;
+	}
+
+	function stats(rows) {
+		var cells = rows.filter(function (row) { return hasValue(row[1]); }).map(function (row) {
+			return el("div", { class: "taggo-stat" }, [
+				el("div", { class: "taggo-stat-label", text: row[0] }),
+				el("div", { class: "taggo-stat-value", text: row[2] ? row[2](row[1]) : String(row[1]) })
+			]);
+		});
+		return cells.length ? el("div", { class: "taggo-stats" }, cells) : null;
+	}
+
+	function linkButtons(links) {
+		return (links || []).map(function (link) {
+			return button(link.label, link.url, "button-outline");
+		});
+	}
+
+	function actions(buttons) {
+		buttons = buttons.filter(Boolean);
+		return buttons.length ? el("div", { class: "taggo-actions" }, buttons) : null;
+	}
+
+	function paragraph(text) {
+		return hasValue(text) ? el("p", { text: text }) : null;
+	}
+
+	// One renderer per tag type. Each returns the nodes that go below the
+	// shared header (badge, title, subtitle, image). Add new types here.
+	var renderers = {
+		room: {
+			label: "Room",
+			render: function (tag) {
+				var d = tag || {};
+				return [
+					paragraph(tag.description),
+					stats([
+						["Max Occupancy", d.capacity, function (v) { return v + " people"; }],
+						["Room Size", d.size, function (v)
+             {
+               return Number(d.size[1]).toLocaleString("en-US") + "' x " + Number(d.size[1]).toLocaleString("en-US")+"'";
+             }],
+						["Per desk / mo", d.ratePerDesk, money],
+						["Available for", d.monthlyRate, function (v) { return money(v) + " monthly"}],
+						["Reserved By", d.reservedBy, function(v) {return v}]
+					]),
+					section("Amenities", list(false, tag.amenities)),
+					actions([tag.action && button(tag.action.label, tag.action.url, "button-red")])
+				];
+			}
+		},
+		tool: {
+			label: "Tool",
+			render: function (tag) {
+				var safety = list(false, tag.safety);
+				return [
+					hasValue(tag.location) ? el("p", {}, [el("strong", { text: "Location: " }), document.createTextNode(tag.location)]) : null,
+					paragraph(tag.description),
+					section("How to use", list(true, tag.steps)),
+					section("Safety", safety && el("div", { class: "taggo-safety" }, [safety])),
+					actions(linkButtons(tag.links))
+				];
+			}
+		},
+		donate: {
+			label: "Donate",
+			render: function (tag) {
+				return [
+					hasValue(tag.amount) ? el("div", { class: "taggo-amount", text: money(tag.amount) }) : null,
+					hasValue(tag.event) ? el("div", { class: "taggo-amount-label", text: "for " + tag.event }) : null,
+					paragraph(tag.description),
+					actions([button(tag.buttonLabel || "Donate", tag.url, "button-green")])
+				];
+			}
+		},
+		info: {
+			label: "Info",
+			render: function (tag) {
+				var nodes = [paragraph(tag.description)];
+				(tag.sections || []).forEach(function (s) {
+					nodes.push(section(s.heading, paragraph(s.body)));
+				});
+				nodes.push(actions(linkButtons(tag.links)));
+				return nodes;
+			}
+		}
+	};
+
+	function card(type, label, title, subtitle, image, bodyNodes) {
+		var body = el("div", { class: "taggo-body" }, [
+			el("div", { class: "taggo-badge", text: label }),
+			el("h1", { text: title }),
+			hasValue(subtitle) ? el("p", { class: "taggo-subtitle", text: subtitle }) : null
+		].concat(bodyNodes));
+		var img = safeUrl(image) ? el("img", { class: "taggo-image", src: image, alt: title }) : null;
+		return el("div", { class: "taggo-card taggo-" + type }, [el("div", { class: "taggo-bar" }), img, body]);
+	}
+
+	function notFound(message) {
+		document.title = "Tag not found | Hacker Dojo";
+		var c = card("unknown", "Taggo", "Tag not found", message, null, [
+			actions([button("Go to hackerdojo.org", "/", "button-darkblue")])
+		]);
+		c.classList.add("taggo-empty");
+		return c;
+	}
+
+//	var id = new URLSearchParams(window.location.search).get("id");
+  var hash = window.location.hash;
+  id = hash.replace("#","");
+  id = id.replaceAll("_"," ");
+	var tag = id && Object.prototype.hasOwnProperty.call(tags, id) ? tags[id] : null;
+	var view;
+
+	if (!id) {
+		view = notFound("No tag id was provided. Try scanning the tag again.");
+	} else if (!tag) {
+		view = notFound("We couldn't find any information for tag \"" + id + "\".");
+	} else {
+		var renderer = renderers[tag.type] || { label: tag.type || "Info", render: renderers.info.render };
+		document.title = (tag.title || "Hacker Dojo") + " | Hacker Dojo";
+		view = card(tag.type, renderer.label, tag.title || "", tag.subtitle, tag.image, renderer.render(tag));
+	}
+
+	root.replaceChildren(view);
+})();
+</script>
