@@ -7,6 +7,9 @@
 #
 # Each area: name, description, items. Optional: priority (a number: the area as a whole is listed in the
 # High priority box in that position), amount and note (shown there), image.
+# general_spent: true - leave out money given to "<Area> - general" from the area's numbers (it already paid
+#            for items marked donated). Areas show "$left / of $total" and a filled Donate button once money or
+#            gifts are in, when they have an `amount` or every item has a price.
 # Each item:
 #   name, note (optional, shown under the name)
 #   kind: fund     - "Chip in" button; shows `amount` (or TBD). With a `url` it also gets a "View item" button.
@@ -14,6 +17,10 @@
 #         contact  - "Contact us" button (used items we need to approve first)
 #   store: the shop's name. Leave it out for Amazon wishlist links (the button then says "Buy on Amazon").
 #   needs: how many (a number, or text such as "3 of 12 needed")
+#   donated: how many have been gifted, counted by hand (a number against `needs`, or true when fully gifted). It
+#            overrides the purchase reports in the live feed. The button fills with the share covered; a partly
+#            gifted item gets a "<donated> of <needs> purchased · Needs <remaining>" chip, and a fully gifted one
+#            shows "✓ Gifted" in place of its button.
 #   coordinate: true  - "Coordinate with us first" chip; the button says "View item" instead of "Gift this item"
 #   stretch: true     - "Stretch goal" chip
 #   priority: a number - also listed in the High priority box, in that position
@@ -45,9 +52,8 @@ areas:
 
   - name: Internet coverage
     description: Wi-Fi 7 across the whole space, plus a new gateway, PoE switch and battery backup.
-    priority: 1
     amount: "$3,785"
-    note: Wi-Fi 7 across the whole space, plus a new gateway, PoE switch and battery backup. Sized for 200-person events.
+    general_spent: true
     image: icon:wifi
     items:
       - name: UniFi U7 Pro Max access point
@@ -57,7 +63,7 @@ areas:
         store: Ubiquiti
         price: "$337 each"
         needs: 3
-        coordinate: true
+        donated: 2
         image: icon:wifi
       - name: UniFi U7 Pro access point
         note: Wi-Fi 7 (U7-Pro) for the classroom, coworking area, kitchen, lab and offices. Chipping in lets us buy a 5-pack locally for about $75 less.
@@ -66,7 +72,7 @@ areas:
         store: Ubiquiti
         price: "$228 each"
         needs: 5
-        coordinate: true
+        donated: 4
         image: icon:wifi
       - name: UniFi Cloud Gateway Fiber
         note: Router, firewall and controller in one. No-SSD version (UCG-Fiber)
@@ -74,7 +80,7 @@ areas:
         url: "https://store.ui.com/us/en/products/ucg-fiber"
         store: Ubiquiti
         price: "$337"
-        coordinate: true
+        donated: true
         image: icon:router
       - name: UniFi Switch Pro 24 PoE Gen2
         note: Powers every access point, camera and door reader from one switch (USW-Pro-24-PoE)
@@ -82,7 +88,7 @@ areas:
         url: "https://store.ui.com/us/en/products/usw-pro-24-poe"
         store: Ubiquiti
         price: "$845.08"
-        coordinate: true
+        donated: true
         image: icon:netswitch
       - name: UniFi 10G direct attach cable, 0.5 m
         note: Connects the gateway to the switch (UACC-DAC-SFP10-0.5M)
@@ -90,7 +96,6 @@ areas:
         url: "https://store.ui.com/us/en/products/10gbps-direct-attach-cable"
         store: Ubiquiti
         price: "$14.27"
-        coordinate: true
         image: icon:cable
       - name: Battery backup
         note: CyberPower CP1500PFCLCD, 1500 VA pure sine wave. Keeps the gateway, switch and door controller up through short outages.
@@ -98,6 +103,7 @@ areas:
         url: "https://www.bhphotovideo.com/c/product/1513053-REG/cyberpower_cp1500pfclcd_pfc_sinewave_ups.html"
         store: B&H
         price: "$263"
+        donated: true
         image: icon:battery
       - name: 24-port patch panel, 1U
         note: TRENDnet TC-KP24S shielded keystone panel for the Cat6A runs to access points and desks
@@ -106,6 +112,7 @@ areas:
         store: Connection
         price: "$37.40 each"
         needs: 2
+        donated: 2
         image: icon:netswitch
       - name: Cat6A shielded keystone jacks, 25-pack
         note: Terminates the cable runs at the patch panels
@@ -113,6 +120,7 @@ areas:
         url: "https://www.newegg.com/p/0J2-079K-006D9"
         store: Newegg
         price: "$99.86"
+        donated: true
         image: icon:cable
 
   - name: Kitchen & breakroom
@@ -188,6 +196,11 @@ areas:
       - name: Main space desks with outlets
         kind: fund
         image: icon:desk
+      - name: Electricians to wire the main space desks
+        kind: fund
+        amount: "$4,000"
+        priority: 7
+        image: icon:bolt
       - name: Power drops
         note: Wired by an electrician
         kind: fund
