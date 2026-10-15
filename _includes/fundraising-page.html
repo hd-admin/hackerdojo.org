@@ -13,19 +13,22 @@
      second-switch stretch goal removed; priority amount updated to $3,785.
      Progress: the page fetches totals by designation and purchase counts from the web app set as fundraising_progress_url
      in _config.yml (the Dojo 5.0 Donations sheet's script) and fills each button in proportion to its target; a met target
-     shows as Funded or Purchased. Without the feed the page simply shows no progress. -->
+     shows as Funded or Purchased. Without the feed the page simply shows no progress.
+     v6, October 15, 2026: `donated` in the data file counts gifts by hand (it overrides purchase reports); fills are a
+     see-through green pill (any amount shows a sliver) and a fully covered item reads "✓ Gifted"; money already in shows as
+     "$left / of $target" in the price slot; Chip in buttons have a green ring; every button uses the site's button font. -->
 <style>
 #fund{--fund-red:#e13838;--fund-green:#018669;--fund-slate:#444c5a;--fund-ink:#111;--fund-text:#222;--fund-muted:#444;--fund-soft:#505050;--fund-line:#e6e4e8;--fund-pink:#fdeceb;--fund-pink-line:#f4c9c6;color:var(--fund-text);line-height:1.5}
 #fund *{box-sizing:border-box}
 #fund h2,#fund h3,#fund h4{font-family:'Rajdhani',Arial,sans-serif;font-weight:600;color:var(--fund-ink);line-height:1.25}
 #fund button{font-family:inherit}
+#fund .button{font-family:'Rajdhani',Arial,sans-serif} /* the site's button font, for <a>, <button> and <span> buttons alike */
 #fund button:focus-visible,#fund input:focus-visible,#fund textarea:focus-visible,#fund a:focus-visible{outline:2px solid var(--fund-slate);outline-offset:2px}
 
 /* Buttons: additions to the site's .button */
 #fund .button{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;cursor:pointer;line-height:1.2;text-decoration:none}
 #fund .button:hover{filter:brightness(.94)}
 #fund .fund-sm{font-size:14px;padding:6px 12px;white-space:nowrap}
-#fund .fund-outline-red{box-shadow:inset 0 0 0 2px var(--fund-red)}
 #fund .fund-outline-green{box-shadow:inset 0 0 0 2px var(--fund-green)}
 #fund .fund-white{box-shadow:inset 0 0 0 1px var(--fund-line)}
 #fund .fund-full{width:100%;margin-top:6px;white-space:normal;text-align:center}
@@ -96,17 +99,12 @@
 #fund .fund-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
 #fund .fund-price{font-weight:600;font-size:15px;color:var(--fund-ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 #fund .fund-price .taxinc{display:block;font-size:11px;font-weight:400;line-height:1.2;color:var(--fund-muted);text-align:right}
-#fund .fund-raised{display:block;font-size:11px;font-weight:500;line-height:1.2;color:var(--fund-green);text-align:right;white-space:nowrap}
-/* Progress: the button fills from the left in proportion to what has come in; a met target turns it solid */
-#fund .button.fund-fill{background:linear-gradient(90deg,var(--fill) var(--pct),#fff var(--pct))}
-#fund .fund-outline-red{--fill:#f8d0d0}
-#fund .fund-outline-green{--fill:#cfe8e1}
-#fund .fund-white{--fill:#f8d0d0}
-#fund .button.fund-done{color:#fff;box-shadow:none}
-#fund .fund-outline-red.fund-done{background:var(--fund-red)}
-#fund .fund-outline-green.fund-done{background:var(--fund-green)}
-#fund .fund-white.fund-done{background:var(--fund-red)}
-#fund .fund-bucket .fund-raised{text-align:left;font-size:13px;margin-top:2px}
+/* Progress: a see-through green pill fills each button from the left, as wide as the share covered (any amount shows a sliver) */
+#fund .fund-fill{position:relative;isolation:isolate;background:#fff}
+#fund .fund-fill::before{content:'';position:absolute;top:2px;bottom:2px;left:2px;width:max(var(--pct-min,0px),calc(var(--pct) - 4px));border-radius:10px;background:rgba(1,134,105,.22);z-index:-1}
+#fund .fund-done{cursor:default;color:#01694f}
+#fund .fund-done:hover{filter:none}
+#fund .fund-chip.got{background:#e3f2ec;color:#01694f}
 #fund .fund-soon{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;line-height:1;padding:7px 10px 6px;border-radius:8px;background:#fff0df;color:var(--fund-ink);white-space:nowrap}
 #fund .fund-priority .fund-soon{background:#ffe6c1}
 #fund .fund-hp{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#fde8e7;color:#a8231d;font-weight:700;font-size:12px;line-height:1;margin-left:7px;vertical-align:1px}
@@ -247,25 +245,48 @@
 	var money = function (s) { var m = String(s || '').replace(/,/g, '').match(/\$\s*(\d+(?:\.\d+)?)/); return m ? Number(m[1]) : 0; };
 	var fmt = function (v) { return '$' + Math.round(v).toLocaleString('en-US'); };
 	var countNeeded = function (it) { return typeof it.needs === 'number' && it.needs > 0 ? it.needs : 1; };
-	// Target and amount so far for one item (or the High priority row of an area)
+	// Target and how much is covered for one item: `donated` (counted by hand in the data file, overriding the feed's
+	// purchase reports) or purchase reports, plus money given to its designation
 	function itemProgress(it, designation) {
-		var unit = money(it.kind === 'fund' ? it.amount : it.price);
-		var target = unit * (/each|per set/i.test(it.kind === 'fund' ? it.amount : it.price) ? countNeeded(it) : 1);
-		var bought = (progress.purchased[it.name] || 0);
-		var raised = (progress.raised[designation] || 0) + (it.kind === 'fund' && !it.url ? 0 : bought * unit);
-		var done = (target > 0 && raised >= target - 0.5) || (it.kind !== 'fund' && bought >= countNeeded(it));
-		return { target: target, raised: raised, bought: bought, done: done, pct: target > 0 ? Math.min(100, Math.round(raised / target * 100)) : (done ? 100 : 0) };
+		var label = it.kind === 'fund' ? it.amount : it.price, unit = money(label), need = countNeeded(it);
+		var target = unit * (/each|per set/i.test(label) ? need : 1);
+		var got = it.donated === true ? need : it.donated ? Math.min(Number(it.donated) || 0, need) : it.kind === 'fund' ? 0 : Math.min(progress.purchased[it.name] || 0, need);
+		var covered = Math.min(target, got / need * target + (progress.raised[designation] || 0));
+		var done = got >= need || (target > 0 && covered >= target - 0.5);
+		return { target: target, covered: covered, left: Math.max(0, target - covered), got: got, need: need, done: done, pct: done ? 100 : target > 0 ? covered / target * 100 : 0 };
 	}
+	// An area's numbers, only when it has a total: its `amount`, or the sum of its items when every item has a price.
+	// `general_spent: true` leaves out money given to "<Area> - general" (it already paid for items marked donated).
 	function areaProgress(area) {
-		var raised = progress.raised[area.name + ' - general'] || 0, target = money(area.amount);
-		(area.items || []).forEach(function (it) { var pr = itemProgress(it, area.name + ' - ' + it.name); raised += pr.raised; if (!area.amount) target += pr.target; });
-		return { target: target, raised: raised, done: target > 0 && raised >= target - 0.5, pct: target > 0 ? Math.min(100, Math.round(raised / target * 100)) : 0 };
+		var covered = area.general_spent ? 0 : progress.raised[area.name + ' - general'] || 0, sum = 0, priced = true;
+		(area.items || []).forEach(function (it) {
+			if (it.kind === 'contact') { priced = false; return; }
+			var pr = itemProgress(it, area.name + ' - ' + it.name);
+			covered += pr.covered; sum += pr.target; if (!pr.target) priced = false;
+		});
+		var target = money(area.amount) || (priced ? sum : 0);
+		if (!target || covered <= 0) return null;
+		covered = Math.min(target, covered);
+		return { target: target, covered: covered, left: target - covered, done: covered >= target - 0.5, pct: covered / target * 100 };
 	}
-	// Fills a button in proportion to pr.pct; a met target turns it solid with doneText
-	function applyFill(btn, pr, doneText) {
-		if (pr.done) { btn.classList.add('fund-done'); btn.textContent = doneText; btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (' + doneText.toLowerCase() + ')'); }
-		else if (pr.pct > 0) { btn.classList.add('fund-fill'); btn.style.setProperty('--pct', pr.pct + '%'); btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (' + pr.pct + '% funded)'); }
+	// Fills a button in proportion to pr.pct; any amount at all shows as a sliver
+	function applyFill(btn, pr) {
+		if (!pr || pr.pct <= 0) return btn;
+		btn.classList.add('fund-fill');
+		btn.style.setProperty('--pct', pr.pct + '%');
+		btn.style.setProperty('--pct-min', '5px');
+		btn.setAttribute('aria-label', btn.getAttribute('aria-label') + ' (' + Math.max(1, Math.round(pr.pct)) + '% covered)');
+		return btn;
 	}
+	// In place of the button once the target is met
+	function doneLabel(name, text) {
+		var g = el('span', 'button fund-sm fund-outline-green fund-fill fund-done', '✓ ' + text);
+		g.style.setProperty('--pct', '100%');
+		g.setAttribute('aria-label', name + ': ' + text.toLowerCase() + '. Thank you!');
+		return g;
+	}
+	// Price slot once money has come in: what is left, with "of <target>" under it
+	function leftPrice(pr) { return el('span', 'fund-price', fmt(pr.left) + '<small class="taxinc">of ' + fmt(pr.target) + '</small>'); }
 	var $ = function (id) { return document.getElementById(id); };
 	var areas = JSON.parse($('fund-data').textContent).areas;
 	// Area addresses: /donations/<slug>/ (see the files in donations/). Must match how those permalinks are built.
@@ -328,7 +349,11 @@
 	// One row. `it` is an item from the data file (or an area listed in the High priority box); `designation` is its Every.org label.
 	function itemRow(it, designation, hp) {
 		var chips = [];
-		if (it.needs) chips.push('<span class="fund-chip">' + esc(typeof it.needs === 'number' ? 'Needs ' + it.needs : it.needs) + '</span>');
+		// `it.area`: the High priority row of a whole area
+		var pr = it.kind === 'contact' ? null : it.area ? areaProgress(it.area) : itemProgress(it, designation);
+		var done = !!(pr && pr.done), partly = !!(pr && !it.area && pr.got > 0 && pr.got < pr.need);
+		if (partly) chips.push('<span class="fund-chip got">' + pr.got + ' of ' + pr.need + ' purchased · Needs ' + (pr.need - pr.got) + '</span>');
+		if (it.needs && !partly && !done) chips.push('<span class="fund-chip">' + esc(typeof it.needs === 'number' ? 'Needs ' + it.needs : it.needs) + '</span>');
 		if (it.coordinate) chips.push('<span class="fund-chip coord">Coordinate with us first</span>');
 		if (it.stretch) chips.push('<span class="fund-chip stretch">Stretch goal</span>');
 		var row = el('div', 'fund-item', thumb(it.image) + '<div><strong>' + esc(it.name) + (hp ? HP : '') + '</strong>' +
@@ -341,21 +366,16 @@
 			b.setAttribute('data-tip', 'Shipping address and link to ' + where);
 			return b;
 		};
-		var pr = it.kind === 'contact' ? null : itemProgress(it, designation);
-		var raisedNote = pr && pr.raised > 0 && !pr.done ? '<small class="fund-raised">' + fmt(pr.raised) + ' so far</small>' : '';
 		if (it.kind === 'fund') {
-			a.appendChild(el('span', 'fund-price', esc(it.amount || 'TBD') + raisedNote));
-			var chip = fundLink('Chip in', designation, 'fund-outline-red', it.name);
-			applyFill(chip, pr, 'Funded');
-			a.appendChild(chip);
-			if (it.url) a.appendChild(shopButton());
+			a.appendChild(pr && pr.covered > 0 && !done ? leftPrice(pr) : el('span', 'fund-price', esc(it.amount || 'TBD')));
+			if (done) a.appendChild(doneLabel(it.name, it.area ? 'Funded' : 'Gifted'));
+			else a.appendChild(applyFill(fundLink('Chip in', designation, 'fund-outline-green', it.name), pr));
+			if (it.url && !done) a.appendChild(shopButton());
 		} else if (it.kind === 'contact') {
 			a.appendChild(popupButton('Contact us', it.name, 'fund-white', function () { openContact(it.name); }));
 		} else if (it.url) {
-			if (it.price) a.appendChild(el('span', 'fund-price', esc(it.price) + '<small class="taxinc">tax included</small>' + raisedNote));
-			var shop = shopButton();
-			applyFill(shop, pr, 'Purchased');
-			a.appendChild(shop);
+			if (it.price) a.appendChild(el('span', 'fund-price', esc(it.price) + '<small class="taxinc">tax included</small>'));
+			a.appendChild(done ? doneLabel(it.name, 'Gifted') : applyFill(shopButton(), pr));
 		} else {
 			a.appendChild(el('span', 'fund-soon', 'Link coming soon'));
 		}
@@ -366,7 +386,7 @@
 	// High priority box: areas and items with a `priority` number, in that order
 	var priority = [];
 	areas.forEach(function (area) {
-		if (area.priority) priority.push({ order: area.priority, it: { name: area.name, note: area.note, kind: 'fund', amount: area.amount, image: area.image }, designation: area.name + ' - general' });
+		if (area.priority) priority.push({ order: area.priority, it: { name: area.name, note: area.note, kind: 'fund', amount: area.amount, image: area.image, area: area }, designation: area.name + ' - general' });
 		(area.items || []).forEach(function (it) { if (it.priority) priority.push({ order: it.priority, it: it, designation: area.name + ' - ' + it.name }); });
 	});
 	priority.sort(function (x, y) { return x.order - y.order; });
@@ -388,9 +408,10 @@
 		panel.innerHTML = '';
 		panel.appendChild(el('div', 'fund-panel-head', '<h3>' + esc(area.name) + (area.priority ? HP : '') + '</h3>' + (area.description ? '<p>' + esc(area.description) + '</p>' : '')));
 		var ap = areaProgress(area);
-		var bucket = el('div', 'fund-bucket', '<p><strong>Support this whole area</strong>' + (ap.raised > 0 ? '<small class="fund-raised">' + fmt(ap.raised) + ' so far' + (ap.target > 0 ? ' of ' + fmt(ap.target) : '') + '</small>' : '') + '</p>');
-		var give = fundLink('Donate', area.name + ' - general', 'fund-white', area.name);
-		applyFill(give, ap, 'Funded');
+		var bucket = el('div', 'fund-bucket', '<p><strong>Support this whole area</strong></p>');
+		var give = el('div', 'fund-actions');
+		if (ap && !ap.done) give.appendChild(leftPrice(ap));
+		give.appendChild(applyFill(fundLink('Donate', area.name + ' - general', 'fund-white', area.name), ap));
 		bucket.appendChild(give);
 		panel.appendChild(bucket);
 		var items = (area.items || []).slice().sort(function (x, y) { return (y.priority ? 1 : 0) - (x.priority ? 1 : 0); });
