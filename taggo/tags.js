@@ -125,17 +125,15 @@ window.TAGGO_TAGS = {
     action: { label: "Inquire about this room", url: "mailto:info@hackerdojo.org?subject=Conference%20Room%20A" }
   },
 
-  "Integral Sign": {
-    title: "Integral Sign",
+  "Godzilla": {
+    title: "Godzilla",
     type: "room",
-    description: "This room is designated as an office space", 
+    description: "This room is designated as a conference room.", 
     location:"",
-    capacity: 5,
+    capacity: 6,
     size: [12,12],
-    monthlyRate: 1095,
-    amenities: [],
-    reservedBy: "Picard", // some string of someone or company.
-    action: { label: "Inquire about this room", url: "mailto:info@hackerdojo.org?subject=Conference%20Room%20A" }
+    amenities: ["50-inch HDMI monitor, 4 chairs, 1 table"],
+    action: { label: "Please sign up on the paper schedule posted at the room.", url: "https://hackerdojo.com/taggo/#Godzilla" }
   },
 
   "Jellyfish": {
