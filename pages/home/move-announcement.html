@@ -8,8 +8,7 @@
 #dojo-move .dm-top{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--dojo-line)}
 #dojo-move .dm-tag{font-family:'Rajdhani',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#fff;background:var(--dojo-red);padding:4px 12px 3px;border-radius:999px}
 #dojo-move .dm-top-actions{display:flex;align-items:center;gap:10px}
-#dojo-move .dm-details{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#fff;background:var(--dojo-red);border-radius:10px;padding:8px 14px;text-decoration:none;white-space:nowrap}
-#dojo-move .dm-details:hover{background:#c72f2f}
+#dojo-move .dm-details{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#fff;background:radial-gradient(ellipse at center,oklch(0.538 0.15 25) 0%,oklch(0.538 0.15 25) 35%,oklch(0.762 0.19 25) 100%);text-shadow:0 1px 2px rgba(0,0,0,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 8px rgba(0,0,0,.35);border-radius:10px;padding:8px 14px;text-decoration:none;white-space:nowrap}
 #dojo-move .dm-details:focus-visible{outline:2px solid #6d3bdb;outline-offset:3px}
 #dojo-move button{font:inherit;cursor:pointer}
 #dojo-move .dm-close{border:0;background:transparent;color:inherit;width:36px;height:36px;font-size:26px;font-weight:600;line-height:1}
@@ -36,11 +35,6 @@
 #dojo-move .dm-footer{display:flex;gap:14px;align-items:center;justify-content:center}
 #dojo-move .dm-doors{font-size:15.6px;text-align:center;margin:18px 0 0}
 #dojo-move .dm-actions{display:flex;gap:10px;flex:none}
-#dojo-move .dm-btn{display:inline-block;font-family:'Rajdhani',Arial,sans-serif;text-transform:uppercase;letter-spacing:.6px;background:var(--dojo-red);color:#fff;border:0;border-radius:12px;padding:13px 18px;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;text-align:center}
-#dojo-move .dm-btn:hover{background:#c72f2f}
-#dojo-move .dm-btn-green{background:var(--dojo-green)}
-#dojo-move .dm-btn-green:hover{background:#016f57}
-#dojo-move .dm-btn:focus-visible{outline:2px solid #6d3bdb;outline-offset:3px}
 #dojo-move .dm-close:focus,#dojo-move .dm-close:focus-visible{outline:none}
 /* Timed copy: .dm-before shows until the move date, .dm-after from then on (the script adds is-moved) */
 #dojo-move:not(.is-moved) .dm-after,#dojo-move.is-moved .dm-before{display:none}
@@ -73,8 +67,8 @@
 		</div>
 		<div class="dm-footer">
 			<div class="dm-actions">
-				<a class="dm-btn" href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" target="_blank" rel="noopener noreferrer">Book a tour</a>
-				<a class="dm-btn dm-btn-green" href="/volunteer/">Volunteer</a>
+				<a class="button button-blue" href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" target="_blank" rel="noopener noreferrer">Book a tour</a>
+				<a class="button button-purple" href="/volunteer/">Volunteer</a>
 			</div>
 		</div>
 		<p class="dm-doors">During the day use the front door | After 5:30pm use our side door</p>
