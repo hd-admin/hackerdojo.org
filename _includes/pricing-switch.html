@@ -1,0 +1,10 @@
+<!-- Pricing switch: .pricing-old shows until 12:00 AM Pacific on November 1, 2026, .pricing-new from then on.
+     After that date, delete every .pricing-old block and this include. -->
+<style>
+  .pricing-old { display: none !important; }
+  .pricing-before .pricing-old { display: revert !important; }
+  .pricing-before .pricing-new { display: none !important; }
+</style>
+<script>
+  if (Date.now() < Date.parse("2026-11-01T00:00:00-07:00")) document.documentElement.classList.add("pricing-before");
+</script>

@@ -4,8 +4,8 @@
   .plan-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 20px;
+    gap: 18px;
+    margin-bottom: 18px;
   }
 
   .plan-card {
@@ -18,7 +18,6 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     position: relative;
-    overflow: hidden;
   }
 
   .plan-card:hover {
@@ -36,8 +35,10 @@
 
   .plan-badge {
     position: absolute;
-    top: 18px;
-    right: 18px;
+    top: -1.5px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
     background: #e13838;
     color: #fff;
     font-family: "Rajdhani";
@@ -74,24 +75,33 @@
   .plan-price-currency {
     font-size: 28px;
     color: #444;
-    vertical-align: super;
+    vertical-align: baseline;
     margin-right: 2px;
   }
 
+  /* Matches .plan-note */
   .plan-price-period {
-    font-size: 16px;
-    color: #888;
-    font-weight: 500;
+    font-family: "Rajdhani";
+    font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: #999;
   }
 
   .plan-annual {
     font-family: "Rajdhani";
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: #018669;
-    margin-bottom: 18px;
+  }
+
+  .plan-price-extra {
+    font-family: "Rajdhani";
+    font-size: 16px;
+    font-weight: 600;
+    color: #888;
+    margin-top: 4px;
   }
 
   .plan-desc {
@@ -108,33 +118,48 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #999;
-    margin-bottom: 24px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
   }
 
-  /* Desk add-on banner */
+  /* Dedicated Desk, Hive and Private Office cards */
+  .desk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
   .desk-addon {
     background: #fff;
     border-radius: 15px;
     padding: 28px 32px;
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 30px;
+    text-align: center;
     box-shadow: 0px 0px 1px rgba(0,0,0,0.04), 0px 0px 2px rgba(0,0,0,0.04), 0px 0px 3px rgba(0,0,0,0.02), 0px 0px 5px rgba(0,0,0,0.03);
     border: 3px solid #ffe6c1;
-    margin-bottom: 60px;
   }
 
-  .desk-addon-label {
+  /* Narrower side padding so the description fits on two lines */
+  .desk-office {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .desk-addon .plan-price {
+    margin-top: auto;
+    padding-top: 16px;
+  }
+
+  .desk-addon-tagline {
     font-family: "Rajdhani";
-    font-size: 13px;
+    font-size: 18px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #888;
+    color: #111;
     margin-bottom: 6px;
   }
 
@@ -149,27 +174,26 @@
   .desk-addon-desc {
     font-size: 14px;
     color: #555;
+    line-height: 1.6;
+    text-wrap: balance;
   }
 
-  .desk-addon-price {
-    text-align: center;
-    min-width: 140px;
+  /* Buttons below the cards */
+  .plan-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+    margin-bottom: 54px;
   }
 
-  .desk-addon-amount {
+  .plan-cta-or {
     font-family: "Rajdhani";
-    font-size: 48px;
-    font-weight: 500;
-    color: #111;
-    line-height: 1;
-  }
-
-  .desk-addon-period {
-    font-family: "Rajdhani";
-    font-size: 14px;
-    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 600;
     color: #888;
-    font-weight: 500;
   }
 
   /* Benefits */
@@ -188,24 +212,31 @@
       order: -1;
     }
 
-    .desk-addon {
+    .desk-grid {
       grid-template-columns: 1fr;
-      text-align: center;
-      gap: 16px;
-    }
-
-    .annual-banner {
-      grid-template-columns: 1fr !important;
-      text-align: center;
-    }
-
-    .annual-banner a {
-      justify-self: center;
     }
 
     .pricing-benefits-grid {
       grid-template-columns: 1fr 1fr;
     }
+  }
+  /* Pricing before Nov 1, 2026: restores the old card styles inside .pricing-old. Delete after that date. */
+  .pricing-old .plan-grid { gap: 20px; margin-bottom: 20px; }
+  .pricing-old .plan-card { overflow: hidden; }
+  .pricing-old .plan-badge { top: 18px; right: 18px; left: auto; transform: none; }
+  .pricing-old .plan-price-currency { vertical-align: super; }
+  .pricing-old .plan-price-period { font-family: inherit; font-size: 16px; color: #888; font-weight: 500; }
+  .pricing-old .plan-annual { font-size: 14px; margin-bottom: 18px; }
+  .pricing-old .plan-note { margin-bottom: 24px; justify-content: normal; }
+  .pricing-old .desk-addon { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 30px; margin-bottom: 60px; text-align: inherit; }
+  .pricing-old .desk-addon-label { font-family: "Rajdhani"; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
+  .pricing-old .desk-addon-desc { line-height: normal; text-wrap: wrap; }
+  .pricing-old .desk-addon-price { text-align: center; min-width: 140px; }
+  .pricing-old .desk-addon-amount { font-family: "Rajdhani"; font-size: 48px; font-weight: 500; color: #111; line-height: 1; }
+  .pricing-old .desk-addon-period { font-family: "Rajdhani"; font-size: 14px; text-transform: uppercase; color: #888; font-weight: 500; }
+
+  @media only screen and (max-width: 960px) {
+    .pricing-old .desk-addon { grid-template-columns: 1fr; text-align: center; gap: 16px; }
   }
 </style>
 
@@ -218,7 +249,10 @@
   </div>
 </div>
 
-<!-- Plans -->
+{% include pricing-switch.html %}
+
+<div class="pricing-old">
+<!-- Plans before Nov 1, 2026 -->
 <div class="section" style="padding-top: 50px; padding-bottom: 20px;">
   <div class="section-content">
     <div class="plan-grid">
@@ -308,6 +342,107 @@
     </div>
 
   </div><!-- .section-content -->
+</div>
+</div>
+
+<div class="pricing-new">
+<!-- Plans -->
+<div class="section" style="padding-top: 45px; padding-bottom: 18px;">
+  <div class="section-content">
+    <div class="plan-grid">
+
+      <!-- Standard -->
+      <div class="plan-card plan-card-featured">
+        <div class="plan-badge">Most Popular</div>
+        <div>
+          <div class="plan-name">Standard</div>
+          <div class="plan-price">
+            <span class="plan-price-currency">$</span><span class="plan-price-amount">180</span>
+          </div>
+          <div class="plan-price-period">/ month</div>
+        </div>
+        <div class="plan-desc">Full membership with 24/7 access to everything Hacker Dojo has to offer. Ideal for founders, engineers, and makers who want a serious creative home base.</div>
+        <div class="plan-annual">or $1,620 / year<br>Equivalent to $135 / month</div>
+      </div>
+
+      <!-- Student -->
+      <div class="plan-card">
+        <div>
+          <div class="plan-name">Student</div>
+          <div class="plan-price">
+            <span class="plan-price-currency">$</span><span class="plan-price-amount">90</span>
+          </div>
+          <div class="plan-price-period">/ month</div>
+        </div>
+        <div class="plan-desc">Half-price membership for currently enrolled students. Bring your projects and ambitions &mdash; we'll provide the space and community.</div>
+        <div class="plan-note">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" /></svg>
+          Student ID verification required
+        </div>
+      </div>
+
+      <!-- Veteran -->
+      <div class="plan-card">
+        <div>
+          <div class="plan-name">Veteran</div>
+          <div class="plan-price">
+            <span class="plan-price-currency">$</span><span class="plan-price-amount">155</span>
+          </div>
+          <div class="plan-price-period">/ month</div>
+        </div>
+        <div class="plan-desc">Discounted membership honoring those who have served. Same full access as a Standard membership &mdash; our way of saying thank you.</div>
+        <div class="plan-note">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" style="width:14px;height:14px;"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" /></svg>
+          Military service verification required
+        </div>
+      </div>
+
+    </div><!-- .plan-grid -->
+
+    <div class="desk-grid">
+
+      <!-- Dedicated Desk -->
+      <div class="desk-addon">
+        <div class="desk-addon-title">Dedicated Desk</div>
+        <div class="desk-addon-desc">Reserve your own permanent desk in our main space. Have your own spot waiting for you every day. Includes membership &amp; mailbox.</div>
+        <div class="plan-price">
+          <span class="plan-price-currency">$</span><span class="plan-price-amount">380</span>
+        </div>
+        <div class="plan-price-period">/ month</div>
+      </div>
+
+      <!-- Hive -->
+      <div class="desk-addon">
+        <div class="desk-addon-title">Hive</div>
+        <div class="desk-addon-desc">Reserve your own permanent desk in the shared corner office.<br>Includes membership &amp; mailbox.</div>
+        <div class="plan-price">
+          <span class="plan-price-currency">$</span><span class="plan-price-amount">420</span>
+        </div>
+        <div class="plan-price-period">/ month</div>
+      </div>
+
+    </div><!-- .desk-grid -->
+
+    <!-- Private Office -->
+    <div class="desk-addon desk-office">
+      <div class="desk-addon-title">Private Office</div>
+      <div class="desk-addon-tagline">Your own space. Your own team. Your place to grow.</div>
+      <div class="desk-addon-desc">Enjoy the privacy and flexibility of a dedicated office within a collaborative, professional community. Whether you're an independent professional or growing team, our Private Office membership gives you a place to focus, connect, and get things done.</div>
+      <div class="plan-price">
+        <span class="plan-price-currency">$</span><span class="plan-price-amount">1,095</span>
+      </div>
+      <div class="plan-price-period">/ month base</div>
+      <div class="plan-price-extra">Plus $180 / month per person</div>
+    </div>
+
+    <div class="plan-cta">
+      <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red">Choose a Membership</a>
+      <span class="plan-cta-or">OR</span>
+      <a href="https://hackerdojo.nexudus.site/hackerdojo/store/day-passes" class="button button-red">Try Us for a Day</a>
+    </div>
+
+  </div><!-- .section-content -->
+</div>
 </div>
 
 <!-- Benefits -->
@@ -401,12 +536,12 @@
 
     <details class="faq-item">
       <summary class="faq-question">Is there a long-term commitment?</summary>
-      <div class="faq-answer">No. All monthly plans can be cancelled at any time. The annual plan locks in a lower effective rate (saving you $450) but is paid upfront. We don't do contracts or lock-in periods on monthly billing.</div>
+      <div class="faq-answer"><span class="pricing-old">No. All monthly plans can be cancelled at any time. The annual plan locks in a lower effective rate (saving you $450) but is paid upfront. We don't do contracts or lock-in periods on monthly billing.</span><span class="pricing-new">No. All monthly plans can be cancelled at any time. The annual plan locks in a lower effective rate (saving you $540) but is paid upfront. We don't do contracts or lock-in periods on monthly billing.</span></div>
     </details>
 
     <details class="faq-item">
       <summary class="faq-question">How does the annual billing work?</summary>
-      <div class="faq-answer">The annual Standard plan is $1,350 paid once per year, equivalent to $112.50/month — a savings of $450 compared to monthly billing. Student and Veteran annual plans may also be available; contact us for details.</div>
+      <div class="faq-answer"><span class="pricing-old">The annual Standard plan is $1,350 paid once per year, equivalent to $112.50/month — a savings of $450 compared to monthly billing. Student and Veteran annual plans may also be available; contact us for details.</span><span class="pricing-new">The annual Standard plan is $1,620 paid once per year, equivalent to $135/month — a savings of $540 compared to monthly billing. Student and Veteran annual plans may also be available; contact us for details.</span></div>
     </details>
 
     <details class="faq-item">
@@ -416,7 +551,7 @@
 
     <details class="faq-item">
       <summary class="faq-question">What is a Dedicated Desk?</summary>
-      <div class="faq-answer">A dedicated desk is a permanent, reserved workspace that is yours every day. You can leave your monitor, equipment, and personal items set up without packing away each visit. It's an add-on to any membership plan for +$225/month.</div>
+      <div class="faq-answer"><span class="pricing-old">A dedicated desk is a permanent, reserved workspace that is yours every day. You can leave your monitor, equipment, and personal items set up without packing away each visit. It's an add-on to any membership plan for +$225/month.</span><span class="pricing-new">A dedicated desk is a permanent, reserved workspace in our main space that is yours every day. You can leave your monitor, equipment, and personal items set up without packing away each visit. It's $380/month and includes membership &amp; mailbox.</span></div>
     </details>
 
     <details class="faq-item">
@@ -445,7 +580,7 @@
       <div class="cta-title">Start your membership today.</div>
       <div class="cta-desc">Join the builders, hackers, and visionaries who call Hacker Dojo home. Not sure yet? Take a tour first.</div>
       <div class="cta-buttons">
-        <a href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" class="button">Take a Tour</a>
+        <a href="https://calendly.com/hdfrontdesk/tour-of-hacker-dojo" class="button button-blue">Take a Tour</a>
         <a href="https://hackerdojo.nexudus.site/hackerdojo/checkout/tariffs" class="button button-red">Start Your Membership</a>
       </div>
     </div>
