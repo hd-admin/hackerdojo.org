@@ -142,9 +142,11 @@
         <div class="big-price-number">$0</div>
         <div class="big-price-text">change</div>
       </div>
-      <p>Your membership moves with you at your current rate. The new prices below apply only to <strong>new members who join after November 1, 2026</strong>. Not a member yet? Join by October 31 for the current rates.</p>
+      <p><span class="pricing-old">Your membership moves with you at your current rate. The new prices below apply only to <strong>new members who join after November 1, 2026</strong>. Not a member yet? Join by October 31 for the current rates.</span><span class="pricing-new">Your membership moves with you at your current rate. The prices below apply to new members.</span></p>
     </div>
 
+{% include pricing-switch.html %}
+    <div class="pricing-old">
     <div class="pricebox hd5-table">
       <table>
         <caption>Monthly rates in USD, except Annual</caption>
@@ -159,14 +161,39 @@
           <tr><th scope="row">Standard</th><td class="yours">$150</td><td>$180</td></tr>
           <tr><th scope="row">Student</th><td class="yours">$75</td><td>$90</td></tr>
           <tr><th scope="row">Annual</th><td class="yours">$1,350<small>/yr</small></td><td>$1,620<small>/yr</small></td></tr>
-          <tr><th scope="row">Hive</th><td class="yours">$375</td><td>TBD</td></tr>
-          <tr><th scope="row">Dedicated</th><td class="yours">$325</td><td>TBD</td></tr>
+          <tr><th scope="row">Hive</th><td class="yours">$375</td><td>$420</td></tr>
+          <tr><th scope="row">Dedicated</th><td class="yours">$325</td><td>$380</td></tr>
           <tr><th scope="row">Office</th><td colspan="2">$1,095 base plus $180<sup>*</sup> membership per person</td></tr>
         </tbody>
         <tfoot>
           <tr><td colspan="3" class="note"><sup>*</sup>$150 for existing members</td></tr>
         </tfoot>
       </table>
+    </div>
+    </div>
+    <div class="pricing-new">
+    <div class="pricebox hd5-table">
+      <table>
+        <caption>Monthly rates in USD, except Annual</caption>
+        <thead>
+          <tr>
+            <th scope="col">Membership</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Standard</th><td>$180</td></tr>
+          <tr><th scope="row">Student</th><td>$90</td></tr>
+          <tr><th scope="row">Annual</th><td>$1,620<small>/yr</small></td></tr>
+          <tr><th scope="row">Hive</th><td>$420</td></tr>
+          <tr><th scope="row">Dedicated</th><td>$380</td></tr>
+          <tr><th scope="row">Office</th><td>$1,095 base plus $180<sup>*</sup> membership per person</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="2" class="note"><sup>*</sup>$150 for existing members</td></tr>
+        </tfoot>
+      </table>
+    </div>
     </div>
 
     <div class="cta-buttons">
