@@ -76,8 +76,9 @@ main {
 	background: radial-gradient(ellipse at center, oklch(0.524 0.15 300) 0%, oklch(0.524 0.15 300) 35%, oklch(0.776 0.16 305) 100%);
 }
 
+/* Gold is the spec gold lightened 30% toward white */
 .button-gold {
-	background: radial-gradient(ellipse at center, oklch(0.762 0.17 70) 0%, oklch(0.762 0.17 70) 35%, oklch(0.93 0.17 95) 100%);
+	background: radial-gradient(ellipse at center, oklch(0.833 0.17 70) 0%, oklch(0.833 0.17 70) 35%, oklch(0.951 0.17 95) 100%);
 }
 
 .button-darkblue {
@@ -1304,7 +1305,7 @@ main {
 	}
 	
 	#hero-links a {
-		width: 140px;
+		width: 240px;
 		margin: auto;
 	}
 
